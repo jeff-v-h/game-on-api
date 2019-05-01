@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using com.gameon.domain.Frameworks;
+﻿using com.gameon.domain.Frameworks;
+using com.gameon.domain.Interfaces;
+using com.gameon.domain.managers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 [assembly: ApiController]
 namespace GameOnApi
@@ -31,6 +26,7 @@ namespace GameOnApi
 
             // Add services in data layer via ServiceManager and the domain layer
             ServiceManager.InjectServices(services);
+            services.AddScoped<IDotaManager, DotaManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
