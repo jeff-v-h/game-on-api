@@ -1,6 +1,7 @@
 ﻿using com.gameon.domain.Frameworks;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.managers;
+using GameOnApi.CustomExceptionMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,8 @@ namespace GameOnApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseMvc();

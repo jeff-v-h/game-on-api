@@ -1,20 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using com.gameon.domain.Interfaces;
+using com.gameon.domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameOnApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("dota")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class DotaController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        private readonly IDotaManager _manager;
+
+        public DotaController(IDotaManager manager)
         {
-            return new string[] { "value1", "value2" };
+            _manager = manager;
+        }
+
+        // GET api/dota
+        [HttpGet("")]
+        [ProducesResponseType(typeof(DotaVM), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 404)]
+        public IActionResult GetDota()
+        {
+            var dota = _manager.Get();
+
+            if (dota == null) return NotFound(new ErrorResponse(404,
+                $"Dota information could not be found."));
+
+            return Ok(dota);
         }
 
         // GET api/values/5
