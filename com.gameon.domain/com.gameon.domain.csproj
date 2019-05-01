@@ -8,4 +8,12 @@
     <Folder Include="ViewModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\com.gameon.data\com.gameon.data.csproj" />
+  </ItemGroup>
+
 </Project>
