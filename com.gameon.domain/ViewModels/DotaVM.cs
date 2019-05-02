@@ -1,4 +1,5 @@
 ﻿using com.gameon.data.Models;
+using MongoDB.Bson;
 using System;
 
 namespace com.gameon.domain.ViewModels
@@ -7,17 +8,18 @@ namespace com.gameon.domain.ViewModels
     {
         public DotaVM(Dota d)
         {
-            tournament = new TournamentVM(d.tournament);
-            startDate = d.startDate;
-            endDate = d.endDate;
-            isCompleted = d.isCompleted;
+            Tournament = new TournamentVM(d.Tournament);
+            StartDate = d.StartDate;
+            EndDate = d.EndDate;
+            IsCompleted = d.IsCompleted;
         }
 
         public DotaVM() { }
 
-        public TournamentVM tournament { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
-        public bool isCompleted { get; set; }
+        public ObjectId Id { get; set; }
+        public TournamentVM Tournament { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public bool IsCompleted { get; set; }
     }
 }

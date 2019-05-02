@@ -1,6 +1,8 @@
 ﻿using com.gameon.data.Interfaces;
+using com.gameon.data.Models;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels;
+using System.Threading.Tasks;
 
 namespace com.gameon.domain.managers
 {
@@ -20,5 +22,28 @@ namespace com.gameon.domain.managers
             // return null if dota is null
             return (dota != null) ? new DotaVM(dota) : null;
         }
+
+        public async Task<DotaVM> Create(DotaVM dotaVM)
+        {
+            // Ensure the project name is unique
+
+            // Pass in the property values into a new Project and add it into the Db via the repo.
+            var dota = new Dota
+            {
+                Tournament = new Tournament
+                {
+                    Name = dotaVM.Tournament.Name,
+                    Year = dotaVM.Tournament.Year
+                },
+                StartDate = dotaVM.StartDate,
+                EndDate = dotaVM.EndDate
+            };
+
+            // Pass the data to repo for creation and return the new id into the view model
+            await _repo.Create(dota);
+            dotaVM.Id = dota.Id;
+
+            return dotaVM;
+        } 
     }
 }

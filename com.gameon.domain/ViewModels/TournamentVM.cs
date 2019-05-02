@@ -1,19 +1,20 @@
 ﻿using com.gameon.data.Models;
-using System;
 
 namespace com.gameon.domain.ViewModels
 {
     public class TournamentVM
     {
-        public Guid id { get; set; }
-        public string name { get; set; }
-        public int year { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int Year { get; set; }
 
         public TournamentVM(Tournament t)
         {
-            id = t.id;
-            name = t.name;
-            year = t.year;
+            Id = t.Id;
+            Name = t.Name;
+            Year = t.Year;
         }
+
+        public TournamentVM() { }
     }
 }

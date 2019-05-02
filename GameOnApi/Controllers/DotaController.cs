@@ -1,6 +1,8 @@
 ﻿using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using System.Threading.Tasks;
 
 namespace GameOnApi.Controllers
 {
@@ -17,10 +19,10 @@ namespace GameOnApi.Controllers
         }
 
         // GET api/dota
-        [HttpGet("")]
+        [HttpGet("", Name = "GetDota")]
         [ProducesResponseType(typeof(DotaVM), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
-        public IActionResult GetDota()
+        public IActionResult GetDota(ObjectId id)
         {
             var dota = _manager.Get();
 
@@ -30,17 +32,19 @@ namespace GameOnApi.Controllers
             return Ok(dota);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
+        // POST api/dota
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(typeof(DotaVM), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 400)]
+        public async Task<IActionResult> Create([FromBody] DotaVM dota)
         {
+            if (dota == null) return BadRequest(new ErrorResponse(400,
+                "Please provide details to create a project."));
+
+            await _manager.Create(dota);
+
+            // Project is successfully created. Return the uri to the created project.
+            return CreatedAtRoute("GetDota", new { id = dota.Id }, dota);
         }
 
         // PUT api/values/5

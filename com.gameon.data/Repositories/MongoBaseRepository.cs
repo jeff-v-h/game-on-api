@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace com.gameon.data.Repositories
 {
@@ -33,9 +34,9 @@ namespace com.gameon.data.Repositories
                 var client = new MongoClient(connectionString);
                 _database = client.GetDatabase(dbName);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception($"Error while attempting to connect to database: {e}");
+                throw new Exception($"Error while attempting to connect to database: {ex}");
             }
         }
 
@@ -48,6 +49,19 @@ namespace com.gameon.data.Repositories
         public IFindFluent<T, T> GetBy(Expression<Func<T, bool>> predicate)
         {
             return _collection.Find(predicate);
+        }
+
+        public async Task<T> Create(T doc)
+        {
+            try
+            {
+                await _collection.InsertOneAsync(doc);
+                return doc;
+            }
+            catch (MongoCommandException ex)
+            {
+                throw new Exception($"Error while creating document: {ex}");
+            }
         }
     }
 }

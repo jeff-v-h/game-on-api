@@ -4,8 +4,8 @@ namespace com.gameon.data.Models
 {
     public class Tournament
     {
-        public Guid id { get; set; }
-        public string name { get; set; }
-        public int year { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int Year { get; set; }
     }
 }
