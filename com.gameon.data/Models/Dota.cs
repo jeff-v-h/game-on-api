@@ -4,11 +4,8 @@ using System;
 
 namespace com.gameon.data.Models
 {
-    public class Dota
+    public class Dota : DocumentBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
 
         [BsonElement("tournament")]
         public Tournament Tournament { get; set; }

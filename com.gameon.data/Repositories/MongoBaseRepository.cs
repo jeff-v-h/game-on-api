@@ -1,4 +1,5 @@
 ﻿using com.gameon.data.Interfaces;
+using com.gameon.data.Models;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace com.gameon.data.Repositories
 {
-    public class MongoBaseRepository<T> : IDocumentRepository<T>
+    public class MongoBaseRepository<T> : IDocumentRepository<T> where T : DocumentBase
     {
         private IMongoCollection<T> _collection;
 
@@ -40,6 +41,11 @@ namespace com.gameon.data.Repositories
             return _collection.Find(x => true);
         }
 
+        public T Get(string id)
+        {
+            return _collection.Find(doc => doc.Id == id).FirstOrDefault();
+        }
+
         public IFindFluent<T, T> GetBy(Expression<Func<T, bool>> predicate)
         {
             return _collection.Find(predicate);
@@ -55,6 +61,21 @@ namespace com.gameon.data.Repositories
             {
                 throw new Exception($"Error while creating document: {ex}");
             }
+        }
+
+        public async void Update(string id, T doc)
+        {
+            await _collection.ReplaceOneAsync(d => d.Id == id, doc);
+        }
+
+        public async void Delete(T doc)
+        {
+            await _collection.DeleteOneAsync(d => d.Id == doc.Id);
+        }
+
+        public async void Delete(string id)
+        {
+            await _collection.DeleteOneAsync(d => d.Id == id);
         }
     }
 }
