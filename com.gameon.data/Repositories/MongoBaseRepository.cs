@@ -1,5 +1,6 @@
 ﻿using com.gameon.data.Interfaces;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Linq.Expressions;
@@ -10,6 +11,7 @@ namespace com.gameon.data.Repositories
     public class MongoBaseRepository<T> : IDocumentRepository<T>
     {
         private readonly IConfiguration _config;
+        private IMongoClient _client;
         private IMongoDatabase _database;
         private IMongoCollection<T> _collection;
 
@@ -24,19 +26,43 @@ namespace com.gameon.data.Repositories
             Connect(connectionString, dbName);
 
             var collectionName = typeof(T).Name;
+            //CreateCollection(dbName, collectionName, "Id");
             _collection = _database.GetCollection<T>(collectionName);
         }
 
-        public void Connect(string connectionString, string dbName)
+        private void Connect(string connectionString, string dbName)
         {
             try
             {
-                var client = new MongoClient(connectionString);
-                _database = client.GetDatabase(dbName);
+                _client = new MongoClient(connectionString);
+                _database = _client.GetDatabase(dbName);
+                
             }
             catch (Exception ex)
             {
                 throw new Exception($"Error while attempting to connect to database: {ex}");
+            }
+        }
+
+        private void CreateCollection(string dbName, string collectionName, string shardKeyName)
+        {
+            //Sharded collection must be initialized this way
+            var bson = new BsonDocument
+            {
+                { "shardCollection", dbName + "." + collectionName },
+                { "key", new BsonDocument(shardKeyName, "hashed") }
+            };
+
+            var shellCommand = new BsonDocumentCommand<BsonDocument>(bson);
+
+            try
+            {
+                var commandResult = _database.RunCommand(shellCommand);
+            }
+            catch (MongoCommandException ex)
+            {
+                throw new Exception($"Error while creating collection in database: {ex}");
+                //logger.LogError(ex, ex.Result.ToString());
             }
         }
 
