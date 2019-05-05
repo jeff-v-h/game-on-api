@@ -1,7 +1,6 @@
 ﻿using com.gameon.data.Interfaces;
 using com.gameon.data.Models;
 using Microsoft.Extensions.Configuration;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace com.gameon.data.Repositories
@@ -12,7 +11,7 @@ namespace com.gameon.data.Repositories
 
         public Dota Get(string id)
         {
-            return GetBy(doc => true).FirstOrDefault();
+            return GetBy(doc => doc.Id == id).FirstOrDefault();
         }
     }
 }

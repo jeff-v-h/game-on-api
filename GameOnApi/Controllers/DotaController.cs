@@ -2,7 +2,6 @@
 using com.gameon.domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using MongoDB.Bson;
 using System.Threading.Tasks;
 
 namespace GameOnApi.Controllers
