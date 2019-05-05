@@ -47,10 +47,20 @@ namespace GameOnApi.Controllers
             return CreatedAtRoute("GetDota", new { id = dotaVM.Id }, dotaVM);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/dota?id=5ccf23bd111979561c08b76a
+        // TODO id length 24
+        [HttpPost]
+        public IActionResult Update([BindRequired, FromQuery] string id, [FromBody] DotaVM data)
         {
+
+            if (id != data.Id) return BadRequest(new ErrorResponse(400, 
+                "The new ticket's id does not match the old id."));
+
+            bool ticketIsUpdated = _manager.Update(data);
+            if (!ticketIsUpdated) return NotFound(new ErrorResponse(400, 
+                $"Ticket with id '{id}' was not found. No update was executed."));
+
+            return NoContent();
         }
 
         // DELETE api/values/5

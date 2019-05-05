@@ -62,9 +62,11 @@ namespace com.gameon.data.Repositories
                 throw new Exception($"Error while creating document: {ex}");
             }
         }
-
-        public async void Update(string id, T doc)
+        
+        public async void Replace(string id, T doc)
         {
+            // ReplaceOne = replace the whole document
+            // UpdateOne = Update certain fields of a document. old fields that aren't changed remain in document
             await _collection.ReplaceOneAsync(d => d.Id == id, doc);
         }
 

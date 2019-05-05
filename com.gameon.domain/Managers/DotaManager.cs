@@ -26,9 +26,34 @@ namespace com.gameon.domain.managers
 
         public async Task<DotaVM> Create(DotaVM dotaVM)
         {
+            var dota = TransferValues(dotaVM);
+
+            // Pass the data to repo for creation and return the new id into the view model
+            await _repo.Create(dota);
+            dotaVM.Id = dota.Id;
+
+            return dotaVM;
+        }
+
+        // TODO: update instead of replace
+        public bool Update(DotaVM dotaVM)
+        {
+            var dota = _repo.Get(dotaVM.Id);
+
+            if (dota == null) return false;
+
+            var newDota = TransferValues(dotaVM);
+            _repo.Replace(dotaVM.Id, newDota);
+
+            return true;
+        }
+
+        // Pass in the property values into a new Project and add it into the Db via the repo.
+        private Dota TransferValues(DotaVM dotaVM)
+        {
             var today = DateTime.Today;
-            // Pass in the property values into a new Project and add it into the Db via the repo.
-            var dota = new Dota
+            
+            return new Dota
             {
                 Tournament = new Tournament
                 {
@@ -40,12 +65,6 @@ namespace com.gameon.domain.managers
                 EndDate = dotaVM.EndDate,
                 IsCompleted = (today > dotaVM.EndDate) ? true : false
             };
-
-            // Pass the data to repo for creation and return the new id into the view model
-            await _repo.Create(dota);
-            dotaVM.Id = dota.Id;
-
-            return dotaVM;
-        } 
+        }
     }
 }

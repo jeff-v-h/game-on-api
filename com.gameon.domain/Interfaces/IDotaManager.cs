@@ -7,5 +7,6 @@ namespace com.gameon.domain.Interfaces
     {
         DotaVM Get(string id);
         Task<DotaVM> Create(DotaVM dotaVM);
+        bool Update(DotaVM dotaVM);
     }
 }
