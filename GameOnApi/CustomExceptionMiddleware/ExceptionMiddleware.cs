@@ -32,13 +32,13 @@ namespace GameOnApi.CustomExceptionMiddleware
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception, string errorInstance)
+        private static Task HandleExceptionAsync(HttpContext context, Exception exception, string errorId)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             return context.Response.WriteAsync(
-                new ErrorResponse(context.Response.StatusCode, null, errorInstance).ToString());
+                new ErrorResponse(context.Response.StatusCode, exception.Message, errorId).ToString());
         }
     }
 }
