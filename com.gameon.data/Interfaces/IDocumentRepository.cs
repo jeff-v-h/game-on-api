@@ -9,6 +9,6 @@ namespace com.gameon.data.Interfaces
     {
         IFindFluent<T, T> GetAll();
         IFindFluent<T, T> GetBy(Expression<Func<T, bool>> predicate);
-        Task<T> Create(T doc);
+        Task Create(T doc);
     }
 }

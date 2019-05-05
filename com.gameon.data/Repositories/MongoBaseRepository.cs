@@ -51,12 +51,11 @@ namespace com.gameon.data.Repositories
             return _collection.Find(predicate);
         }
 
-        public async Task<T> Create(T doc)
+        public async Task Create(T doc)
         {
             try
             {
                 await _collection.InsertOneAsync(doc);
-                return doc;
             }
             catch (MongoCommandException ex)
             {
