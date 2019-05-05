@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace GameOnApi.Controllers
 {
     [Produces("application/json")]
-    [Route("dota")]
+    [Route("api/dota")]
     [ApiController]
     public class DotaController : ControllerBase
     {
@@ -36,15 +36,15 @@ namespace GameOnApi.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(DotaVM), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 400)]
-        public async Task<IActionResult> Create([FromBody] DotaVM dota)
+        public async Task<IActionResult> Create([FromBody] DotaVM data)
         {
-            if (dota == null) return BadRequest(new ErrorResponse(400,
+            if (data == null) return BadRequest(new ErrorResponse(400,
                 "Please provide details to create a project."));
 
-            await _manager.Create(dota);
+            var dotaVM = await _manager.Create(data);
 
             // Project is successfully created. Return the uri to the created project.
-            return CreatedAtRoute("GetDota", new { id = dota.Id }, dota);
+            return CreatedAtRoute("GetDota", new { id = dotaVM.Id }, dotaVM);
         }
 
         // PUT api/values/5

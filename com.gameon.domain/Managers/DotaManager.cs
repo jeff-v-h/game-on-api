@@ -2,6 +2,7 @@
 using com.gameon.data.Models;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels;
+using System;
 using System.Threading.Tasks;
 
 namespace com.gameon.domain.managers
@@ -27,6 +28,8 @@ namespace com.gameon.domain.managers
         {
             // Ensure the project name is unique
 
+            var today = DateTime.Today;
+            var t = today > dotaVM.EndDate;
             // Pass in the property values into a new Project and add it into the Db via the repo.
             var dota = new Dota
             {
@@ -36,7 +39,8 @@ namespace com.gameon.domain.managers
                     Year = dotaVM.Tournament.Year
                 },
                 StartDate = dotaVM.StartDate,
-                EndDate = dotaVM.EndDate
+                EndDate = dotaVM.EndDate,
+                IsCompleted = (today > dotaVM.EndDate) ? true : false
             };
 
             // Pass the data to repo for creation and return the new id into the view model
