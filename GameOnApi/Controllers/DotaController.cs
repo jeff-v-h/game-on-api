@@ -1,6 +1,7 @@
 ﻿using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MongoDB.Bson;
 using System.Threading.Tasks;
 
@@ -22,9 +23,9 @@ namespace GameOnApi.Controllers
         [HttpGet("", Name = "GetDota")]
         [ProducesResponseType(typeof(DotaVM), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
-        public IActionResult GetDota(ObjectId id)
+        public IActionResult GetDota([BindRequired, FromQuery] string id)
         {
-            var dota = _manager.Get();
+            var dota = _manager.Get(id);
 
             if (dota == null) return NotFound(new ErrorResponse(404,
                 $"Dota information could not be found."));

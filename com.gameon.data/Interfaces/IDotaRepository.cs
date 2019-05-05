@@ -4,6 +4,6 @@ namespace com.gameon.data.Interfaces
 {
     public interface IDotaRepository : IDocumentRepository<Dota>
     {
-        Dota Get();
+        Dota Get(string id);
     }
 }

@@ -5,7 +5,7 @@ namespace com.gameon.domain.Interfaces
 {
     public interface IDotaManager
     {
-        DotaVM Get();
+        DotaVM Get(string id);
         Task<DotaVM> Create(DotaVM dotaVM);
     }
 }

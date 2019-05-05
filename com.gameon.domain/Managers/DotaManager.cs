@@ -17,9 +17,9 @@ namespace com.gameon.domain.managers
             _repo = repo;
         }
 
-        public DotaVM Get()
+        public DotaVM Get(string id)
         {
-            var dota = _repo.Get();
+            var dota = _repo.Get(id);
 
             // return null if dota is null
             return (dota != null) ? new DotaVM(dota) : null;
@@ -33,7 +33,7 @@ namespace com.gameon.domain.managers
             // Pass in the property values into a new Project and add it into the Db via the repo.
             var dota = new Dota
             {
-                Id = new ObjectId(),
+                Id = "50ed4e7d5baffd13a44d0153",
                 Tournament = new Tournament
                 {
                     Name = dotaVM.Tournament.Name,
