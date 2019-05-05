@@ -29,7 +29,6 @@ namespace com.gameon.domain.managers
             // Ensure the project name is unique
 
             var today = DateTime.Today;
-            var t = today > dotaVM.EndDate;
             // Pass in the property values into a new Project and add it into the Db via the repo.
             var dota = new Dota
             {

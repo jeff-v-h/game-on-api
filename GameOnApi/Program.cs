@@ -29,6 +29,7 @@ namespace GameOnApi
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseSerilog()
+                //.UseSetting("https_port", "443") // For production
                 .UseStartup<Startup>();
     }
 }

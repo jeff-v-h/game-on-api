@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 [assembly: ApiController]
 namespace GameOnApi
@@ -38,6 +39,10 @@ namespace GameOnApi
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Game On API", Version = "v1" });
+            });
 
             // Add services in data layer via ServiceManager and the domain layer
             ServiceManager.InjectServices(services);
@@ -58,9 +63,21 @@ namespace GameOnApi
             }
 
             app.UseCors(MyAllowSpecificOrigins);
+            app.UseSwagger();
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Game On API");
+                // Set RoutePrefix to an empty string to serve swagger UI as the app's root
+                c.RoutePrefix = string.Empty;
+            });
+
             app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+
             app.UseMvc();
         }
     }
