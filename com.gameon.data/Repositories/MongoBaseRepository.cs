@@ -44,6 +44,7 @@ namespace com.gameon.data.Repositories
             }
         }
 
+        // Method to create collection via mongo shell in cosmos db emulator
         private void CreateCollection(string dbName, string collectionName, string shardKeyName)
         {
             //Sharded collection must be initialized this way

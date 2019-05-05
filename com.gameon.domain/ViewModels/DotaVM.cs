@@ -16,7 +16,7 @@ namespace com.gameon.domain.ViewModels
 
         public DotaVM() { }
 
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
         public TournamentVM Tournament { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

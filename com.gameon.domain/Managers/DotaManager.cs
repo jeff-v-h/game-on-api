@@ -27,15 +27,13 @@ namespace com.gameon.domain.managers
 
         public async Task<DotaVM> Create(DotaVM dotaVM)
         {
-            // Ensure the project name is unique
-
             var today = DateTime.Today;
             // Pass in the property values into a new Project and add it into the Db via the repo.
             var dota = new Dota
             {
-                Id = "50ed4e7d5baffd13a44d0153",
                 Tournament = new Tournament
                 {
+                    Id = dotaVM.Tournament.Id,
                     Name = dotaVM.Tournament.Name,
                     Year = dotaVM.Tournament.Year
                 },

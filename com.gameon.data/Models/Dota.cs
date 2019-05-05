@@ -8,7 +8,7 @@ namespace com.gameon.data.Models
     {
         [BsonId]
         [BsonElement("id")]
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
         [BsonElement("tournament")]
         public Tournament Tournament { get; set; }
         [BsonElement("startDate")]
