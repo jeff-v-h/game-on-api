@@ -3,7 +3,6 @@ using com.gameon.data.Models;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels;
 using System;
-using System.Threading.Tasks;
 
 namespace com.gameon.domain.managers
 {
@@ -24,12 +23,12 @@ namespace com.gameon.domain.managers
             return (dota != null) ? new DotaVM(dota) : null;
         }
 
-        public async Task<DotaVM> Create(DotaVM dotaVM)
+        public DotaVM Create(DotaVM dotaVM)
         {
             var dota = TransferValues(dotaVM);
 
             // Pass the data to repo for creation and return the new id into the view model
-            await _repo.Create(dota);
+            _repo.Create(dota);
             dotaVM.Id = dota.Id;
 
             return dotaVM;
@@ -38,7 +37,6 @@ namespace com.gameon.domain.managers
         public bool Update(string id, DotaVM dotaVM)
         {
             var dota = _repo.Get(id);
-
             if (dota == null) return false;
 
             var newDotaValues = TransferValues(dotaVM);
@@ -66,6 +64,15 @@ namespace com.gameon.domain.managers
                 EndDate = dotaVM.EndDate,
                 IsCompleted = (today > dotaVM.EndDate) ? true : false
             };
+        }
+
+        public bool Delete(string id)
+        {
+            var dota = _repo.Get(id);
+            if (dota == null) return false;
+
+            _repo.Delete(id);
+            return true;
         }
     }
 }

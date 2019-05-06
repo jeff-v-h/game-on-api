@@ -1,7 +1,6 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace com.gameon.data.Interfaces
 {
@@ -9,7 +8,7 @@ namespace com.gameon.data.Interfaces
     {
         IFindFluent<T, T> GetAll();
         IFindFluent<T, T> GetBy(Expression<Func<T, bool>> predicate);
-        Task Create(T doc);
+        T Create(T doc);
         void Replace(string id, T doc);
         void Delete(T doc);
         void Delete(string id);

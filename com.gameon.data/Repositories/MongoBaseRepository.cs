@@ -51,11 +51,12 @@ namespace com.gameon.data.Repositories
             return _collection.Find(predicate);
         }
 
-        public async Task Create(T doc)
+        public T Create(T doc)
         {
             try
             {
-                await _collection.InsertOneAsync(doc);
+                _collection.InsertOne(doc);
+                return doc;
             }
             catch (MongoCommandException ex)
             {
@@ -78,14 +79,14 @@ namespace com.gameon.data.Repositories
             
         }
 
-        public async void Delete(T doc)
+        public void Delete(T doc)
         {
-            await _collection.DeleteOneAsync(d => d.Id == doc.Id);
+            _collection.DeleteOne(d => d.Id == doc.Id);
         }
 
-        public async void Delete(string id)
+        public void Delete(string id)
         {
-            await _collection.DeleteOneAsync(d => d.Id == id);
+            _collection.DeleteOne(d => d.Id == id);
         }
     }
 }

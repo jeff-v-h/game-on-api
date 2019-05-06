@@ -2,7 +2,6 @@
 using com.gameon.domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Threading.Tasks;
 
 namespace GameOnApi.Controllers
 {
@@ -36,36 +35,43 @@ namespace GameOnApi.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(DotaVM), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 400)]
-        public async Task<IActionResult> Create([FromBody] DotaVM data)
+        public IActionResult Create([FromBody] DotaVM data)
         {
             if (data == null) return BadRequest(new ErrorResponse(400,
                 "Please provide details to create a project."));
 
-            var dotaVM = await _manager.Create(data);
+            var dotaVM = _manager.Create(data);
 
             // Project is successfully created. Return the uri to the created project.
             return CreatedAtRoute("GetDota", new { id = dotaVM.Id }, dotaVM);
         }
 
-        // PUT api/dota?id=5ccf23bd111979561c08b76a
-        // TODO id length 24
+        // POST api/dota?id=5ccf23bd111979561c08b76a
         [HttpPost("update")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
         public IActionResult Update([BindRequired, FromQuery] string id, [FromBody] DotaVM data)
         {
-            bool ticketIsUpdated = _manager.Update(id, data);
+            bool isUpdated = _manager.Update(id, data);
 
-            if (!ticketIsUpdated) return NotFound(new ErrorResponse(404, 
-                $"Ticket with id '{id}' was not found. No update was executed."));
+            if (!isUpdated) return NotFound(new ErrorResponse(404, 
+                $"Document with id '{id}' was not found. No update was executed."));
 
             return NoContent();
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // DELETE api/dota?id=5ccfed25b620305d94f541f0
+        [HttpDelete]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(ErrorResponse), 404)]
+        public IActionResult Delete([BindRequired, FromQuery] string id)
         {
+            bool isDeleted = _manager.Delete(id);
+
+            if (!isDeleted) return NotFound(new ErrorResponse(404,
+                $"Document with id '{id}' was not found. No delete was executed."));
+
+            return NoContent();
         }
     }
 }
