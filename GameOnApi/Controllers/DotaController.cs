@@ -49,15 +49,14 @@ namespace GameOnApi.Controllers
 
         // PUT api/dota?id=5ccf23bd111979561c08b76a
         // TODO id length 24
-        [HttpPost]
+        [HttpPost("update")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(ErrorResponse), 404)]
         public IActionResult Update([BindRequired, FromQuery] string id, [FromBody] DotaVM data)
         {
+            bool ticketIsUpdated = _manager.Update(id, data);
 
-            if (id != data.Id) return BadRequest(new ErrorResponse(400, 
-                "The new ticket's id does not match the old id."));
-
-            bool ticketIsUpdated = _manager.Update(data);
-            if (!ticketIsUpdated) return NotFound(new ErrorResponse(400, 
+            if (!ticketIsUpdated) return NotFound(new ErrorResponse(404, 
                 $"Ticket with id '{id}' was not found. No update was executed."));
 
             return NoContent();

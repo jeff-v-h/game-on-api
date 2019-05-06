@@ -35,20 +35,21 @@ namespace com.gameon.domain.managers
             return dotaVM;
         }
 
-        // TODO: update instead of replace
-        public bool Update(DotaVM dotaVM)
+        public bool Update(string id, DotaVM dotaVM)
         {
-            var dota = _repo.Get(dotaVM.Id);
+            var dota = _repo.Get(id);
 
             if (dota == null) return false;
 
-            var newDota = TransferValues(dotaVM);
-            _repo.Replace(dotaVM.Id, newDota);
+            var newDotaValues = TransferValues(dotaVM);
+            newDotaValues.Id = dota.Id;
+
+            _repo.Replace(id, newDotaValues);
 
             return true;
         }
 
-        // Pass in the property values into a new Project and add it into the Db via the repo.
+        // Pass in the property values from viewmodel into a new Dota object (excluding id)
         private Dota TransferValues(DotaVM dotaVM)
         {
             var today = DateTime.Today;

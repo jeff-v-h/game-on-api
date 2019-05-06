@@ -63,11 +63,19 @@ namespace com.gameon.data.Repositories
             }
         }
         
-        public async void Replace(string id, T doc)
+        public void Replace(string id, T doc)
         {
-            // ReplaceOne = replace the whole document
-            // UpdateOne = Update certain fields of a document. old fields that aren't changed remain in document
-            await _collection.ReplaceOneAsync(d => d.Id == id, doc);
+            try
+            {
+                // ReplaceOne = replace the whole document
+                // UpdateOne = Update certain fields of a document. old fields that aren't changed remain in document
+                _collection.ReplaceOne(d => d.Id == id, doc);
+            }
+            catch (MongoCommandException ex)
+            {
+                throw new Exception($"Error with updating document: {ex}");
+            }
+            
         }
 
         public async void Delete(T doc)

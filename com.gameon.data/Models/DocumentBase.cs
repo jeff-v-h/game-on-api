@@ -8,6 +8,7 @@ namespace com.gameon.data.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
+        [BsonElement("_id")]
         public string Id { get; set; }
 
         [BsonElement("createdOn")]
