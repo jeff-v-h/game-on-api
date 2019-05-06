@@ -1,8 +1,7 @@
-﻿using com.gameon.data.Interfaces;
-using com.gameon.data.Models;
+﻿using com.gameon.data.Database.Interfaces;
+using com.gameon.data.Database.Models;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels;
-using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 

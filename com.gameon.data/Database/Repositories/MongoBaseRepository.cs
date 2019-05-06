@@ -1,11 +1,11 @@
-﻿using com.gameon.data.Interfaces;
-using com.gameon.data.Models;
+﻿using com.gameon.data.Database.Interfaces;
+using com.gameon.data.Database.Models;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
 using System.Linq.Expressions;
 
-namespace com.gameon.data.Repositories
+namespace com.gameon.data.Database.Repositories
 {
     public class MongoBaseRepository<T> : IDocumentRepository<T> where T : DocumentBase
     {

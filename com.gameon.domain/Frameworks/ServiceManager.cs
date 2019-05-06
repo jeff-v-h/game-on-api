@@ -1,6 +1,6 @@
-﻿using com.gameon.data.Interfaces;
-using com.gameon.data.Models;
-using com.gameon.data.Repositories;
+﻿using com.gameon.data.Database.Interfaces;
+using com.gameon.data.Database.Models;
+using com.gameon.data.Database.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace com.gameon.domain.Frameworks

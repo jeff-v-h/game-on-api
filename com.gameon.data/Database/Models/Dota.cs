@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace com.gameon.data.Models
+namespace com.gameon.data.Database.Models
 {
     public class Dota : DocumentBase
     {

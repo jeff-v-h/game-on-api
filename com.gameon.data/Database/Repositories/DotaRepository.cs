@@ -1,10 +1,10 @@
-﻿using com.gameon.data.Interfaces;
-using com.gameon.data.Models;
+﻿using com.gameon.data.Database.Interfaces;
+using com.gameon.data.Database.Models;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System.Collections.Generic;
 
-namespace com.gameon.data.Repositories
+namespace com.gameon.data.Database.Repositories
 {
     public class DotaRepository : MongoBaseRepository<Dota>, IDotaRepository
     {

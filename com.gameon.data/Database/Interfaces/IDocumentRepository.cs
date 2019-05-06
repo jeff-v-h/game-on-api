@@ -2,7 +2,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace com.gameon.data.Interfaces
+namespace com.gameon.data.Database.Interfaces
 {
     public interface IDocumentRepository<T>
     {

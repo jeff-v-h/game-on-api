@@ -1,4 +1,4 @@
-﻿using com.gameon.data.Models;
+﻿using com.gameon.data.Database.Models;
 using System;
 
 namespace com.gameon.domain.ViewModels

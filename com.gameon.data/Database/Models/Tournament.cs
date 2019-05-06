@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace com.gameon.data.Models
+namespace com.gameon.data.Database.Models
 {
     public class Tournament
     {
