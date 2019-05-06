@@ -2,6 +2,7 @@
 using com.gameon.domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Collections.Generic;
 
 namespace GameOnApi.Controllers
 {
@@ -18,10 +19,20 @@ namespace GameOnApi.Controllers
         }
 
         // GET api/dota
-        [HttpGet("", Name = "GetDota")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<DotaVM>), 200)]
+        public IActionResult GetAll()
+        {
+            var dotaList = _manager.GetAll();
+
+            return Ok(dotaList);
+        }
+
+        // GET api/dota/5ccf23bd111979561c08b76a
+        [HttpGet("{id:length(24)}", Name = "GetDota")]
         [ProducesResponseType(typeof(DotaVM), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
-        public IActionResult GetDota([BindRequired, FromQuery] string id)
+        public IActionResult GetDota(string id)
         {
             var dota = _manager.Get(id);
 
@@ -35,7 +46,7 @@ namespace GameOnApi.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(DotaVM), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 400)]
-        public IActionResult Create([FromBody] DotaVM data)
+        public IActionResult Create(DotaVM data)
         {
             if (data == null) return BadRequest(new ErrorResponse(400,
                 "Please provide details to create a project."));
@@ -46,11 +57,11 @@ namespace GameOnApi.Controllers
             return CreatedAtRoute("GetDota", new { id = dotaVM.Id }, dotaVM);
         }
 
-        // POST api/dota?id=5ccf23bd111979561c08b76a
-        [HttpPost("update")]
+        // POST api/dota/5ccf23bd111979561c08b76a
+        [HttpPost("{id:length(24)}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
-        public IActionResult Update([BindRequired, FromQuery] string id, [FromBody] DotaVM data)
+        public IActionResult Update(string id, DotaVM data)
         {
             bool isUpdated = _manager.Update(id, data);
 
@@ -60,11 +71,11 @@ namespace GameOnApi.Controllers
             return NoContent();
         }
 
-        // DELETE api/dota?id=5ccfed25b620305d94f541f0
-        [HttpDelete]
+        // DELETE api/dota/5ccfed25b620305d94f541f0
+        [HttpDelete("{id:length(24)}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
-        public IActionResult Delete([BindRequired, FromQuery] string id)
+        public IActionResult Delete(string id)
         {
             bool isDeleted = _manager.Delete(id);
 

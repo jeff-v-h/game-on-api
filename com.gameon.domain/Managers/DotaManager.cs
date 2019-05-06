@@ -3,6 +3,7 @@ using com.gameon.data.Models;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels;
 using System;
+using System.Collections.Generic;
 
 namespace com.gameon.domain.managers
 {
@@ -15,6 +16,17 @@ namespace com.gameon.domain.managers
             _repo = repo;
         }
 
+        public List<DotaVM> GetAll()
+        {
+            var dotaList = _repo.GetAll();
+
+            var dotaVMs = new List<DotaVM>();
+
+            foreach (Dota d in dotaList) dotaVMs.Add(new DotaVM(d));
+
+            return dotaVMs;
+        }
+
         public DotaVM Get(string id)
         {
             var dota = _repo.Get(id);
@@ -25,7 +37,10 @@ namespace com.gameon.domain.managers
 
         public DotaVM Create(DotaVM dotaVM)
         {
-            var dota = TransferValues(dotaVM);
+            var today = DateTime.UtcNow;
+            var dota = TransferValues(dotaVM, today);
+
+            dota.CreatedOn = today;
 
             // Pass the data to repo for creation and return the new id into the view model
             _repo.Create(dota);
@@ -39,7 +54,7 @@ namespace com.gameon.domain.managers
             var dota = _repo.Get(id);
             if (dota == null) return false;
 
-            var newDotaValues = TransferValues(dotaVM);
+            var newDotaValues = TransferValues(dotaVM, DateTime.UtcNow);
             newDotaValues.Id = dota.Id;
 
             _repo.Replace(id, newDotaValues);
@@ -47,13 +62,12 @@ namespace com.gameon.domain.managers
             return true;
         }
 
-        // Pass in the property values from viewmodel into a new Dota object (excluding id)
-        private Dota TransferValues(DotaVM dotaVM)
+        // Pass in the property values from viewmodel into a new Dota object (excluding id and CreatedOn)
+        private Dota TransferValues(DotaVM dotaVM, DateTime today)
         {
-            var today = DateTime.Today;
-            
             return new Dota
             {
+                ModifiedOn = today,
                 Tournament = new Tournament
                 {
                     Id = dotaVM.Tournament.Id,

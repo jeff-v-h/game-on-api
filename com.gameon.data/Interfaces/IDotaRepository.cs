@@ -1,9 +1,10 @@
 ﻿using com.gameon.data.Models;
+using System.Collections.Generic;
 
 namespace com.gameon.data.Interfaces
 {
     public interface IDotaRepository : IDocumentRepository<Dota>
     {
-        Dota Get(string id);
+        List<Dota> GetAll();
     }
 }

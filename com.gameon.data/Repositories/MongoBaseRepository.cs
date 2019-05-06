@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace com.gameon.data.Repositories
 {
@@ -36,14 +35,14 @@ namespace com.gameon.data.Repositories
         }
 
         // Crud Methods
-        public virtual IFindFluent<T, T> GetAll()
+        public virtual IFindFluent<T, T> GetAllBy(Expression<Func<T, bool>> predicate)
         {
-            return _collection.Find(x => true);
+            return _collection.Find(predicate);
         }
 
         public T Get(string id)
         {
-            return _collection.Find(doc => doc.Id == id).FirstOrDefault();
+            return GetBy(doc => doc.Id == id).FirstOrDefault();
         }
 
         public IFindFluent<T, T> GetBy(Expression<Func<T, bool>> predicate)

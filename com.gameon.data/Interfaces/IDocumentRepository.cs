@@ -6,8 +6,9 @@ namespace com.gameon.data.Interfaces
 {
     public interface IDocumentRepository<T>
     {
-        IFindFluent<T, T> GetAll();
+        IFindFluent<T, T> GetAllBy(Expression<Func<T, bool>> predicate);
         IFindFluent<T, T> GetBy(Expression<Func<T, bool>> predicate);
+        T Get(string id);
         T Create(T doc);
         void Replace(string id, T doc);
         void Delete(T doc);
