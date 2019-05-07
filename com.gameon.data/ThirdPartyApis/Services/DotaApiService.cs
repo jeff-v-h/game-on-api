@@ -15,7 +15,6 @@ namespace com.gameon.data.ThirdPartyApis.Services
         private readonly HttpClient _client;
         private IConfigurationSection _settings;
         private string _host;
-        public IEnumerable<ProMatch> Schedule;
         public bool IsError = false;
         public string ErrorMessage;
 

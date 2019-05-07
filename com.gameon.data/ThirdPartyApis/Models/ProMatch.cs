@@ -5,45 +5,45 @@ namespace com.gameon.data.ThirdPartyApis.Models
     public class ProMatch
     {
         [JsonProperty("match_id")]
-        public long match_id { get; set; }
+        public long MatchId { get; set; }
 
         [JsonProperty("duration")]
-        public int duration { get; set; }
+        public int? Duration { get; set; }
 
         [JsonProperty("start_time")]
-        public int start_time { get; set; }
+        public int? StartTime { get; set; }
 
         [JsonProperty("radiant_team_id")]
-        public int radiant_team_id { get; set; }
+        public int? RadiantTeamId { get; set; }
 
         [JsonProperty("radiant_name")]
-        public string radiant_name { get; set; }
+        public string RadiantName { get; set; }
 
         [JsonProperty("dire_team_id")]
-        public int dire_team_id { get; set; }
+        public int? DireTeamId { get; set; }
 
         [JsonProperty("dire_name")]
-        public string dire_name { get; set; }
+        public string DireName { get; set; }
 
         [JsonProperty("leagueid")]
-        public int leagueid { get; set; }
+        public int? LeagueId { get; set; }
 
         [JsonProperty("league_name")]
-        public string league_name { get; set; }
+        public string LeagueName { get; set; }
 
         [JsonProperty("series_id")]
-        public int series_id { get; set; }
+        public int SeriesId { get; set; }
 
         [JsonProperty("series_type")]
-        public int series_type { get; set; }
+        public int? SeriesType { get; set; }
 
         [JsonProperty("radiant_score")]
-        public int radiant_score { get; set; }
+        public int? RadiantScore { get; set; }
 
         [JsonProperty("dire_score")]
-        public int dire_score { get; set; }
+        public int? DireScore { get; set; }
 
         [JsonProperty("radiant_win")]
-        public bool radiant_win { get; set; }
+        public bool RadiantWin { get; set; }
     }
 }

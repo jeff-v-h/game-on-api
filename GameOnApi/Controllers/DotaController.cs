@@ -3,6 +3,7 @@ using com.gameon.domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GameOnApi.Controllers
 {
@@ -21,9 +22,9 @@ namespace GameOnApi.Controllers
         // GET api/dota
         [HttpGet]
         [ProducesResponseType(typeof(List<DotaVM>), 200)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var dotaList = _manager.GetAll();
+            var dotaList = await _manager.GetAll();
 
             return Ok(dotaList);
         }
