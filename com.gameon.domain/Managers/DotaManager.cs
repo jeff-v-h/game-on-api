@@ -1,23 +1,28 @@
 ﻿using com.gameon.data.Database.Interfaces;
 using com.gameon.data.Database.Models;
+using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace com.gameon.domain.managers
 {
     public class DotaManager : IDotaManager
     {
         private readonly IDotaRepository _repo;
+        private readonly IDotaApiService _service;
 
-        public DotaManager(IDotaRepository repo)
+        public DotaManager(IDotaRepository repo, IDotaApiService service)
         {
             _repo = repo;
+            _service = service;
         }
 
-        public List<DotaVM> GetAll()
+        public async Task<List<DotaVM>> GetAll()
         {
+            var apiList = await _service.GetSchedule();
             var dotaList = _repo.GetAll();
 
             var dotaVMs = new List<DotaVM>();

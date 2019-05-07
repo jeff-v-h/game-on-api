@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace com.gameon.data.ThirdPartyApis.Interfaces
 {
-    public interface IDotaApiRepository
+    public interface IDotaApiService
     {
         Task<IEnumerable<ProMatch>> GetSchedule();
     }

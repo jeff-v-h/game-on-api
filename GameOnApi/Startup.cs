@@ -46,7 +46,7 @@ namespace GameOnApi
 
             // Add services in data layer via ServiceManager and the domain layer
             ServiceManager.InjectServices(services);
-            services.AddScoped<IDotaManager, DotaManager>();
+            services.AddTransient<IDotaManager, DotaManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
