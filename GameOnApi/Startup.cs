@@ -1,6 +1,6 @@
 ﻿using com.gameon.domain.Frameworks;
 using com.gameon.domain.Interfaces;
-using com.gameon.domain.managers;
+using com.gameon.domain.Managers;
 using GameOnApi.CustomExceptionMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +47,7 @@ namespace GameOnApi
             // Add services in data layer via ServiceManager and the domain layer
             ServiceManager.InjectServices(services);
             services.AddTransient<IDotaManager, DotaManager>();
+            services.AddTransient<IEplManager, EplManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

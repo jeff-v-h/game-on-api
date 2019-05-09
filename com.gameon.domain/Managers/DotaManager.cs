@@ -6,7 +6,7 @@ using com.gameon.domain.ViewModels;
 using System;
 using System.Collections.Generic;
 
-namespace com.gameon.domain.managers
+namespace com.gameon.domain.Managers
 {
     public class DotaManager : IDotaManager
     {
