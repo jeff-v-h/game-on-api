@@ -5,7 +5,6 @@ using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace com.gameon.domain.managers
 {
@@ -20,9 +19,9 @@ namespace com.gameon.domain.managers
             _service = service;
         }
 
-        public async Task<List<DotaVM>> GetAll()
+        public List<DotaVM> GetAll()
         {
-            var apiList = await _service.GetSchedule();
+            //var apiList = await _service.GetSchedule();
             var dotaList = _repo.GetAll();
 
             var dotaVMs = new List<DotaVM>();
