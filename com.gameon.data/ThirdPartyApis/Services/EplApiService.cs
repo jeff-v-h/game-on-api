@@ -1,5 +1,7 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Football;
+﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+using com.gameon.data.ThirdPartyApis.Models.Football;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +23,14 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client = client;
             _settings = config.GetSection("EplApi");
             _host = _settings["Host"];
+            var apiKey = _settings["ApiKey"];
+            var apiHostHeader = _settings["ApiHostHeader"];
 
             _client.BaseAddress = new Uri(_host);
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
+            _client.DefaultRequestHeaders.Add("X-RapidAPI-Key", apiKey);
+            _client.DefaultRequestHeaders.Add("X-RapidAPI-Host", apiHostHeader);
         }
 
         public async Task<List<Fixture>> GetSchedule()
@@ -34,8 +40,9 @@ namespace com.gameon.data.ThirdPartyApis.Services
 
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadAsAsync<IEnumerable<FootballApi>>();
-                return result.FirstOrDefault().Api.Fixtures;
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
+                return result.Api.Fixtures;
             }
             else
             {
@@ -52,8 +59,9 @@ namespace com.gameon.data.ThirdPartyApis.Services
 
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadAsAsync<IEnumerable<FootballApi>>();
-                return result.FirstOrDefault().Api.Teams;
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
+                return result.Api.Teams;
             }
             else
             {

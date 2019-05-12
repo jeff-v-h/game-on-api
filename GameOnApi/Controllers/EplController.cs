@@ -2,6 +2,7 @@
 using com.gameon.domain.ViewModels.Football;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GameOnApi.Controllers
 {
@@ -20,9 +21,9 @@ namespace GameOnApi.Controllers
         // GET api/epl/schedule
         [HttpGet("schedule")]
         [ProducesResponseType(typeof(List<FixtureVM>), 200)]
-        public IActionResult GetSchedule()
+        public async Task<IActionResult> GetSchedule()
         {
-            var schedule = _manager.GetSchedule();
+            var schedule = await _manager.GetSchedule();
 
             return Ok(schedule);
         }
@@ -30,9 +31,9 @@ namespace GameOnApi.Controllers
         // GET api/epl/teams
         [HttpGet("teams")]
         [ProducesResponseType(typeof(List<TeamVM>), 200)]
-        public IActionResult GetTeams()
+        public async Task<IActionResult> GetTeams()
         {
-            var teams = _manager.GetTeams();
+            var teams = await _manager.GetTeams();
 
             return Ok(teams);
         }
