@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace com.gameon.data.ThirdPartyApis.Interfaces
 {
-    public interface IEplApiService
+    public interface IFootballApiService
     {
-        Task<List<Fixture>> GetSchedule();
-        Task<List<Team>> GetTeams();
+        Task<List<Fixture>> GetEplSchedule();
+        Task<List<Team>> GetEplTeams();
     }
 }

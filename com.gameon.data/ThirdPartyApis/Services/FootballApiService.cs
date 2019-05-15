@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace com.gameon.data.ThirdPartyApis.Services
 {
-    public class EplApiService : IEplApiService
+    public class FootballApiService : IFootballApiService
     {
         private readonly HttpClient _client;
         private IConfigurationSection _settings;
@@ -18,10 +18,10 @@ namespace com.gameon.data.ThirdPartyApis.Services
         public bool IsError = false;
         public string ErrorMessage;
 
-        public EplApiService(IConfiguration config, HttpClient client)
+        public FootballApiService(IConfiguration config, HttpClient client)
         {
             _client = client;
-            _settings = config.GetSection("EplApi");
+            _settings = config.GetSection("FootballApi");
             _host = _settings["Host"];
             var apiKey = _settings["ApiKey"];
             var apiHostHeader = _settings["ApiHostHeader"];
@@ -33,10 +33,11 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("X-RapidAPI-Host", apiHostHeader);
         }
 
-        public async Task<List<Fixture>> GetSchedule()
+        public async Task<List<Fixture>> GetEplSchedule()
         {
             var path = _settings["Schedule"];
-            var response = await _client.GetAsync(path);
+            var id = _settings["EplId"];
+            var response = await _client.GetAsync(path + id);
 
             if (response.IsSuccessStatusCode)
             {
@@ -52,10 +53,11 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
-        public async Task<List<Team>> GetTeams()
+        public async Task<List<Team>> GetEplTeams()
         {
             var path = _settings["Teams"];
-            var response = await _client.GetAsync(path);
+            var id = _settings["EplId"];
+            var response = await _client.GetAsync(path + id);
 
             if (response.IsSuccessStatusCode)
             {

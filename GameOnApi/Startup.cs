@@ -31,7 +31,7 @@ namespace GameOnApi
                 options.AddPolicy(MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200")
+                        builder.WithOrigins("http://localhost:8080")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();
