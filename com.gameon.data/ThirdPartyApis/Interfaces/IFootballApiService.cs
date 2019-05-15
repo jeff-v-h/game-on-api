@@ -8,5 +8,9 @@ namespace com.gameon.data.ThirdPartyApis.Interfaces
     {
         Task<List<Fixture>> GetEplSchedule();
         Task<List<Team>> GetEplTeams();
+        Task<List<Fixture>> GetChampionsLeagueSchedule();
+        Task<List<Team>> GetChampionsLeagueTeams();
+        Task<List<Fixture>> GetEuropaLeagueSchedule();
+        Task<List<Team>> GetEuropaLeagueTeams();
     }
 }

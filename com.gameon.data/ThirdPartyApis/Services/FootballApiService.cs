@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -57,6 +56,86 @@ namespace com.gameon.data.ThirdPartyApis.Services
         {
             var path = _settings["Teams"];
             var id = _settings["EplId"];
+            var response = await _client.GetAsync(path + id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
+                return result.Api.Teams;
+            }
+            else
+            {
+                IsError = true;
+                ErrorMessage = response.ReasonPhrase;
+                return null;
+            }
+        }
+
+        public async Task<List<Fixture>> GetChampionsLeagueSchedule()
+        {
+            var path = _settings["Schedule"];
+            var id = _settings["ChampionsLeagueId"];
+            var response = await _client.GetAsync(path + id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
+                return result.Api.Fixtures;
+            }
+            else
+            {
+                IsError = true;
+                ErrorMessage = response.ReasonPhrase;
+                return null;
+            }
+        }
+
+        public async Task<List<Team>> GetChampionsLeagueTeams()
+        {
+            var path = _settings["Teams"];
+            var id = _settings["ChampionsLeagueId"];
+            var response = await _client.GetAsync(path + id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
+                return result.Api.Teams;
+            }
+            else
+            {
+                IsError = true;
+                ErrorMessage = response.ReasonPhrase;
+                return null;
+            }
+        }
+
+        public async Task<List<Fixture>> GetEuropaLeagueSchedule()
+        {
+            var path = _settings["Schedule"];
+            var id = _settings["EuropaLeagueId"];
+            var response = await _client.GetAsync(path + id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
+                return result.Api.Fixtures;
+            }
+            else
+            {
+                IsError = true;
+                ErrorMessage = response.ReasonPhrase;
+                return null;
+            }
+        }
+
+        public async Task<List<Team>> GetEuropaLeagueTeams()
+        {
+            var path = _settings["Teams"];
+            var id = _settings["EuropaLeagueId"];
             var response = await _client.GetAsync(path + id);
 
             if (response.IsSuccessStatusCode)
