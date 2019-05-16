@@ -23,14 +23,14 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<GameVM>), 200)]
         public async Task<IActionResult> GetNbaSchedule()
         {
-            var schedule = await _manager.GetNbaSchedule();
+            var games = await _manager.GetNbaSchedule();
 
-            return Ok(schedule);
+            return Ok(games);
         }
 
         // GET api/basketball/nba/teams
         [HttpGet("nba/teams")]
-        [ProducesResponseType(typeof(List<TeamVM>), 200)]
+        [ProducesResponseType(typeof(List<NbaTeamVM>), 200)]
         public async Task<IActionResult> GetNbaTeams()
         {
             var teams = await _manager.GetNbaTeams();

@@ -2,14 +2,14 @@
 
 namespace com.gameon.domain.ViewModels.Nba
 {
-    public class TeamVM : TeamBaseVM
+    public class NbaTeamVM : NbaTeamBaseVM
     {
         public string City { get; set; }
         public string NbaFranchise { get; set; }
         public string AllStar { get; set; }
         public LeaguesVM Leagues { get; set; }
 
-        public TeamVM(Team t)
+        public NbaTeamVM(Team t)
         {
             FullName = t.FullName;
             TeamId = t.TeamId;

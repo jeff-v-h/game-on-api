@@ -7,6 +7,6 @@ namespace com.gameon.domain.Interfaces
     public interface INbaManager
     {
         Task<List<GameVM>> GetNbaSchedule();
-        Task<List<TeamVM>> GetNbaTeams();
+        Task<List<NbaTeamVM>> GetNbaTeams();
     }
 }

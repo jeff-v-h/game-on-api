@@ -1,5 +1,4 @@
 ﻿using com.gameon.data.ThirdPartyApis.Models.Nba;
-using System;
 
 namespace com.gameon.domain.ViewModels.Nba
 {

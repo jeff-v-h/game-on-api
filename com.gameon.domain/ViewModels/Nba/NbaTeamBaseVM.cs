@@ -1,6 +1,6 @@
 ﻿namespace com.gameon.domain.ViewModels.Nba
 {
-    public class TeamBaseVM
+    public class NbaTeamBaseVM
     {
         public string FullName { get; set; }
         public string TeamId { get; set; }

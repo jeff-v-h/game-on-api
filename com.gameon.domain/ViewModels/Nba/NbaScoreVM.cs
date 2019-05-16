@@ -2,11 +2,11 @@
 
 namespace com.gameon.domain.ViewModels.Nba
 {
-    public class ScoreVM
+    public class NbaScoreVM
     {
         public string Points { get; set; }
 
-        public ScoreVM(Score s)
+        public NbaScoreVM(Score s)
         {
             Points = s.Points;
         }
