@@ -18,6 +18,7 @@ namespace com.gameon.domain.Frameworks
             // Third Party Api Services
             services.AddHttpClient<IDotaApiService, DotaApiService>();
             services.AddHttpClient<IFootballApiService, FootballApiService>();
+            services.AddHttpClient<INbaApiService, NbaApiService>();
         }
     }
 }

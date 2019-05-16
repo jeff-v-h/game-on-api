@@ -1,15 +1,15 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Nba;
+﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+using com.gameon.data.ThirdPartyApis.Models.Nba;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace com.gameon.data.ThirdPartyApis.Services
 {
-    public class NbaApiService
+    public class NbaApiService : INbaApiService
     {
         private readonly HttpClient _client;
         private IConfigurationSection _settings;
@@ -20,7 +20,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         public NbaApiService(IConfiguration config, HttpClient client)
         {
             _client = client;
-            _settings = config.GetSection("FootballApi");
+            _settings = config.GetSection("NbaApi");
             _host = _settings["Host"];
             var apiKey = _settings["ApiKey"];
             var apiHostHeader = _settings["ApiHostHeader"];
@@ -35,8 +35,8 @@ namespace com.gameon.data.ThirdPartyApis.Services
         public async Task<List<Game>> GetNbaSchedule()
         {
             var path = _settings["Schedule"];
-            var id = _settings["EplId"];
-            var response = await _client.GetAsync(path + id);
+            var season = _settings["SeasonYear"];
+            var response = await _client.GetAsync(path + season);
 
             if (response.IsSuccessStatusCode)
             {
@@ -55,8 +55,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         public async Task<List<Team>> GetNbaTeams()
         {
             var path = _settings["Teams"];
-            var id = _settings["EplId"];
-            var response = await _client.GetAsync(path + id);
+            var response = await _client.GetAsync(path);
 
             if (response.IsSuccessStatusCode)
             {
