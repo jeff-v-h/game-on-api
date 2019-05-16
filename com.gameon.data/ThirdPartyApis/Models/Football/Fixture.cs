@@ -16,13 +16,13 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
         public DateTime EventDate { get; set; }
 
         [JsonProperty("event_timestamp")]
-        public int EventTimestamp { get; set; }
+        public int? EventTimestamp { get; set; }
 
         [JsonProperty("firstHalfStart")]
-        public int FirstHalfStart { get; set; }
+        public int? FirstHalfStart { get; set; }
 
         [JsonProperty("secondHalfStart")]
-        public int SecondHalfStart { get; set; }
+        public int? SecondHalfStart { get; set; }
 
         [JsonProperty("round")]
         public string Round { get; set; }
@@ -34,7 +34,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
         public string StatusShort { get; set; }
 
         [JsonProperty("elapsed")]
-        public int Elapsed { get; set; }
+        public int? Elapsed { get; set; }
 
         [JsonProperty("venue")]
         public string Venue { get; set; }
@@ -49,10 +49,10 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
         public TeamBase AwayTeam { get; set; }
 
         [JsonProperty("goalsHomeTeam")]
-        public int GoalsHomeTeam { get; set; }
+        public int? GoalsHomeTeam { get; set; }
 
         [JsonProperty("goalsAwayTeam")]
-        public int GoalsAwayTeam { get; set; }
+        public int? GoalsAwayTeam { get; set; }
 
         [JsonProperty("score")]
         public Score Score { get; set; }

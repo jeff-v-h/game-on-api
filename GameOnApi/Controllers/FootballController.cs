@@ -38,8 +38,8 @@ namespace GameOnApi.Controllers
             return Ok(teams);
         }
 
-        // GET api/football/champions-league/schedule
-        [HttpGet("champions-league/schedule")]
+        // GET api/football/championsleague/schedule
+        [HttpGet("championsleague/schedule")]
         [ProducesResponseType(typeof(List<FixtureVM>), 200)]
         public async Task<IActionResult> GetChampionsLeagueSchedule()
         {
@@ -48,8 +48,8 @@ namespace GameOnApi.Controllers
             return Ok(schedule);
         }
 
-        // GET api/football/champions-league/teams
-        [HttpGet("champions-league/teams")]
+        // GET api/football/championsleague/teams
+        [HttpGet("championsleague/teams")]
         [ProducesResponseType(typeof(List<TeamVM>), 200)]
         public async Task<IActionResult> GetChampionsLeagueTeams()
         {
@@ -58,8 +58,8 @@ namespace GameOnApi.Controllers
             return Ok(teams);
         }
 
-        // GET api/football/europa-league/schedule
-        [HttpGet("europa-league/schedule")]
+        // GET api/football/europaleague/schedule
+        [HttpGet("europaleague/schedule")]
         [ProducesResponseType(typeof(List<FixtureVM>), 200)]
         public async Task<IActionResult> GetEuropaLeagueSchedule()
         {
@@ -68,8 +68,8 @@ namespace GameOnApi.Controllers
             return Ok(schedule);
         }
 
-        // GET api/football/europa-league/teams
-        [HttpGet("europa-league/teams")]
+        // GET api/football/europaleague/teams
+        [HttpGet("europaleague/teams")]
         [ProducesResponseType(typeof(List<TeamVM>), 200)]
         public async Task<IActionResult> GetEuropaLeagueTeams()
         {
