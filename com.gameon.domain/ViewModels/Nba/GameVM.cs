@@ -8,8 +8,8 @@ namespace com.gameon.domain.ViewModels.Nba
         public string SeasonYear { get; set; }
         public string League { get; set; }
         public string GameId { get; set; }
-        public DateTime StartTimeUTC { get; set; }
-        public DateTime EndTimeUTC { get; set; }
+        public string StartTimeUTC { get; set; }
+        public string EndTimeUTC { get; set; }
         public string Arena { get; set; }
         public string City { get; set; }
         public string Country { get; set; }

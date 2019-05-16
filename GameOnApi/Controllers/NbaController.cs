@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace GameOnApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/nba")]
+    [Route("api/basketball")]
     [ApiController]
     public class NbaController : ControllerBase
     {
@@ -18,8 +18,8 @@ namespace GameOnApi.Controllers
             _manager = manager;
         }
 
-        // GET api/nba/schedule
-        [HttpGet("schedule")]
+        // GET api/basketball/nba/schedule
+        [HttpGet("nba/schedule")]
         [ProducesResponseType(typeof(List<GameVM>), 200)]
         public async Task<IActionResult> GetNbaSchedule()
         {
@@ -28,7 +28,7 @@ namespace GameOnApi.Controllers
             return Ok(schedule);
         }
 
-        // GET api/nba/teams
+        // GET api/basketball/nba/teams
         [HttpGet("nba/teams")]
         [ProducesResponseType(typeof(List<TeamVM>), 200)]
         public async Task<IActionResult> GetNbaTeams()
