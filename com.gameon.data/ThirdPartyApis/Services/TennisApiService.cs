@@ -10,7 +10,7 @@ using System.Web;
 
 namespace com.gameon.data.ThirdPartyApis.Services
 {
-    public class TennisApiService
+    public class TennisApiService : ITennisApiService
     {
         private readonly HttpClient _client;
         private IConfigurationSection _settings;
