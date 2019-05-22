@@ -17,6 +17,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         private string _host;
         private string _common;
         private string _apiKey;
+        private string _apiKeyQuery;
         public bool IsError = false;
         public string ErrorMessage;
 
@@ -26,7 +27,8 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _settings = config.GetSection("TennisApi");
             _host = _settings["Host"];
             _common = _settings["Common"];
-            _apiKey = _settings["ApiKey"];
+            _apiKey = _settings["ApiKeyValue"];
+            _apiKeyQuery = _settings["ApiKeyQuery"];
 
             _client.BaseAddress = new Uri(_host);
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -42,7 +44,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             var builder = new UriBuilder(mainUrl);
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
-            query["api_key"] = _apiKey;
+            query[_apiKeyQuery] = _apiKey;
             builder.Query = query.ToString();
             string requestUrl = builder.ToString();
 
@@ -71,7 +73,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             var builder = new UriBuilder(mainUrl);
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
-            query["api_key"] = _apiKey;
+            query[_apiKeyQuery] = _apiKey;
             builder.Query = query.ToString();
             string requestUrl = builder.ToString();
 
@@ -100,7 +102,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             var builder = new UriBuilder(mainUrl);
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
-            query["api_key"] = _apiKey;
+            query[_apiKeyQuery] = _apiKey;
             builder.Query = query.ToString();
             string requestUrl = builder.ToString();
 

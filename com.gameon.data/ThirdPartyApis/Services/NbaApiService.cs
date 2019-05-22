@@ -22,13 +22,14 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client = client;
             _settings = config.GetSection("NbaApi");
             _host = _settings["Host"];
-            var apiKey = _settings["ApiKey"];
+            var apiKey = _settings["ApiKeyValue"];
             var apiHostHeader = _settings["ApiHostHeader"];
+            var apiKeyQuery = _settings["ApiKeyQuery"];
 
             _client.BaseAddress = new Uri(_host);
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
-            _client.DefaultRequestHeaders.Add("X-RapidAPI-Key", apiKey);
+            _client.DefaultRequestHeaders.Add(apiKeyQuery, apiKey);
             _client.DefaultRequestHeaders.Add("X-RapidAPI-Host", apiHostHeader);
         }
 
