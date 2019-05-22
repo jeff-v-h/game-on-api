@@ -41,8 +41,8 @@ namespace com.gameon.domain.ViewModels.Nba
             SeasonStage = g.SeasonStage;
             StatusShortGame = g.StatusShortGame;
             StatusGame = g.StatusGame;
-            VTeam = new CompetingTeamVM(g.VTeam);
-            HTeam = new CompetingTeamVM(g.HTeam);
+            VTeam = (g.VTeam != null) ? new CompetingTeamVM(g.VTeam) : null;
+            HTeam = (g.HTeam != null) ? new CompetingTeamVM(g.HTeam) : null;
         }
     }
 }

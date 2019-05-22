@@ -19,7 +19,7 @@ namespace com.gameon.domain.ViewModels.Nba
             City = t.City;
             NbaFranchise = t.NbaFranchise;
             AllStar = t.AllStar;
-            Leagues = new LeaguesVM(t.Leagues);
+            Leagues = (t.Leagues != null) ? new LeaguesVM(t.Leagues) : null;
         }
     }
 }

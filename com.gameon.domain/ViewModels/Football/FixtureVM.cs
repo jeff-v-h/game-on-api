@@ -37,11 +37,11 @@ namespace com.gameon.domain.ViewModels.Football
             Elapsed = f.Elapsed;
             Venue = f.Venue;
             Referee = f.Referee;
-            HomeTeam = new TeamBaseVM(f.HomeTeam);
-            AwayTeam = new TeamBaseVM(f.AwayTeam);
+            HomeTeam = (f.HomeTeam != null) ? new TeamBaseVM(f.HomeTeam) : null;
+            AwayTeam = (f.AwayTeam != null) ? new TeamBaseVM(f.AwayTeam) : null;
             GoalsHomeTeam = f.GoalsHomeTeam;
             GoalsAwayTeam = f.GoalsAwayTeam;
-            Score = new ScoreVM(f.Score);
+            Score = (f.Score != null) ? new ScoreVM(f.Score) : null;
         }
     }
 }

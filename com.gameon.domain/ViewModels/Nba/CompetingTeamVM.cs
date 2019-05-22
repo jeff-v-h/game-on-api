@@ -13,7 +13,7 @@ namespace com.gameon.domain.ViewModels.Nba
             NickName = c.NickName;
             ShortName = c.ShortName;
             Logo = c.Logo;
-            Score = new NbaScoreVM(c.Score);
+            Score = (c.Score != null) ? new NbaScoreVM(c.Score) : null;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace com.gameon.domain.ViewModels.Nba
 
         public LeaguesVM(Leagues l)
         {
-            Standard = new StandardVM(l.Standard);
+            Standard = (l.Standard != null) ? new StandardVM(l.Standard) : null;
         }
     }
 }
