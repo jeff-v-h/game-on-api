@@ -19,12 +19,12 @@ namespace com.gameon.domain.ViewModels.Tennis
         {
             GeneratedAt = i.GeneratedAt;
             Schema = i.Schema;
-            Tournament = new TournamentVM(i.Tournament);
-            Season = new SeasonVM(i.Season);
-            TournamentRound = new TournamentRoundVM(i.TournamentRound);
-            Info = new InfoVM(i.Info);
-            CoverageInfo = new CoverageInfoVM(i.CoverageInfo);
-            WinnerLastSeason = new PlayerVM(i.WinnerLastSeason);
+            Tournament = (i.Tournament != null) ? new TournamentVM(i.Tournament) : null;
+            Season = (i.Season != null) ? new SeasonVM(i.Season) : null;
+            TournamentRound = (i.TournamentRound != null) ? new TournamentRoundVM(i.TournamentRound) : null;
+            Info = (i.Info != null) ? new InfoVM(i.Info) : null;
+            CoverageInfo = (i.CoverageInfo != null) ? new CoverageInfoVM(i.CoverageInfo) : null;
+            WinnerLastSeason = (i.WinnerLastSeason != null) ? new PlayerVM(i.WinnerLastSeason) : null;
             Competitors = MapCompetitors(i.Competitors);
             Stages = MapStages(i.Stages);
         }

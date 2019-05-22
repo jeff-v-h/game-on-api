@@ -16,9 +16,9 @@ namespace com.gameon.domain.ViewModels.Tennis
         {
             Id = t.Id;
             Name = t.Name;
-            Sport = new IdentifierVM(t.Sport);
-            Category = new CategoryVM(t.Category);
-            CurrentSeason = new SeasonVM(t.CurrentSeason);
+            Sport = (t.Sport != null) ? new IdentifierVM(t.Sport) : null;
+            Category = (t.Category != null) ? new CategoryVM(t.Category) : null;
+            CurrentSeason = (t.CurrentSeason != null) ? new SeasonVM(t.CurrentSeason) : null;
             Type = t.Type;
             Gender = t.Gender;
             CountryFormat = t.CountryFormat;

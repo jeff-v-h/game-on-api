@@ -22,11 +22,11 @@ namespace com.gameon.domain.ViewModels.Tennis
             Scheduled = s.Scheduled;
             StartTimeTbd = s.StartTimeTbd;
             Status = s.Status;
-            TournamentRound = new TournamentRoundVM(s.TournamentRound);
-            Season = new SeasonVM(s.Season);
-            Tournament = new TournamentVM(s.Tournament);
+            TournamentRound = (s.TournamentRound != null) ? new TournamentRoundVM(s.TournamentRound) : null;
+            Season = (s.Season != null) ? new SeasonVM(s.Season) : null;
+            Tournament = (s.Tournament != null) ? new TournamentVM(s.Tournament) : null;
             Competitors = MapCompetitors(s.Competitors);
-            Venue = new VenueVM(s.Venue);
+            Venue = (s.Venue != null) ? new VenueVM(s.Venue) : null;
             Estimated = s.Estimated;
         }
 

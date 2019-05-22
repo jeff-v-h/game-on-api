@@ -10,7 +10,7 @@ namespace com.gameon.domain.ViewModels.Tennis
 
         public ScheduleApiVM(ScheduleApi s)
         {
-            Tournament = new TournamentVM(s.Tournament);
+            Tournament = (s.Tournament != null) ? new TournamentVM(s.Tournament) : null;
             SportEvents = MapSportEvents(s.SportEvents);
         }
 

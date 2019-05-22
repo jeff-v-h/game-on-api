@@ -2,19 +2,19 @@
 
 namespace com.gameon.domain.ViewModels
 {
-    public class TournamentVM
+    public class DotaTournamentVM
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }
 
-        public TournamentVM(Tournament t)
+        public DotaTournamentVM(Tournament t)
         {
             Id = t.Id;
             Name = t.Name;
             Year = t.Year;
         }
 
-        public TournamentVM() { }
+        public DotaTournamentVM() { }
     }
 }

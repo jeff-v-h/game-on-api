@@ -6,7 +6,7 @@ namespace com.gameon.domain.ViewModels
     public class DotaVM
     {
         public string Id { get; set; }
-        public TournamentVM Tournament { get; set; }
+        public DotaTournamentVM Tournament { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool IsCompleted { get; set; }
@@ -14,7 +14,7 @@ namespace com.gameon.domain.ViewModels
         public DotaVM(Dota d)
         {
             Id = d.Id;
-            Tournament = new TournamentVM(d.Tournament);
+            Tournament = new DotaTournamentVM(d.Tournament);
             StartDate = d.StartDate;
             EndDate = d.EndDate;
             IsCompleted = d.IsCompleted;
