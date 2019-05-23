@@ -1,4 +1,5 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Esports;
+﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+using com.gameon.data.ThirdPartyApis.Models.Esports;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -9,7 +10,7 @@ using System.Web;
 
 namespace com.gameon.data.ThirdPartyApis.Services
 {
-    public class ESportsApiService
+    public class ESportsApiService : IESportsApiService
     {
         private readonly HttpClient _client;
         private IConfigurationSection _settings;
@@ -25,14 +26,34 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _settings = config.GetSection("ESportsApi");
             _host = _settings["Host"];
             _apiKey = _settings["ApiKeyValue"];
-            _apiKey = _settings["ApiKeyQuery"];
+            _apiKeyQuery = _settings["ApiKeyQuery"];
 
             _client.BaseAddress = new Uri(_host);
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
         }
 
-        public async Task<List<Tournament>> GetTournaments(string game)
+        public async Task<List<Tournament>> GetDotaTournaments()
+        {
+            return await GetTournaments("Dota");
+        }
+
+        public async Task<List<Tournament>> GetLolTournaments()
+        {
+            return await GetTournaments("LeagueOfLegends");
+        }
+
+        public async Task<List<Tournament>> GetOverwatchTournaments()
+        {
+            return await GetTournaments("Overwatch");
+        }
+
+        public async Task<List<Tournament>> GetCsgoTournaments()
+        {
+            return await GetTournaments("CounterStrikeGlobalOffensive");
+        }
+
+        private async Task<List<Tournament>> GetTournaments(string game)
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Tournaments"];

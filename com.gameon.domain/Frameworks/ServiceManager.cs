@@ -20,6 +20,7 @@ namespace com.gameon.domain.Frameworks
             services.AddHttpClient<IFootballApiService, FootballApiService>();
             services.AddHttpClient<INbaApiService, NbaApiService>();
             services.AddHttpClient<ITennisApiService, TennisApiService>();
+            services.AddHttpClient<IESportsApiService, ESportsApiService>();
         }
     }
 }

@@ -18,9 +18,7 @@ namespace GameOnApi.Controllers
             _manager = manager;
         }
 
-        // GET api/tennis/schedule
         // GET api/tennis/tournaments
-        [HttpGet("schedule")]
         [HttpGet("tournaments")]
         [ProducesResponseType(typeof(List<TournamentVM>), 200)]
         public async Task<IActionResult> GetTennisTournaments()
