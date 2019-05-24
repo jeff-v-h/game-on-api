@@ -1,6 +1,7 @@
 ﻿using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels.Esports;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GameOnApi.Controllers
@@ -19,7 +20,7 @@ namespace GameOnApi.Controllers
 
         // GET api/dota/tournaments
         [HttpGet("dota/tournaments")]
-        [ProducesResponseType(typeof(ESportsTournamentsVM), 200)]
+        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
         public async Task<IActionResult> GetDotaTournaments()
         {
             var tournaments = await _manager.GetDotaTournaments();
@@ -29,7 +30,7 @@ namespace GameOnApi.Controllers
 
         // GET api/lol/tournaments
         [HttpGet("lol/tournaments")]
-        [ProducesResponseType(typeof(ESportsTournamentsVM), 200)]
+        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
         public async Task<IActionResult> GetLolTournaments()
         {
             var tournaments = await _manager.GetLolTournaments();
@@ -39,7 +40,7 @@ namespace GameOnApi.Controllers
 
         // GET api/overwatch/tournaments
         [HttpGet("overwatch/tournaments")]
-        [ProducesResponseType(typeof(ESportsTournamentsVM), 200)]
+        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
         public async Task<IActionResult> GetOverwatchTournaments()
         {
             var tournaments = await _manager.GetOverwatchTournaments();
@@ -49,7 +50,7 @@ namespace GameOnApi.Controllers
 
         // GET api/csgo/tournaments
         [HttpGet("csgo/tournaments")]
-        [ProducesResponseType(typeof(ESportsTournamentsVM), 200)]
+        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
         public async Task<IActionResult> GetCsgoTournaments()
         {
             var tournaments = await _manager.GetCsgoTournaments();
