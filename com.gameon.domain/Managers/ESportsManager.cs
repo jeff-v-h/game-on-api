@@ -24,6 +24,16 @@ namespace com.gameon.domain.Managers
             return tournamentVMs;
         }
 
+        public async Task<List<ESportsTeamVM>> GetDotaTeams()
+        {
+            var teams = await _service.GetDotaTeams();
+
+            var teamVMs = new List<ESportsTeamVM>();
+            foreach (var t in teams) teamVMs.Add(new ESportsTeamVM(t));
+
+            return teamVMs;
+        }
+
         public async Task<List<ESportsTournamentVM>> GetLolTournaments()
         {
             var tournaments = await _service.GetLolTournaments();
@@ -32,6 +42,16 @@ namespace com.gameon.domain.Managers
             foreach (var t in tournaments) tournamentVMs.Add(new ESportsTournamentVM(t));
 
             return tournamentVMs;
+        }
+
+        public async Task<List<ESportsTeamVM>> GetLolTeams()
+        {
+            var teams = await _service.GetLolTeams();
+
+            var teamVMs = new List<ESportsTeamVM>();
+            foreach (var t in teams) teamVMs.Add(new ESportsTeamVM(t));
+
+            return teamVMs;
         }
 
         public async Task<List<ESportsTournamentVM>> GetOverwatchTournaments()
@@ -44,6 +64,16 @@ namespace com.gameon.domain.Managers
             return tournamentVMs;
         }
 
+        public async Task<List<ESportsTeamVM>> GetOverwatchTeams()
+        {
+            var teams = await _service.GetOverwatchTeams();
+
+            var teamVMs = new List<ESportsTeamVM>();
+            foreach (var t in teams) teamVMs.Add(new ESportsTeamVM(t));
+
+            return teamVMs;
+        }
+
         public async Task<List<ESportsTournamentVM>> GetCsgoTournaments()
         {
             var tournaments = await _service.GetCsgoTournaments();
@@ -52,6 +82,16 @@ namespace com.gameon.domain.Managers
             foreach (var t in tournaments) tournamentVMs.Add(new ESportsTournamentVM(t));
 
             return tournamentVMs;
+        }
+
+        public async Task<List<ESportsTeamVM>> GetCsgoTeams()
+        {
+            var teams = await _service.GetCsgoTeams();
+
+            var teamVMs = new List<ESportsTeamVM>();
+            foreach (var t in teams) teamVMs.Add(new ESportsTeamVM(t));
+
+            return teamVMs;
         }
     }
 }

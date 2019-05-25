@@ -37,10 +37,18 @@ namespace com.gameon.data.ThirdPartyApis.Services
         {
             return await GetTournaments("Dota");
         }
+        public async Task<List<Team>> GetDotaTeams()
+        {
+            return await GetTeams("Dota");
+        }
 
         public async Task<List<Tournament>> GetLolTournaments()
         {
             return await GetTournaments("LeagueOfLegends");
+        }
+        public async Task<List<Team>> GetLolTeams()
+        {
+            return await GetTeams("LeagueOfLegends");
         }
 
         public async Task<List<Tournament>> GetOverwatchTournaments()
@@ -48,9 +56,19 @@ namespace com.gameon.data.ThirdPartyApis.Services
             return await GetTournaments("Overwatch");
         }
 
+        public async Task<List<Team>> GetOverwatchTeams()
+        {
+            return await GetTeams("Overwatch");
+        }
+
         public async Task<List<Tournament>> GetCsgoTournaments()
         {
             return await GetTournaments("CounterStrikeGlobalOffensive");
+        }
+
+        public async Task<List<Team>> GetCsgoTeams()
+        {
+            return await GetTeams("CounterStrikeGlobalOffensive");
         }
 
         private async Task<List<Tournament>> GetTournaments(string game)
@@ -72,6 +90,35 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<List<Tournament>>(jsonString);
+                return result;
+            }
+            else
+            {
+                IsError = true;
+                ErrorMessage = response.ReasonPhrase;
+                throw new Exception(ErrorMessage);
+            }
+        }
+
+        private async Task<List<Team>> GetTeams(string game)
+        {
+            // Create the main url pathway
+            var mainUrl = _host + _settings[game] + _settings["Teams"];
+
+            // Add parameters to url
+            var builder = new UriBuilder(mainUrl);
+            builder.Port = -1;
+            var query = HttpUtility.ParseQueryString(builder.Query);
+            query[_apiKeyQuery] = _apiKey;
+            builder.Query = query.ToString();
+            string requestUrl = builder.ToString();
+
+            var response = await _client.GetAsync(requestUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<List<Team>>(jsonString);
                 return result;
             }
             else

@@ -16,7 +16,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Esports
         public VideoGame VideoGame { get; set; }
 
         [JsonProperty("teams")]
-        public List<Team> Teams { get; set; }
+        public List<TeamBase> Teams { get; set; }
 
         [JsonProperty("slug")]
         public string Slug { get; set; }

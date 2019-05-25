@@ -28,6 +28,16 @@ namespace GameOnApi.Controllers
             return Ok(tournaments);
         }
 
+        // GET api/dota/teams
+        [HttpGet("dota/teams")]
+        [ProducesResponseType(typeof(List<ESportsTeamVM>), 200)]
+        public async Task<IActionResult> GetDotaTeams()
+        {
+            var teams = await _manager.GetDotaTeams();
+
+            return Ok(teams);
+        }
+
         // GET api/lol/tournaments
         [HttpGet("lol/tournaments")]
         [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
@@ -36,6 +46,16 @@ namespace GameOnApi.Controllers
             var tournaments = await _manager.GetLolTournaments();
 
             return Ok(tournaments);
+        }
+
+        // GET api/lol/teams
+        [HttpGet("lol/teams")]
+        [ProducesResponseType(typeof(List<ESportsTeamVM>), 200)]
+        public async Task<IActionResult> GetLolTeams()
+        {
+            var teams = await _manager.GetLolTeams();
+
+            return Ok(teams);
         }
 
         // GET api/overwatch/tournaments
@@ -48,6 +68,16 @@ namespace GameOnApi.Controllers
             return Ok(tournaments);
         }
 
+        // GET api/overwatch/teams
+        [HttpGet("overwatch/teams")]
+        [ProducesResponseType(typeof(List<ESportsTeamVM>), 200)]
+        public async Task<IActionResult> GetOverwatchTeams()
+        {
+            var teams = await _manager.GetOverwatchTeams();
+
+            return Ok(teams);
+        }
+
         // GET api/csgo/tournaments
         [HttpGet("csgo/tournaments")]
         [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
@@ -56,6 +86,16 @@ namespace GameOnApi.Controllers
             var tournaments = await _manager.GetCsgoTournaments();
 
             return Ok(tournaments);
+        }
+
+        // GET api/csgo/teams
+        [HttpGet("csgo/teams")]
+        [ProducesResponseType(typeof(List<ESportsTeamVM>), 200)]
+        public async Task<IActionResult> GetCsgoTeams()
+        {
+            var teams = await _manager.GetCsgoTeams();
+
+            return Ok(teams);
         }
     }
 }

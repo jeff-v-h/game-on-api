@@ -1,14 +1,11 @@
 ﻿using com.gameon.data.ThirdPartyApis.Models.Esports;
+using System.Collections.Generic;
 
 namespace com.gameon.domain.ViewModels.Esports
 {
-    public class ESportsTeamVM
+    public class ESportsTeamVM : ESportsTeamBaseVM
     {
-        public string Slug { get; set; }
-        public string Name { get; set; }
-        public string ImageUrl { get; set; }
-        public int Id { get; set; }
-        public string Acronym { get; set; }
+        public List<ESportsPlayerVM> Players { get; set; }
 
         public ESportsTeamVM(Team t)
         {
@@ -17,6 +14,19 @@ namespace com.gameon.domain.ViewModels.Esports
             ImageUrl = t.ImageUrl;
             Id = t.Id;
             Acronym = t.Acronym;
+            Players = MapPlayers(t.Players);
+        }
+
+        private List<ESportsPlayerVM> MapPlayers(List<Player> players)
+        {
+            if (players == null) return null;
+
+            var list = new List<ESportsPlayerVM>();
+
+            for (int i = 0; i < players.Count; i++)
+                list.Add(new ESportsPlayerVM(players[i]));
+
+            return list;
         }
     }
 }
