@@ -1,50 +1,38 @@
 ﻿using Newtonsoft.Json;
-using System;
+using System.Collections.Generic;
 
 namespace com.gameon.data.ThirdPartyApis.Models.Esports
 {
-    public class Match
+    public class Match : MatchBase
     {
-        [JsonProperty("winner_id")]
-        public int? WinnerId { get; set; }
+        [JsonProperty("videogame_version")]
+        public object VideoGameVersion { get; set; }
 
-        [JsonProperty("tournament_id")]
-        public int TournamentId { get; set; }
+        [JsonProperty("tournament")]
+        public TournamentBase Tournament { get; set; }
 
-        [JsonProperty("status")]
-        public string Status { get; set; }
+        [JsonProperty("winner")]
+        public TeamBase Winner { get; set; }
 
-        [JsonProperty("slug")]
-        public string Slug { get; set; }
+        [JsonProperty("serie_id")]
+        public int SeriesId { get; set; }
 
-        [JsonProperty("number_of_games")]
-        public int NumberOfGames { get; set; }
+        [JsonProperty("serie")]
+        public SeriesBase Series { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("results")]
+        public List<Result> Results { get; set; }
 
-        [JsonProperty("modified_at")]
-        public DateTime ModifiedAt { get; set; }
+        [JsonProperty("opponents")]
+        public List<Competitor> Opponents { get; set; }
 
-        [JsonProperty("match_type")]
-        public string MatchType { get; set; }
+        [JsonProperty("league_id")]
+        public int LeagueId { get; set; }
 
-        [JsonProperty("live")]
-        public Live Live { get; set; }
+        [JsonProperty("league")]
+        public League League { get; set; }
 
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
-        [JsonProperty("forfeit")]
-        public bool Forfeit { get; set; }
-
-        [JsonProperty("end_at")]
-        public DateTime? EndAt { get; set; }
-
-        [JsonProperty("draw")]
-        public bool Draw { get; set; }
-
-        [JsonProperty("begin_at")]
-        public DateTime? BeginAt { get; set; }
+        [JsonProperty("games")]
+        public List<Game> Games { get; set; }
     }
 }

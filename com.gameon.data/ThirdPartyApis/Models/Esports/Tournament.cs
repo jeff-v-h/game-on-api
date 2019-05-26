@@ -18,6 +18,6 @@ namespace com.gameon.data.ThirdPartyApis.Models.Esports
         public SeriesBase Series { get; set; }
 
         [JsonProperty("matches")]
-        public List<Match> Matches { get; set; }
+        public List<MatchBase> Matches { get; set; }
     }
 }

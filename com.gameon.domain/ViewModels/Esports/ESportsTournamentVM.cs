@@ -7,7 +7,7 @@ namespace com.gameon.domain.ViewModels.Esports
     {
         public List<ESportsTeamBaseVM> Teams { get; set; }
         public SeriesBaseVM Series { get; set; }
-        public List<MatchVM> Matches { get; set; }
+        public List<MatchBaseVM> Matches { get; set; }
         public LeagueVM League { get; set; }
 
         public ESportsTournamentVM(Tournament t)
@@ -37,14 +37,14 @@ namespace com.gameon.domain.ViewModels.Esports
             return list;
         }
 
-        private List<MatchVM> MapMatches(List<Match> matches)
+        private List<MatchBaseVM> MapMatches(List<MatchBase> matches)
         {
             if (matches == null) return null;
 
-            var list = new List<MatchVM>();
+            var list = new List<MatchBaseVM>();
 
             for (int i = 0; i < matches.Count; i++)
-                list.Add(new MatchVM(matches[i]));
+                list.Add(new MatchBaseVM(matches[i]));
 
             return list;
         }
