@@ -33,6 +33,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
         }
 
+        // Dota
         public async Task<List<Tournament>> GetDotaTournaments()
         {
             return await GetTournaments("Dota");
@@ -42,6 +43,12 @@ namespace com.gameon.data.ThirdPartyApis.Services
             return await GetTeams("Dota");
         }
 
+        public async Task<List<Series>> GetDotaSeries()
+        {
+            return await GetSeries("Dota");
+        }
+
+        // League of Legends
         public async Task<List<Tournament>> GetLolTournaments()
         {
             return await GetTournaments("LeagueOfLegends");
@@ -51,6 +58,12 @@ namespace com.gameon.data.ThirdPartyApis.Services
             return await GetTeams("LeagueOfLegends");
         }
 
+        public async Task<List<Series>> GetLolSeries()
+        {
+            return await GetSeries("Lol");
+        }
+
+        // Overwatch
         public async Task<List<Tournament>> GetOverwatchTournaments()
         {
             return await GetTournaments("Overwatch");
@@ -61,6 +74,12 @@ namespace com.gameon.data.ThirdPartyApis.Services
             return await GetTeams("Overwatch");
         }
 
+        public async Task<List<Series>> GetOverwatchSeries()
+        {
+            return await GetSeries("Overwatch");
+        }
+
+        // CSGO
         public async Task<List<Tournament>> GetCsgoTournaments()
         {
             return await GetTournaments("CounterStrikeGlobalOffensive");
@@ -71,18 +90,16 @@ namespace com.gameon.data.ThirdPartyApis.Services
             return await GetTeams("CounterStrikeGlobalOffensive");
         }
 
+        public async Task<List<Series>> GetCsgoSeries()
+        {
+            return await GetSeries("CounterStrikeGlobalOffensive");
+        }
+
         private async Task<List<Tournament>> GetTournaments(string game)
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Tournaments"];
-
-            // Add parameters to url
-            var builder = new UriBuilder(mainUrl);
-            builder.Port = -1;
-            var query = HttpUtility.ParseQueryString(builder.Query);
-            query[_apiKeyQuery] = _apiKey;
-            builder.Query = query.ToString();
-            string requestUrl = builder.ToString();
+            string requestUrl = BuildUrlWithQueryParams(mainUrl);
 
             var response = await _client.GetAsync(requestUrl);
 
@@ -104,14 +121,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Teams"];
-
-            // Add parameters to url
-            var builder = new UriBuilder(mainUrl);
-            builder.Port = -1;
-            var query = HttpUtility.ParseQueryString(builder.Query);
-            query[_apiKeyQuery] = _apiKey;
-            builder.Query = query.ToString();
-            string requestUrl = builder.ToString();
+            string requestUrl = BuildUrlWithQueryParams(mainUrl);
 
             var response = await _client.GetAsync(requestUrl);
 
@@ -127,6 +137,39 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 ErrorMessage = response.ReasonPhrase;
                 throw new Exception(ErrorMessage);
             }
+        }
+
+        private async Task<List<Series>> GetSeries(string game)
+        {
+            // Create the main url pathway
+            var mainUrl = _host + _settings[game] + _settings["Series"];
+            string requestUrl = BuildUrlWithQueryParams(mainUrl);
+
+            var response = await _client.GetAsync(requestUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<List<Series>>(jsonString);
+                return result;
+            }
+            else
+            {
+                IsError = true;
+                ErrorMessage = response.ReasonPhrase;
+                throw new Exception(ErrorMessage);
+            }
+        }
+
+        // Add parameters to url
+        private string BuildUrlWithQueryParams(string url)
+        {
+            var builder = new UriBuilder(url);
+            builder.Port = -1;
+            var query = HttpUtility.ParseQueryString(builder.Query);
+            query[_apiKeyQuery] = _apiKey;
+            builder.Query = query.ToString();
+            return builder.ToString();
         }
     }
 }

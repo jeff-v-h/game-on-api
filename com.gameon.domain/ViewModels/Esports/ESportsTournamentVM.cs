@@ -1,24 +1,14 @@
 ﻿using com.gameon.data.ThirdPartyApis.Models.Esports;
-using System;
 using System.Collections.Generic;
 
 namespace com.gameon.domain.ViewModels.Esports
 {
-    public class ESportsTournamentVM
+    public class ESportsTournamentVM : TournamentBaseVM
     {
-        public string WinnerType { get; set; }
-        public int? WinnerId { get; set; }
         public List<ESportsTeamBaseVM> Teams { get; set; }
-        public string Slug { get; set; }
-        public int SeriesId { get; set; }
-        public SeriesVM Series { get; set; }
-        public string Name { get; set; }
+        public SeriesBaseVM Series { get; set; }
         public List<MatchVM> Matches { get; set; }
-        public int LeagueId { get; set; }
         public LeagueVM League { get; set; }
-        public int Id { get; set; }
-        public DateTime? EndAt { get; set; }
-        public DateTime? BeginAt { get; set; }
 
         public ESportsTournamentVM(Tournament t)
         {
