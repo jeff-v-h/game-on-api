@@ -43,9 +43,9 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
         public async Task<IActionResult> GetDotaSeries()
         {
-            var teams = await _manager.GetSeries("Dota");
+            var series = await _manager.GetSeries("Dota");
 
-            return Ok(teams);
+            return Ok(series);
         }
 
         // GET api/dota/matches
@@ -53,9 +53,9 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<MatchVM>), 200)]
         public async Task<IActionResult> GetDotaMatches()
         {
-            var teams = await _manager.GetMatches("Dota");
+            var matches = await _manager.GetMatches("Dota");
 
-            return Ok(teams);
+            return Ok(matches);
         }
 
         // GET api/lol/tournaments
@@ -83,9 +83,9 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
         public async Task<IActionResult> GetLolSeries()
         {
-            var teams = await _manager.GetSeries("LeagueOfLegends");
+            var series = await _manager.GetSeries("LeagueOfLegends");
 
-            return Ok(teams);
+            return Ok(series);
         }
 
         // GET api/lol/matches
@@ -93,9 +93,9 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<MatchVM>), 200)]
         public async Task<IActionResult> GetLolMatches()
         {
-            var teams = await _manager.GetMatches("LeagueOfLegends");
+            var matches = await _manager.GetMatches("LeagueOfLegends");
 
-            return Ok(teams);
+            return Ok(matches);
         }
 
         // GET api/overwatch/tournaments
@@ -123,9 +123,9 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
         public async Task<IActionResult> GetOverwatchSeries()
         {
-            var teams = await _manager.GetSeries("Overwatch");
+            var series = await _manager.GetSeries("Overwatch");
 
-            return Ok(teams);
+            return Ok(series);
         }
 
         // GET api/overwatch/matches
@@ -133,9 +133,9 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<MatchVM>), 200)]
         public async Task<IActionResult> GetOverwatchMatches()
         {
-            var teams = await _manager.GetMatches("Overwatch");
+            var matches = await _manager.GetMatches("Overwatch");
 
-            return Ok(teams);
+            return Ok(matches);
         }
 
         // GET api/csgo/tournaments
@@ -163,9 +163,9 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
         public async Task<IActionResult> GetCsgoSeries()
         {
-            var teams = await _manager.GetSeries("CounterStrikeGlobalOffensive");
+            var series = await _manager.GetSeries("CounterStrikeGlobalOffensive");
 
-            return Ok(teams);
+            return Ok(series);
         }
 
         // GET api/csgo/matches
@@ -173,9 +173,9 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<MatchVM>), 200)]
         public async Task<IActionResult> GetCsgoMatches()
         {
-            var teams = await _manager.GetMatches("CounterStrikeGlobalOffensive");
+            var matches = await _manager.GetMatches("CounterStrikeGlobalOffensive");
 
-            return Ok(teams);
+            return Ok(matches);
         }
     }
 }
