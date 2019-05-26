@@ -12,16 +12,16 @@ namespace com.gameon.data.ThirdPartyApis.Models.Esports
         public Winner Winner { get; set; }
 
         [JsonProperty("position")]
-        public int Position { get; set; }
+        public int? Position { get; set; }
 
         [JsonProperty("match_id")]
-        public int MatchId { get; set; }
+        public int? MatchId { get; set; }
 
         [JsonProperty("length")]
-        public int Length { get; set; }
+        public int? Length { get; set; }
 
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [JsonProperty("forfeit")]
         public bool Forfeit { get; set; }

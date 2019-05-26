@@ -5,7 +5,6 @@ namespace com.gameon.domain.ViewModels.Esports
 {
     public class MatchVM : MatchBaseVM
     {
-        public object VideoGameVersion { get; set; }
         public TournamentBaseVM Tournament { get; set; }
         public ESportsTeamBaseVM Winner { get; set; }
         public int SeriesId { get; set; }
@@ -18,16 +17,28 @@ namespace com.gameon.domain.ViewModels.Esports
 
         public MatchVM(Match m)
         {
-            VideoGameVersion = m.VideoGameVersion;
-            Tournament = (m.Tournament != null) ? new TournamentBaseVM(m.Tournament) : null;
-            Winner = (m.Winner != null) ? new ESportsTeamBaseVM(m.Winner) : null;
-            SeriesId = m.SeriesId;
-            Series = (m.Series != null) ? new SeriesBaseVM(m.Series) : null;
-            Results = MapResults(m.Results);
-            Opponents = MapOpponents(m.Opponents);
-            LeagueId = m.LeagueId;
-            League = (m.League != null) ? new LeagueVM(m.League) : null;
+            BeginAt = m.BeginAt;
+            Draw = m.Draw;
+            EndAt = m.EndAt;
+            Forfeit = m.Forfeit;
             Games = MapGames(m.Games);
+            Id = m.Id;
+            League = (m.League != null) ? new LeagueVM(m.League) : null;
+            LeagueId = m.LeagueId;
+            Live = (m.Live != null) ? new LiveVM(m.Live) : null;
+            MatchType = m.MatchType;
+            Name = m.Name;
+            NumberOfGames = m.NumberOfGames;
+            Opponents = MapOpponents(m.Opponents);
+            Results = MapResults(m.Results);
+            Series = (m.Series != null) ? new SeriesBaseVM(m.Series) : null;
+            SeriesId = m.SeriesId;
+            Slug = m.Slug;
+            Status = m.Status;
+            Tournament = (m.Tournament != null) ? new TournamentBaseVM(m.Tournament) : null;
+            TournamentId = m.TournamentId;
+            Winner = (m.Winner != null) ? new ESportsTeamBaseVM(m.Winner) : null;
+            WinnerId = m.WinnerId;
         }
 
         private List<ResultVM> MapResults(List<Result> results)

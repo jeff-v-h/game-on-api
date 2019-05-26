@@ -14,7 +14,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Esports
         public string ImageUrl { get; set; }
 
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [JsonProperty("acronym")]
         public string Acronym { get; set; }

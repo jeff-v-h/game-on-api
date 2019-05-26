@@ -8,6 +8,6 @@ namespace com.gameon.data.ThirdPartyApis.Models.Esports
         public string Type { get; set; }
 
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
     }
 }

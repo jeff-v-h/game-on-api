@@ -5,7 +5,7 @@ namespace com.gameon.domain.ViewModels.Esports
     public class WinnerVM
     {
         public string Type { get; set; }
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public WinnerVM(Winner w)
         {

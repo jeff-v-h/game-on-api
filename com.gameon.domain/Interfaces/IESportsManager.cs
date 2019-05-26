@@ -6,13 +6,9 @@ namespace com.gameon.domain.Interfaces
 {
     public interface IESportsManager
     {
-        Task<List<ESportsTournamentVM>> GetDotaTournaments();
-        Task<List<ESportsTeamVM>> GetDotaTeams();
-        Task<List<ESportsTournamentVM>> GetLolTournaments();
-        Task<List<ESportsTeamVM>> GetLolTeams();
-        Task<List<ESportsTournamentVM>> GetOverwatchTournaments();
-        Task<List<ESportsTeamVM>> GetOverwatchTeams();
-        Task<List<ESportsTournamentVM>> GetCsgoTournaments();
-        Task<List<ESportsTeamVM>> GetCsgoTeams();
+        Task<List<ESportsTournamentVM>> GetTournaments(string game);
+        Task<List<ESportsTeamVM>> GetTeams(string game);
+        Task<List<SeriesVM>> GetSeries(string game);
+        Task<List<MatchVM>> GetMatches(string game);
     }
 }

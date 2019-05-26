@@ -14,9 +14,9 @@ namespace com.gameon.domain.Managers
             _service = service;
         }
 
-        public async Task<List<ESportsTournamentVM>> GetDotaTournaments()
+        public async Task<List<ESportsTournamentVM>> GetTournaments(string game)
         {
-            var tournaments = await _service.GetDotaTournaments();
+            var tournaments = await _service.GetTournaments(game);
 
             var tournamentVMs = new List<ESportsTournamentVM>();
             foreach (var t in tournaments) tournamentVMs.Add(new ESportsTournamentVM(t));
@@ -24,9 +24,9 @@ namespace com.gameon.domain.Managers
             return tournamentVMs;
         }
 
-        public async Task<List<ESportsTeamVM>> GetDotaTeams()
+        public async Task<List<ESportsTeamVM>> GetTeams(string game)
         {
-            var teams = await _service.GetDotaTeams();
+            var teams = await _service.GetTeams(game);
 
             var teamVMs = new List<ESportsTeamVM>();
             foreach (var t in teams) teamVMs.Add(new ESportsTeamVM(t));
@@ -34,64 +34,24 @@ namespace com.gameon.domain.Managers
             return teamVMs;
         }
 
-        public async Task<List<ESportsTournamentVM>> GetLolTournaments()
+        public async Task<List<SeriesVM>> GetSeries(string game)
         {
-            var tournaments = await _service.GetLolTournaments();
+            var series = await _service.GetSeries(game);
 
-            var tournamentVMs = new List<ESportsTournamentVM>();
-            foreach (var t in tournaments) tournamentVMs.Add(new ESportsTournamentVM(t));
+            var seriesVM = new List<SeriesVM>();
+            foreach (var t in series) seriesVM.Add(new SeriesVM(t));
 
-            return tournamentVMs;
+            return seriesVM;
         }
 
-        public async Task<List<ESportsTeamVM>> GetLolTeams()
+        public async Task<List<MatchVM>> GetMatches(string game)
         {
-            var teams = await _service.GetLolTeams();
+            var matches = await _service.GetMatches(game);
 
-            var teamVMs = new List<ESportsTeamVM>();
-            foreach (var t in teams) teamVMs.Add(new ESportsTeamVM(t));
+            var matchVM = new List<MatchVM>();
+            foreach (var t in matches) matchVM.Add(new MatchVM(t));
 
-            return teamVMs;
-        }
-
-        public async Task<List<ESportsTournamentVM>> GetOverwatchTournaments()
-        {
-            var tournaments = await _service.GetOverwatchTournaments();
-
-            var tournamentVMs = new List<ESportsTournamentVM>();
-            foreach (var t in tournaments) tournamentVMs.Add(new ESportsTournamentVM(t));
-
-            return tournamentVMs;
-        }
-
-        public async Task<List<ESportsTeamVM>> GetOverwatchTeams()
-        {
-            var teams = await _service.GetOverwatchTeams();
-
-            var teamVMs = new List<ESportsTeamVM>();
-            foreach (var t in teams) teamVMs.Add(new ESportsTeamVM(t));
-
-            return teamVMs;
-        }
-
-        public async Task<List<ESportsTournamentVM>> GetCsgoTournaments()
-        {
-            var tournaments = await _service.GetCsgoTournaments();
-
-            var tournamentVMs = new List<ESportsTournamentVM>();
-            foreach (var t in tournaments) tournamentVMs.Add(new ESportsTournamentVM(t));
-
-            return tournamentVMs;
-        }
-
-        public async Task<List<ESportsTeamVM>> GetCsgoTeams()
-        {
-            var teams = await _service.GetCsgoTeams();
-
-            var teamVMs = new List<ESportsTeamVM>();
-            foreach (var t in teams) teamVMs.Add(new ESportsTeamVM(t));
-
-            return teamVMs;
+            return matchVM;
         }
     }
 }

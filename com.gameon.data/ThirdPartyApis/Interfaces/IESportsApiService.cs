@@ -6,13 +6,9 @@ namespace com.gameon.data.ThirdPartyApis.Interfaces
 {
     public interface IESportsApiService
     {
-        Task<List<Tournament>> GetDotaTournaments();
-        Task<List<Team>> GetDotaTeams();
-        Task<List<Tournament>> GetLolTournaments();
-        Task<List<Team>> GetLolTeams();
-        Task<List<Tournament>> GetOverwatchTournaments();
-        Task<List<Team>> GetOverwatchTeams();
-        Task<List<Tournament>> GetCsgoTournaments();
-        Task<List<Team>> GetCsgoTeams();
+        Task<List<Tournament>> GetTournaments(string game);
+        Task<List<Team>> GetTeams(string game);
+        Task<List<Series>> GetSeries(string game);
+        Task<List<Match>> GetMatches(string game);
     }
 }
