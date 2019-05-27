@@ -1,6 +1,6 @@
 ﻿using com.gameon.data.Database.Models;
 
-namespace com.gameon.domain.ViewModels
+namespace com.gameon.domain.ViewModels.Dota2
 {
     public class DotaTournamentVM
     {

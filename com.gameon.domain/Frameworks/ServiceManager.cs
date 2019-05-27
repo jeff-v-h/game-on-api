@@ -16,7 +16,6 @@ namespace com.gameon.domain.Frameworks
             services.AddTransient<IDocumentRepository<Dota>, MongoBaseRepository<Dota>>();
 
             // Third Party Api Services
-            services.AddHttpClient<IDotaApiService, DotaApiService>();
             services.AddHttpClient<IFootballApiService, FootballApiService>();
             services.AddHttpClient<INbaApiService, NbaApiService>();
             services.AddHttpClient<ITennisApiService, TennisApiService>();

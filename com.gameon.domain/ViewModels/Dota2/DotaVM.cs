@@ -1,7 +1,7 @@
 ﻿using com.gameon.data.Database.Models;
 using System;
 
-namespace com.gameon.domain.ViewModels
+namespace com.gameon.domain.ViewModels.Dota2
 {
     public class DotaVM
     {

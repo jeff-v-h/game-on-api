@@ -1,8 +1,7 @@
 ﻿using com.gameon.data.Database.Interfaces;
 using com.gameon.data.Database.Models;
-using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels;
+using com.gameon.domain.ViewModels.Dota2;
 using System;
 using System.Collections.Generic;
 
@@ -11,17 +10,15 @@ namespace com.gameon.domain.Managers
     public class DotaManager : IDotaManager
     {
         private readonly IDotaRepository _repo;
-        private readonly IDotaApiService _service;
 
-        public DotaManager(IDotaRepository repo, IDotaApiService service)
+        public DotaManager(IDotaRepository repo)
         {
             _repo = repo;
-            _service = service;
         }
 
+        // CRUD methods for private database. For requests to third party APIs check ESportsManager
         public List<DotaVM> GetAll()
         {
-            //var apiList = await _service.GetSchedule();
             var dotaList = _repo.GetAll();
 
             var dotaVMs = new List<DotaVM>();
