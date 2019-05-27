@@ -150,8 +150,8 @@ namespace com.gameon.data.ThirdPartyApis.Services
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
             query[_apiKeyQuery] = _apiKey;
-            //query["per_page"] = "100";
-            if (tournamentId.HasValue) query["tournament_id"] = tournamentId.Value.ToString();
+            //query["filter[per_page]"] = "100";
+            if (tournamentId.HasValue) query["filter[tournament_id]"] = tournamentId.Value.ToString();
             builder.Query = query.ToString();
             return builder.ToString();
         }
