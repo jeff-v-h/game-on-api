@@ -121,13 +121,37 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
+        public async Task<List<Match>> GetTournamentMatches(string game, int tournamentId)
+        {
+            // Create the main url pathway
+            var mainUrl = _host + _settings[game] + _settings["Matches"];
+            string requestUrl = BuildUrlWithQueryParams(mainUrl, tournamentId);
+
+            var response = await _client.GetAsync(requestUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<List<Match>>(jsonString);
+                return result;
+            }
+            else
+            {
+                IsError = true;
+                ErrorMessage = response.ReasonPhrase;
+                throw new Exception(ErrorMessage);
+            }
+        }
+
         // Add parameters to url
-        private string BuildUrlWithQueryParams(string url)
+        private string BuildUrlWithQueryParams(string url, int? tournamentId = null)
         {
             var builder = new UriBuilder(url);
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
             query[_apiKeyQuery] = _apiKey;
+            //query["per_page"] = "100";
+            if (tournamentId.HasValue) query["tournament_id"] = tournamentId.Value.ToString();
             builder.Query = query.ToString();
             return builder.ToString();
         }

@@ -1,4 +1,5 @@
 ﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+using com.gameon.data.ThirdPartyApis.Models.Esports;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels.Esports;
 using System.Collections.Generic;
@@ -44,10 +45,14 @@ namespace com.gameon.domain.Managers
             return seriesVM;
         }
 
-        public async Task<List<MatchVM>> GetMatches(string game)
+        public async Task<List<MatchVM>> GetMatches(string game, int? tournamentId = null)
         {
-            var matches = await _service.GetMatches(game);
+            // Determine whether to get most recent matches for the game or for a specific tournament
+            List<Match> matches;
+            if (tournamentId.HasValue) matches = await _service.GetTournamentMatches(game, tournamentId.Value);
+            else matches = await _service.GetMatches(game);
 
+            // Convert to view model
             var matchVM = new List<MatchVM>();
             foreach (var t in matches) matchVM.Add(new MatchVM(t));
 

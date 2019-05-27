@@ -51,9 +51,12 @@ namespace GameOnApi.Controllers
         // GET api/dota/matches
         [HttpGet("dota/matches")]
         [ProducesResponseType(typeof(List<MatchVM>), 200)]
-        public async Task<IActionResult> GetDotaMatches()
+        public async Task<IActionResult> GetDotaMatches([FromQuery] int? tournamentId)
         {
-            var matches = await _manager.GetMatches("Dota");
+            // Get most recent matches from any tournament or for specific tournament
+            List<MatchVM> matches;
+            if (tournamentId.HasValue) matches = await _manager.GetMatches("Dota", tournamentId);
+            else matches = await _manager.GetMatches("Dota");
 
             return Ok(matches);
         }

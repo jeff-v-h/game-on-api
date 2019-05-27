@@ -10,5 +10,6 @@ namespace com.gameon.data.ThirdPartyApis.Interfaces
         Task<List<Team>> GetTeams(string game);
         Task<List<Series>> GetSeries(string game);
         Task<List<Match>> GetMatches(string game);
+        Task<List<Match>> GetTournamentMatches(string game, int tournamentId);
     }
 }

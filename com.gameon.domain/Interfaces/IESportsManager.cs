@@ -9,6 +9,6 @@ namespace com.gameon.domain.Interfaces
         Task<List<ESportsTournamentVM>> GetTournaments(string game);
         Task<List<ESportsTeamVM>> GetTeams(string game);
         Task<List<SeriesVM>> GetSeries(string game);
-        Task<List<MatchVM>> GetMatches(string game);
+        Task<List<MatchVM>> GetMatches(string game, int? tournamentId = null);
     }
 }
