@@ -40,7 +40,10 @@ namespace com.gameon.domain.Managers
             var series = await _service.GetSeries(game);
 
             var seriesVM = new List<SeriesVM>();
-            foreach (var t in series) seriesVM.Add(new SeriesVM(t));
+            // Due to api sort by descending starts with null dates, must not return the beginning few objects
+            var indexFirst = series.FindIndex(x => !(x.BeginAt == null && x.EndAt == null));
+            for (int i = indexFirst; i < series.Count; i++)
+                seriesVM.Add(new SeriesVM(series[i]));
 
             return seriesVM;
         }
