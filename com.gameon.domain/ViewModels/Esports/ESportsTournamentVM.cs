@@ -16,6 +16,7 @@ namespace com.gameon.domain.ViewModels.Esports
             Teams = MapTeams(t.Teams);
             Slug = t.Slug;
             SeriesId = t.SeriesId;
+            Series = (t.Series != null) ? new SeriesBaseVM(t.Series) : null; 
             Name = t.Name;
             Matches = MapMatches(t.Matches);
             LeagueId = t.LeagueId;
