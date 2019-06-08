@@ -94,9 +94,12 @@ namespace GameOnApi.Controllers
         // GET api/lol/matches
         [HttpGet("lol/matches")]
         [ProducesResponseType(typeof(List<MatchVM>), 200)]
-        public async Task<IActionResult> GetLolMatches()
+        public async Task<IActionResult> GetLolMatches([FromQuery] int? tournamentId)
         {
-            var matches = await _manager.GetMatches("LeagueOfLegends");
+            // Get most recent matches from any tournament or for specific tournament
+            List<MatchVM> matches;
+            if (tournamentId.HasValue) matches = await _manager.GetMatches("LeagueOfLegends", tournamentId);
+            else matches = await _manager.GetMatches("LeagueOfLegends");
 
             return Ok(matches);
         }
@@ -134,9 +137,12 @@ namespace GameOnApi.Controllers
         // GET api/overwatch/matches
         [HttpGet("overwatch/matches")]
         [ProducesResponseType(typeof(List<MatchVM>), 200)]
-        public async Task<IActionResult> GetOverwatchMatches()
+        public async Task<IActionResult> GetOverwatchMatches([FromQuery] int? tournamentId)
         {
-            var matches = await _manager.GetMatches("Overwatch");
+            // Get most recent matches from any tournament or for specific tournament
+            List<MatchVM> matches;
+            if (tournamentId.HasValue) matches = await _manager.GetMatches("Overwatch", tournamentId);
+            else matches = await _manager.GetMatches("Overwatch");
 
             return Ok(matches);
         }
@@ -174,9 +180,12 @@ namespace GameOnApi.Controllers
         // GET api/csgo/matches
         [HttpGet("csgo/matches")]
         [ProducesResponseType(typeof(List<MatchVM>), 200)]
-        public async Task<IActionResult> GetCsgoMatches()
+        public async Task<IActionResult> GetCsgoMatches([FromQuery] int? tournamentId)
         {
-            var matches = await _manager.GetMatches("CounterStrikeGlobalOffensive");
+            // Get most recent matches from any tournament or for specific tournament
+            List<MatchVM> matches;
+            if (tournamentId.HasValue) matches = await _manager.GetMatches("CounterStrikeGlobalOffensive", tournamentId);
+            else matches = await _manager.GetMatches("CounterStrikeGlobalOffensive");
 
             return Ok(matches);
         }
