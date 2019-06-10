@@ -103,7 +103,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Matches"];
-            string requestUrl = BuildUrlWithQueryParams(mainUrl);
+            string requestUrl = BuildUrlWithQueryParams(mainUrl, sortBy: "-begin_at", thenBy: "-end_at");
 
             var response = await _client.GetAsync(requestUrl);
 
@@ -144,7 +144,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         }
 
         // Add parameters to url
-        private string BuildUrlWithQueryParams(string url, int? tournamentId = null, string sortBy = null)
+        private string BuildUrlWithQueryParams(string url, int? tournamentId = null, string sortBy = null, string thenBy = null)
         {
             var builder = new UriBuilder(url);
             builder.Port = -1;
@@ -153,6 +153,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             //query["filter[per_page]"] = "100";
             if (tournamentId.HasValue) query["filter[tournament_id]"] = tournamentId.Value.ToString();
             if (sortBy != null) query["sort"] = sortBy;
+            if (thenBy != null) query["sort"] += "," + thenBy;
             builder.Query = query.ToString();
             return builder.ToString();
         }
