@@ -60,7 +60,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 IsError = true;
                 ErrorMessage = response.ReasonPhrase;
-                return null;
+                throw new Exception(response.ReasonPhrase);
             }
         }
 
@@ -89,7 +89,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 IsError = true;
                 ErrorMessage = response.ReasonPhrase;
-                return null;
+                throw new Exception(response.ReasonPhrase);
             }
         }
 
@@ -118,7 +118,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 IsError = true;
                 ErrorMessage = response.ReasonPhrase;
-                return null;
+                throw new Exception(response.ReasonPhrase);
             }
         }
 

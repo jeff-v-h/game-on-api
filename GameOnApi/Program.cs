@@ -12,7 +12,7 @@ namespace GameOnApi
                 .Enrich.FromLogContext()
                 .MinimumLevel.Debug()
                 .WriteTo.File(
-                    "../log.txt",
+                    "../logs/log.txt",
                     rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 

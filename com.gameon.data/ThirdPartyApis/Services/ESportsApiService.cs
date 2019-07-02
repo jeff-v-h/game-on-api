@@ -51,7 +51,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 IsError = true;
                 ErrorMessage = response.ReasonPhrase;
-                throw new Exception(ErrorMessage);
+                throw new Exception(response.ReasonPhrase);
             }
         }
 
@@ -73,7 +73,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 IsError = true;
                 ErrorMessage = response.ReasonPhrase;
-                throw new Exception(ErrorMessage);
+                throw new Exception(response.ReasonPhrase);
             }
         }
 
@@ -95,7 +95,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 IsError = true;
                 ErrorMessage = response.ReasonPhrase;
-                throw new Exception(ErrorMessage);
+                throw new Exception(response.ReasonPhrase);
             }
         }
 
@@ -117,7 +117,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 IsError = true;
                 ErrorMessage = response.ReasonPhrase;
-                throw new Exception(ErrorMessage);
+                throw new Exception(response.ReasonPhrase);
             }
         }
 
@@ -139,7 +139,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 IsError = true;
                 ErrorMessage = response.ReasonPhrase;
-                throw new Exception(ErrorMessage);
+                throw new Exception(response.ReasonPhrase);
             }
         }
 
