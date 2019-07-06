@@ -4,7 +4,7 @@ namespace com.gameon.domain.ViewModels.Football
 {
     public class TeamBaseVM
     {
-        public int TeamId { get; set; }
+        public int? TeamId { get; set; }
         public string TeamName { get; set; }
         public string Logo { get; set; }
 

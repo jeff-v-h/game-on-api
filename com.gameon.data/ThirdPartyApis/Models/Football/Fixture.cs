@@ -7,10 +7,10 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
     public class Fixture
     {
         [JsonProperty("fixture_id")]
-        public int FixtureId { get; set; }
+        public int? FixtureId { get; set; }
 
         [JsonProperty("league_id")]
-        public int LeagueId { get; set; }
+        public int? LeagueId { get; set; }
 
         [JsonProperty("event_date")]
         public DateTime EventDate { get; set; }

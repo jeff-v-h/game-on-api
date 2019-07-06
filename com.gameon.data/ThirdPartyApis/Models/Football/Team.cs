@@ -15,7 +15,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
         public string Country { get; set; }
 
         [JsonProperty("founded")]
-        public int Founded { get; set; }
+        public int? Founded { get; set; }
 
         [JsonProperty("venue_name")]
         public string VenueName { get; set; }
@@ -30,6 +30,6 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
         public string VenueCity { get; set; }
 
         [JsonProperty("venue_capacity")]
-        public int VenueCapacity { get; set; }
+        public int? VenueCapacity { get; set; }
     }
 }
