@@ -99,11 +99,16 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
-        public async Task<List<Match>> GetMatches(string game)
+        public async Task<List<Match>> GetMatches(string game = null, string timeFrame = null)
         {
             // Create the main url pathway
-            var mainUrl = _host + _settings[game] + _settings["Matches"];
-            string requestUrl = BuildUrlWithQueryParams(mainUrl, sortBy: "-begin_at", thenBy: "-end_at");
+            var mainUrl = _host;
+            if (game != null) mainUrl += _settings[game];
+            mainUrl += _settings["Matches"];
+            if (timeFrame != null) mainUrl += "/" + timeFrame;
+
+            string requestUrl = (timeFrame == "upcoming") ? BuildUrlWithQueryParams(mainUrl, sortBy: "begin_at")
+                : BuildUrlWithQueryParams(mainUrl, sortBy: "-begin_at", thenBy: "-end_at");
 
             var response = await _client.GetAsync(requestUrl);
 
