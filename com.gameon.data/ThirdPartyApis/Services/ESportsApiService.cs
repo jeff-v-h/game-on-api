@@ -143,6 +143,28 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
+        public async Task<List<LiveMatch>> GetLiveMatches()
+        {
+            // Create the main url pathway
+            var mainUrl = _host + "/lives";
+            string requestUrl = BuildUrlWithQueryParams(mainUrl, sortBy: "-begin_at");
+
+            var response = await _client.GetAsync(requestUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<List<LiveMatch>>(jsonString);
+                return result;
+            }
+            else
+            {
+                IsError = true;
+                ErrorMessage = response.ReasonPhrase;
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
+
         // Add parameters to url
         private string BuildUrlWithQueryParams(string url, int? tournamentId = null, string sortBy = null, string thenBy = null)
         {
