@@ -18,6 +18,27 @@ namespace GameOnApi.Controllers
             _manager = manager;
         }
 
+        // GET api/esports/tournaments
+        [HttpGet("esports/tournaments")]
+        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
+        public async Task<IActionResult> GetESportsTournaments([FromQuery] string timeFrame)
+        {
+            List<ESportsTournamentVM> tournaments = await _manager.GetTournaments(timeFrame: timeFrame);
+
+            return Ok(tournaments);
+        }
+
+        // GET api/esports/matches
+        [HttpGet("esports/matches")]
+        [ProducesResponseType(typeof(List<MatchVM>), 200)]
+        public async Task<IActionResult> GetESportsMatches([FromQuery] string timeFrame)
+        {
+            // Get most recent matches from any tournament or for specific tournament
+            List<MatchVM> matches = await _manager.GetMatches(timeFrame: timeFrame);
+
+            return Ok(matches);
+        }
+
         // GET api/dota/tournaments
         [HttpGet("dota/tournaments")]
         [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]

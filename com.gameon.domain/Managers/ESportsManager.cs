@@ -2,6 +2,7 @@
 using com.gameon.data.ThirdPartyApis.Models.Esports;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels.Esports;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,9 +16,9 @@ namespace com.gameon.domain.Managers
             _service = service;
         }
 
-        public async Task<List<ESportsTournamentVM>> GetTournaments(string game)
+        public async Task<List<ESportsTournamentVM>> GetTournaments(string game = null, string timeFrame = null)
         {
-            var tournaments = await _service.GetTournaments(game);
+            List<Tournament> tournaments = await _service.GetTournaments(game, timeFrame);
 
             var tournamentVMs = new List<ESportsTournamentVM>();
             foreach (var t in tournaments) tournamentVMs.Add(new ESportsTournamentVM(t));
@@ -48,12 +49,14 @@ namespace com.gameon.domain.Managers
             return seriesVM;
         }
 
-        public async Task<List<MatchVM>> GetMatches(string game, int? tournamentId = null)
+        public async Task<List<MatchVM>> GetMatches(string game = null, int? tournamentId = null, string timeFrame = null)
         {
             // Determine whether to get most recent matches for the game or for a specific tournament
             List<Match> matches;
-            if (tournamentId.HasValue) matches = await _service.GetTournamentMatches(game, tournamentId.Value);
-            else matches = await _service.GetMatches(game);
+
+            if (game == null) matches = await _service.GetMatches(timeFrame: timeFrame);
+            else if (tournamentId.HasValue) matches = await _service.GetTournamentMatches(game, tournamentId.Value, timeFrame);
+            else matches = await _service.GetMatches(game, timeFrame: timeFrame);
 
             // Convert to view model
             var matchVM = new List<MatchVM>();

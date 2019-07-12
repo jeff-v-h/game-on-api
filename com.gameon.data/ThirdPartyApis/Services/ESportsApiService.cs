@@ -33,11 +33,16 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
         }
 
-        public async Task<List<Tournament>> GetTournaments(string game)
+        public async Task<List<Tournament>> GetTournaments(string game = null, string timeFrame = null)
         {
             // Create the main url pathway
-            var mainUrl = _host + _settings[game] + _settings["Tournaments"];
-            string requestUrl = BuildUrlWithQueryParams(mainUrl);
+            var mainUrl = _host;
+            if (game == null) mainUrl += _settings[game];
+            mainUrl += _settings["Tournaments"];
+            if (timeFrame != null) mainUrl += "/" + timeFrame;
+
+            string requestUrl = (timeFrame == "upcoming") ? BuildUrlWithQueryParams(mainUrl, sortBy: "begin_at")
+                : BuildUrlWithQueryParams(mainUrl);
 
             var response = await _client.GetAsync(requestUrl);
 
@@ -126,10 +131,12 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
-        public async Task<List<Match>> GetTournamentMatches(string game, int tournamentId)
+        // Separate to GetMatches since having a tournamentId means needing a game specified
+        public async Task<List<Match>> GetTournamentMatches(string game, int tournamentId, string timeFrame = null)
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Matches"];
+            if (timeFrame != null) mainUrl += "/" + timeFrame;
             string requestUrl = BuildUrlWithQueryParams(mainUrl, tournamentId);
 
             var response = await _client.GetAsync(requestUrl);
