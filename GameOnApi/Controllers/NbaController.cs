@@ -38,6 +38,16 @@ namespace GameOnApi.Controllers
             return Ok(games);
         }
 
+        // GET api/basketball/nba/games/upcoming
+        [HttpGet("nba/games/upcoming")]
+        [ProducesResponseType(typeof(List<GameVM>), 200)]
+        public async Task<IActionResult> GetNbaGamesUpcoming()
+        {
+            List<GameVM> games = await _manager.GetNbaGamesNext24Hrs();
+
+            return Ok(games);
+        }
+
         // GET api/basketball/nba/teams
         [HttpGet("nba/teams")]
         [ProducesResponseType(typeof(List<NbaTeamVM>), 200)]

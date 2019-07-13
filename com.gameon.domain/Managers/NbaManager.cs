@@ -1,6 +1,7 @@
 ﻿using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels.Nba;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,6 +31,26 @@ namespace com.gameon.domain.Managers
 
             var gameVMs = new List<GameVM>();
             foreach (var f in games) gameVMs.Add(new GameVM(f));
+
+            return gameVMs;
+        }
+
+        /**
+         * Get games within next 24 hours. Does not return games that have started. (Another function does that)
+         */
+        public async Task<List<GameVM>> GetNbaGamesNext24Hrs()
+        {
+            var games = await _service.GetNbaSchedule();
+
+            // Filter games to find those that will happen within the next 24 hours
+            var today = DateTime.UtcNow.Ticks;
+            var in24Hours = today + TimeSpan.TicksPerDay;
+            var gamesNext24 = games.FindAll(g => g.StartTimeUTC.HasValue 
+                && g.StartTimeUTC.Value.Ticks > today
+                && g.StartTimeUTC.Value.Ticks < in24Hours);
+
+            var gameVMs = new List<GameVM>();
+            foreach (var game in gamesNext24) gameVMs.Add(new GameVM(game));
 
             return gameVMs;
         }

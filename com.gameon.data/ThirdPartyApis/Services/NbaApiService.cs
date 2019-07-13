@@ -62,6 +62,31 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase); 
         }
 
+        public async Task<List<Game>> GetNbaGames(DateTime? datetime = null)
+        {
+            string path;
+            if (datetime == null) path = _settings["Schedule"];
+            else
+            {
+                var date = datetime.Value;
+                var day = (date.Day < 10) ? "0" + date.Day : date.Day.ToString();
+                var month = (date.Month < 10) ? "0" + date.Month : date.Month.ToString();
+                var dateString = date.Year + "-" + month + "-" + day;
+                path = _settings["Games"] + "/date/" + dateString; 
+            }
+
+            var response = await _client.GetAsync(path);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<NbaApi>(jsonString);
+                return result.Api.Games;
+            } 
+            else if (response.StatusCode == HttpStatusCode.NotFound) return new List<Game>();
+            else throw new Exception(response.ReasonPhrase); 
+        }
+
         public async Task<List<Team>> GetNbaTeams()
         {
             var path = _settings["Teams"];
