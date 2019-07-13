@@ -24,6 +24,16 @@ namespace com.gameon.domain.Managers
             return gameVMs;
         }
 
+        public async Task<List<GameVM>> GetNbaLiveGames()
+        {
+            var games = await _service.GetNbaLiveGames();
+
+            var gameVMs = new List<GameVM>();
+            foreach (var f in games) gameVMs.Add(new GameVM(f));
+
+            return gameVMs;
+        }
+
         public async Task<List<NbaTeamVM>> GetNbaTeams()
         {
             var teams = await _service.GetNbaTeams();

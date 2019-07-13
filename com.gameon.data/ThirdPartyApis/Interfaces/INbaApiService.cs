@@ -8,5 +8,6 @@ namespace com.gameon.data.ThirdPartyApis.Interfaces
     {
         Task<List<Game>> GetNbaSchedule();
         Task<List<Team>> GetNbaTeams();
+        Task<List<Game>> GetNbaLiveGames();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using com.gameon.domain.Interfaces;
+using com.gameon.domain.ViewModels;
 using com.gameon.domain.ViewModels.Nba;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -24,6 +25,16 @@ namespace GameOnApi.Controllers
         public async Task<IActionResult> GetNbaSchedule()
         {
             var games = await _manager.GetNbaSchedule();
+
+            return Ok(games);
+        }
+        
+        // GET api/basketball/nba/games/live
+        [HttpGet("nba/games/live")]
+        [ProducesResponseType(typeof(List<GameVM>), 200)]
+        public async Task<IActionResult> GetNbaGames()
+        {
+            List<GameVM> games = await _manager.GetNbaLiveGames();
 
             return Ok(games);
         }

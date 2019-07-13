@@ -8,5 +8,6 @@ namespace com.gameon.domain.Interfaces
     {
         Task<List<GameVM>> GetNbaSchedule();
         Task<List<NbaTeamVM>> GetNbaTeams();
+        Task<List<GameVM>> GetNbaLiveGames();
     }
 }

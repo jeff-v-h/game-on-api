@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -14,8 +15,6 @@ namespace com.gameon.data.ThirdPartyApis.Services
         private readonly HttpClient _client;
         private IConfigurationSection _settings;
         private string _host;
-        public bool IsError = false;
-        public string ErrorMessage;
 
         public NbaApiService(IConfiguration config, HttpClient client)
         {
@@ -36,8 +35,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         public async Task<List<Game>> GetNbaSchedule()
         {
             var path = _settings["Schedule"];
-            var season = _settings["SeasonYear"];
-            var response = await _client.GetAsync(path + season);
+            var response = await _client.GetAsync(path);
 
             if (response.IsSuccessStatusCode)
             {
@@ -45,12 +43,22 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<NbaApi>(jsonString);
                 return result.Api.Games;
             }
-            else
+            else throw new Exception(response.ReasonPhrase);
+        }
+
+        public async Task<List<Game>> GetNbaLiveGames()
+        {
+            string path = _settings["Live"];
+            var response = await _client.GetAsync(path);
+
+            if (response.IsSuccessStatusCode)
             {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<NbaApi>(jsonString);
+                return result.Api.Games;
+            } 
+            else if (response.StatusCode == HttpStatusCode.NotFound) return new List<Game>();
+            else throw new Exception(response.ReasonPhrase); 
         }
 
         public async Task<List<Team>> GetNbaTeams()
@@ -64,12 +72,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<NbaApi>(jsonString);
                 return result.Api.Teams.FindAll(t => t.NbaFranchise == "1");
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
     }
 }
