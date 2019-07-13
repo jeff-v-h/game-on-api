@@ -13,7 +13,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
         public int? LeagueId { get; set; }
 
         [JsonProperty("event_date")]
-        public DateTime EventDate { get; set; }
+        public DateTime? EventDate { get; set; }
 
         [JsonProperty("event_timestamp")]
         public int? EventTimestamp { get; set; }

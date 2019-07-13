@@ -7,7 +7,7 @@ namespace com.gameon.domain.ViewModels.Football
     {
         public int? FixtureId { get; set; }
         public int? LeagueId { get; set; }
-        public DateTime EventDate { get; set; }
+        public DateTime? EventDate { get; set; }
         public int? EventTimestamp { get; set; }
         public int? FirstHalfStart { get; set; }
         public int? SecondHalfStart { get; set; }

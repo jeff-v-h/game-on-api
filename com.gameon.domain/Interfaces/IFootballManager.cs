@@ -8,6 +8,7 @@ namespace com.gameon.domain.Interfaces
     {
         Task<List<FixtureVM>> GetSchedule(string league);
         Task<List<FixtureVM>> GetLiveGames(string league);
+        Task<List<FixtureVM>> GetGamesNext24Hrs(string league);
         Task<List<TeamVM>> GetTeams(string league);
     }
 }
