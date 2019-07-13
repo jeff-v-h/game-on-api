@@ -72,7 +72,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var day = (date.Day < 10) ? "0" + date.Day : date.Day.ToString();
                 var month = (date.Month < 10) ? "0" + date.Month : date.Month.ToString();
                 var dateString = date.Year + "-" + month + "-" + day;
-                path = _settings["Games"] + "/date/" + dateString; 
+                path = _settings["Games"].Replace("{date}", dateString);
             }
 
             var response = await _client.GetAsync(path);

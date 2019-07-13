@@ -15,7 +15,6 @@ namespace com.gameon.data.ThirdPartyApis.Services
         private readonly HttpClient _client;
         private IConfigurationSection _settings;
         private string _host;
-        private string _common;
         private string _apiKey;
         private string _apiKeyQuery;
 
@@ -24,7 +23,6 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client = client;
             _settings = config.GetSection("TennisApi");
             _host = _settings["Host"];
-            _common = _settings["Common"];
             _apiKey = _settings["ApiKeyValue"];
             _apiKeyQuery = _settings["ApiKeyQuery"];
 
@@ -53,8 +51,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         public async Task<InfoApi> GetTournamentInfo(string id)
         {
             // Create the main url pathway
-            var mainUrl = _host + _settings["TournamentInfo"];
-            mainUrl.Replace("{id}", id);
+            var mainUrl = _host + _settings["TournamentInfo"].Replace("{id}", id);
             var requestUrl = BuildUrlWithQueryParams(mainUrl);
 
             var response = await _client.GetAsync(requestUrl);
@@ -71,8 +68,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         public async Task<List<SportEvent>> GetTournamentSchedule(string id)
         {
             // Create the main url pathway
-            var mainUrl = _host +  _settings["TournamentSchedule"];
-            mainUrl.Replace("{id}", id);
+            var mainUrl = _host +  _settings["TournamentSchedule"].Replace("{id}", id);
             var requestUrl = BuildUrlWithQueryParams(mainUrl);
 
             var response = await _client.GetAsync(requestUrl);
@@ -81,6 +77,29 @@ namespace com.gameon.data.ThirdPartyApis.Services
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<ScheduleApi>(jsonString);
+                return result.SportEvents;
+            }
+            else throw new Exception(response.ReasonPhrase);
+        }
+
+        public async Task<List<SportEvent>> GetDailySchedule(DateTime? datetime = null)
+        {
+            // Create date string to be used in request url
+            var date = (datetime == null) ? DateTime.UtcNow : datetime.Value;
+            var day = (date.Day < 10) ? "0" + date.Day : date.Day.ToString();
+            var month = (date.Month < 10) ? "0" + date.Month : date.Month.ToString();
+            var dateString = date.Year + "-" + month + "-" + day;
+
+            // Create the request url
+            var mainUrl = _host + _settings["DailySchedule"].Replace("{date}", dateString);
+            var requestUrl = BuildUrlWithQueryParams(mainUrl);
+
+            var response = await _client.GetAsync(requestUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<DailyScheduleApi>(jsonString);
                 return result.SportEvents;
             }
             else throw new Exception(response.ReasonPhrase);
@@ -100,7 +119,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<RankingsApi>(jsonString);
                 return result.Rankings;
             }
-            else return null;
+            else throw new Exception(response.ReasonPhrase);
         }
 
         private string BuildUrlWithQueryParams(string mainUrl)

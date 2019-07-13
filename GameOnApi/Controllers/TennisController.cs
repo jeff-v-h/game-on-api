@@ -47,5 +47,25 @@ namespace GameOnApi.Controllers
 
             return Ok(schedule);
         }
+
+        // GET api/tennis/schedule
+        [HttpGet("schedule")]
+        [ProducesResponseType(typeof(List<SportEventVM>), 200)]
+        public async Task<IActionResult> GetDaySchedule([FromQuery] string date)
+        {
+            var schedule = await _manager.GetDailySchedule(date);
+
+            return Ok(schedule);
+        }
+
+        // GET api/tennis/rankings
+        [HttpGet("rankings")]
+        [ProducesResponseType(typeof(List<AssociationRankingsVM>), 200)]
+        public async Task<IActionResult> GetPlayerRankings()
+        {
+            var rankings = await _manager.GetPlayerRankings();
+
+            return Ok(rankings);
+        }
     }
 }
