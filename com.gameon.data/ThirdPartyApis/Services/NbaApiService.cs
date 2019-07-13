@@ -43,6 +43,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<NbaApi>(jsonString);
                 return result.Api.Games;
             }
+            else if (response.StatusCode == HttpStatusCode.NotFound) return new List<Game>();
             else throw new Exception(response.ReasonPhrase);
         }
 

@@ -14,8 +14,6 @@ namespace com.gameon.data.ThirdPartyApis.Services
         private readonly HttpClient _client;
         private IConfigurationSection _settings;
         private string _host;
-        public bool IsError = false;
-        public string ErrorMessage;
 
         public FootballApiService(IConfiguration config, HttpClient client)
         {
@@ -35,9 +33,8 @@ namespace com.gameon.data.ThirdPartyApis.Services
 
         public async Task<List<Fixture>> GetEplSchedule()
         {
-            var path = _settings["Schedule"];
-            var id = _settings["EplId"];
-            var response = await _client.GetAsync(path + id);
+            var path = _settings["EplSchedule"];
+            var response = await _client.GetAsync(path);
 
             if (response.IsSuccessStatusCode)
             {
@@ -45,19 +42,13 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
                 return result.Api.Fixtures;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<List<Team>> GetEplTeams()
         {
-            var path = _settings["Teams"];
-            var id = _settings["EplId"];
-            var response = await _client.GetAsync(path + id);
+            var path = _settings["EplTeams"];
+            var response = await _client.GetAsync(path);
 
             if (response.IsSuccessStatusCode)
             {
@@ -65,19 +56,13 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
                 return result.Api.Teams;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<List<Fixture>> GetChampionsLeagueSchedule()
         {
-            var path = _settings["Schedule"];
-            var id = _settings["ChampionsLeagueId"];
-            var response = await _client.GetAsync(path + id);
+            var path = _settings["ChampionsLeagueSchedule"];
+            var response = await _client.GetAsync(path);
 
             if (response.IsSuccessStatusCode)
             {
@@ -85,19 +70,13 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
                 return result.Api.Fixtures;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<List<Team>> GetChampionsLeagueTeams()
         {
-            var path = _settings["Teams"];
-            var id = _settings["ChampionsLeagueId"];
-            var response = await _client.GetAsync(path + id);
+            var path = _settings["ChampionsLeagueTeams"];
+            var response = await _client.GetAsync(path);
 
             if (response.IsSuccessStatusCode)
             {
@@ -105,19 +84,13 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
                 return result.Api.Teams;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase); 
         }
 
         public async Task<List<Fixture>> GetEuropaLeagueSchedule()
         {
-            var path = _settings["Schedule"];
-            var id = _settings["EuropaLeagueId"];
-            var response = await _client.GetAsync(path + id);
+            var path = _settings["EuropaLeagueSchedule"];
+            var response = await _client.GetAsync(path);
 
             if (response.IsSuccessStatusCode)
             {
@@ -125,19 +98,13 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
                 return result.Api.Fixtures;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase); 
         }
 
         public async Task<List<Team>> GetEuropaLeagueTeams()
         {
-            var path = _settings["Teams"];
-            var id = _settings["EuropaLeagueId"];
-            var response = await _client.GetAsync(path + id);
+            var path = _settings["EuropaLeagueTeams"];
+            var response = await _client.GetAsync(path);
 
             if (response.IsSuccessStatusCode)
             {
@@ -145,12 +112,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<FootballApi>(jsonString);
                 return result.Api.Teams;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
     }
 }
