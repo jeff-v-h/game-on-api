@@ -4,12 +4,6 @@ namespace com.gameon.data.ThirdPartyApis.Models.Tennis
 {
     public class Competitor : Player
     {
-        [JsonProperty("nationality")]
-        public string Nationality { get; set; }
-
-        [JsonProperty("country_code")]
-        public string CountryCode { get; set; }
-
         [JsonProperty("seed")]
         public int? Seed { get; set; }
 

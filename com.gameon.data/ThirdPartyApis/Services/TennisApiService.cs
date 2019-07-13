@@ -18,8 +18,6 @@ namespace com.gameon.data.ThirdPartyApis.Services
         private string _common;
         private string _apiKey;
         private string _apiKeyQuery;
-        public bool IsError = false;
-        public string ErrorMessage;
 
         public TennisApiService(IConfiguration config, HttpClient client)
         {
@@ -38,15 +36,8 @@ namespace com.gameon.data.ThirdPartyApis.Services
         public async Task<List<Tournament>> GetTournaments()
         {
             // Create the main url pathway
-            var mainUrl = _host + _common + _settings["Tournaments"] + ".json";
-
-            // Add parameters to url
-            var builder = new UriBuilder(mainUrl);
-            builder.Port = -1;
-            var query = HttpUtility.ParseQueryString(builder.Query);
-            query[_apiKeyQuery] = _apiKey;
-            builder.Query = query.ToString();
-            string requestUrl = builder.ToString();
+            var mainUrl = _host + _settings["Tournaments"];
+            var requestUrl = BuildUrlWithQueryParams(mainUrl);
 
             var response = await _client.GetAsync(requestUrl);
 
@@ -56,26 +47,15 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<TournamentsApi>(jsonString);
                 return result.Tournaments;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<InfoApi> GetTournamentInfo(string id)
         {
             // Create the main url pathway
-            var mainUrl = _host + _common + _settings["Tournaments"] + "/" + id + _settings["Info"] + ".json";
-
-            // Add parameters to url
-            var builder = new UriBuilder(mainUrl);
-            builder.Port = -1;
-            var query = HttpUtility.ParseQueryString(builder.Query);
-            query[_apiKeyQuery] = _apiKey;
-            builder.Query = query.ToString();
-            string requestUrl = builder.ToString();
+            var mainUrl = _host + _settings["TournamentInfo"];
+            mainUrl.Replace("{id}", id);
+            var requestUrl = BuildUrlWithQueryParams(mainUrl);
 
             var response = await _client.GetAsync(requestUrl);
 
@@ -85,26 +65,15 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<InfoApi>(jsonString);
                 return result;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<List<SportEvent>> GetTournamentSchedule(string id)
         {
             // Create the main url pathway
-            var mainUrl = _host + _common + _settings["Tournaments"] + "/" + id + _settings["Schedule"] + ".json";
-
-            // Add parameters to url
-            var builder = new UriBuilder(mainUrl);
-            builder.Port = -1;
-            var query = HttpUtility.ParseQueryString(builder.Query);
-            query[_apiKeyQuery] = _apiKey;
-            builder.Query = query.ToString();
-            string requestUrl = builder.ToString();
+            var mainUrl = _host +  _settings["TournamentSchedule"];
+            mainUrl.Replace("{id}", id);
+            var requestUrl = BuildUrlWithQueryParams(mainUrl);
 
             var response = await _client.GetAsync(requestUrl);
 
@@ -114,42 +83,34 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<ScheduleApi>(jsonString);
                 return result.SportEvents;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
-        //public async Task<List<Player>> GetPlayerRankings(string id)
-        //{
-        //    throw new NotImplementedException();
-        //    // Create the main url pathway
-        //    var mainUrl = _host + _common + _settings["Players"] + "/" + id + _settings["profile"] + ".json";
+        public async Task<List<AssociationRankings>> GetPlayerRankings()
+        {
+            // Create the main url pathway
+            var mainUrl = _host + _settings["PlayerRankings"];
+            var requestUrl = BuildUrlWithQueryParams(mainUrl);
 
-        //    // Add parameters to url
-        //    var builder = new UriBuilder(mainUrl);
-        //    builder.Port = -1;
-        //    var query = HttpUtility.ParseQueryString(builder.Query);
-        //    query["api_key"] = _apiKey;
-        //    builder.Query = query.ToString();
-        //    string requestUrl = builder.ToString();
+            var response = await _client.GetAsync(requestUrl);
 
-        //    var response = await _client.GetAsync(requestUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<RankingsApi>(jsonString);
+                return result.Rankings;
+            }
+            else return null;
+        }
 
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var jsonString = await response.Content.ReadAsStringAsync();
-        //        var result = JsonConvert.DeserializeObject<ScheduleApi>(jsonString);
-        //        return result.SportEvents;
-        //    }
-        //    else
-        //    {
-        //        IsError = true;
-        //        ErrorMessage = response.ReasonPhrase;
-        //        return null;
-        //    }
-        //}
+        private string BuildUrlWithQueryParams(string mainUrl)
+        {
+            var builder = new UriBuilder(mainUrl);
+            builder.Port = -1;
+            var query = HttpUtility.ParseQueryString(builder.Query);
+            query[_apiKeyQuery] = _apiKey;
+            builder.Query = query.ToString();
+            return builder.ToString();
+        }
     }
 }

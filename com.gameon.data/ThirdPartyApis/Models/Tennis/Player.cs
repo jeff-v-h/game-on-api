@@ -2,9 +2,12 @@
 
 namespace com.gameon.data.ThirdPartyApis.Models.Tennis
 {
-    public class Player : Identifier
+    public class Player : PlayerBase
     {
-        [JsonProperty("abbreviation")]
-        public string Abbreviation { get; set; }
+        [JsonProperty("nationality")]
+        public string Nationality { get; set; }
+
+        [JsonProperty("country_code")]
+        public string CountryCode { get; set; }
     }
 }

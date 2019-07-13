@@ -2,15 +2,18 @@
 
 namespace com.gameon.domain.ViewModels.Tennis
 {
-    public class PlayerVM : IdentifierVM
+    public class PlayerVM : PlayerBaseVM
     {
-        public string Abbreviation { get; set; }
+        public string Nationality { get; set; }
+        public string CountryCode { get; set; }
 
         public PlayerVM(Player p)
         {
             Id = p.Id;
             Name = p.Name;
             Abbreviation = p.Abbreviation;
+            Nationality = p.Nationality;
+            CountryCode = p.CountryCode;
         }
 
         public PlayerVM() { }

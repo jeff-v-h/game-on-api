@@ -11,7 +11,7 @@ namespace com.gameon.domain.ViewModels.Tennis
         public TournamentRoundVM TournamentRound { get; set; }
         public InfoVM Info { get; set; }
         public CoverageInfoVM CoverageInfo { get; set; }
-        public PlayerVM WinnerLastSeason { get; set; }
+        public PlayerBaseVM WinnerLastSeason { get; set; }
         public List<CompetitorVM> Competitors { get; set; }
         public List<StageVM> Stages { get; set; }
 
@@ -24,7 +24,7 @@ namespace com.gameon.domain.ViewModels.Tennis
             TournamentRound = (i.TournamentRound != null) ? new TournamentRoundVM(i.TournamentRound) : null;
             Info = (i.Info != null) ? new InfoVM(i.Info) : null;
             CoverageInfo = (i.CoverageInfo != null) ? new CoverageInfoVM(i.CoverageInfo) : null;
-            WinnerLastSeason = (i.WinnerLastSeason != null) ? new PlayerVM(i.WinnerLastSeason) : null;
+            WinnerLastSeason = (i.WinnerLastSeason != null) ? new PlayerBaseVM(i.WinnerLastSeason) : null;
             Competitors = MapCompetitors(i.Competitors);
             Stages = MapStages(i.Stages);
         }

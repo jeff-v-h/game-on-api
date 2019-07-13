@@ -22,7 +22,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Tennis
         public CoverageInfo CoverageInfo { get; set; }
 
         [JsonProperty("winner_last_season")]
-        public Player WinnerLastSeason { get; set; }
+        public PlayerBase WinnerLastSeason { get; set; }
 
         [JsonProperty("competitors")]
         public List<Competitor> Competitors { get; set; }
