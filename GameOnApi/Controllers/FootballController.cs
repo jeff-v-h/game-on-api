@@ -23,7 +23,17 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<FixtureVM>), 200)]
         public async Task<IActionResult> GetEplSchedule()
         {
-            var schedule = await _manager.GetEplSchedule();
+            var schedule = await _manager.GetSchedule("epl");
+
+            return Ok(schedule);
+        }
+        
+        // GET api/football/epl/games/live
+        [HttpGet("epl/games/live")]
+        [ProducesResponseType(typeof(List<FixtureVM>), 200)]
+        public async Task<IActionResult> GetEplLiveGames()
+        {
+            var schedule = await _manager.GetLiveGames("epl");
 
             return Ok(schedule);
         }
@@ -33,7 +43,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<TeamVM>), 200)]
         public async Task<IActionResult> GetEplTeams()
         {
-            var teams = await _manager.GetEplTeams();
+            var teams = await _manager.GetTeams("epl");
 
             return Ok(teams);
         }
@@ -43,7 +53,17 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<FixtureVM>), 200)]
         public async Task<IActionResult> GetChampionsLeagueSchedule()
         {
-            var schedule = await _manager.GetChampionsLeagueSchedule();
+            var schedule = await _manager.GetSchedule("championsleague");
+
+            return Ok(schedule);
+        }
+
+        // GET api/football/championsleague/games/live
+        [HttpGet("championsleague/games/live")]
+        [ProducesResponseType(typeof(List<FixtureVM>), 200)]
+        public async Task<IActionResult> GetChampionsLeagueLiveGames()
+        {
+            var schedule = await _manager.GetLiveGames("championsleague");
 
             return Ok(schedule);
         }
@@ -53,7 +73,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<TeamVM>), 200)]
         public async Task<IActionResult> GetChampionsLeagueTeams()
         {
-            var teams = await _manager.GetChampionsLeagueTeams();
+            var teams = await _manager.GetTeams("championsleague");
 
             return Ok(teams);
         }
@@ -63,7 +83,17 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<FixtureVM>), 200)]
         public async Task<IActionResult> GetEuropaLeagueSchedule()
         {
-            var schedule = await _manager.GetEuropaLeagueSchedule();
+            var schedule = await _manager.GetSchedule("europaleague");
+
+            return Ok(schedule);
+        }
+
+        // GET api/football/europaleague/games/live
+        [HttpGet("europaleague/games/live")]
+        [ProducesResponseType(typeof(List<FixtureVM>), 200)]
+        public async Task<IActionResult> GetEuropaLeagueLiveGames()
+        {
+            var schedule = await _manager.GetLiveGames("europaleague");
 
             return Ok(schedule);
         }
@@ -73,7 +103,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<TeamVM>), 200)]
         public async Task<IActionResult> GetEuropaLeagueTeams()
         {
-            var teams = await _manager.GetEuropaLeagueTeams();
+            var teams = await _manager.GetTeams("europaleague");
 
             return Ok(teams);
         }

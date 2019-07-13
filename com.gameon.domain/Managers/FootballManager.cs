@@ -14,9 +14,9 @@ namespace com.gameon.domain.Managers
             _service = service;
         }
 
-        public async Task<List<FixtureVM>> GetEplSchedule()
+        public async Task<List<FixtureVM>> GetSchedule(string league)
         {
-            var fixtures = await _service.GetEplSchedule();
+            var fixtures = await _service.GetSchedule(league);
 
             var fixtureVMs = new List<FixtureVM>();
             foreach (var f in fixtures) fixtureVMs.Add(new FixtureVM(f));
@@ -24,19 +24,9 @@ namespace com.gameon.domain.Managers
             return fixtureVMs;
         }
 
-        public async Task<List<TeamVM>> GetEplTeams()
+        public async Task<List<FixtureVM>> GetLiveGames(string league)
         {
-            var teams = await _service.GetEplTeams();
-
-            var teamVMs = new List<TeamVM>();
-            foreach (var t in teams) teamVMs.Add(new TeamVM(t));
-
-            return teamVMs;
-        }
-
-        public async Task<List<FixtureVM>> GetChampionsLeagueSchedule()
-        {
-            var fixtures = await _service.GetChampionsLeagueSchedule();
+            var fixtures = await _service.GetLiveGames(league);
 
             var fixtureVMs = new List<FixtureVM>();
             foreach (var f in fixtures) fixtureVMs.Add(new FixtureVM(f));
@@ -44,29 +34,9 @@ namespace com.gameon.domain.Managers
             return fixtureVMs;
         }
 
-        public async Task<List<TeamVM>> GetChampionsLeagueTeams()
+        public async Task<List<TeamVM>> GetTeams(string league)
         {
-            var teams = await _service.GetChampionsLeagueTeams();
-
-            var teamVMs = new List<TeamVM>();
-            foreach (var t in teams) teamVMs.Add(new TeamVM(t));
-
-            return teamVMs;
-        }
-
-        public async Task<List<FixtureVM>> GetEuropaLeagueSchedule()
-        {
-            var fixtures = await _service.GetEuropaLeagueSchedule();
-
-            var fixtureVMs = new List<FixtureVM>();
-            foreach (var f in fixtures) fixtureVMs.Add(new FixtureVM(f));
-
-            return fixtureVMs;
-        }
-
-        public async Task<List<TeamVM>> GetEuropaLeagueTeams()
-        {
-            var teams = await _service.GetEuropaLeagueTeams();
+            var teams = await _service.GetTeams(league);
 
             var teamVMs = new List<TeamVM>();
             foreach (var t in teams) teamVMs.Add(new TeamVM(t));

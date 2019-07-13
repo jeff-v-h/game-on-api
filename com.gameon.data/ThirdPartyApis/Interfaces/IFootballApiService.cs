@@ -6,11 +6,8 @@ namespace com.gameon.data.ThirdPartyApis.Interfaces
 {
     public interface IFootballApiService
     {
-        Task<List<Fixture>> GetEplSchedule();
-        Task<List<Team>> GetEplTeams();
-        Task<List<Fixture>> GetChampionsLeagueSchedule();
-        Task<List<Team>> GetChampionsLeagueTeams();
-        Task<List<Fixture>> GetEuropaLeagueSchedule();
-        Task<List<Team>> GetEuropaLeagueTeams();
+        Task<List<Fixture>> GetSchedule(string league);
+        Task<List<Fixture>> GetLiveGames(string league);
+        Task<List<Team>> GetTeams(string league);
     }
 }
