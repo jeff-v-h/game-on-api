@@ -43,7 +43,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<GameVM>), 200)]
         public async Task<IActionResult> GetNbaGamesUpcoming()
         {
-            List<GameVM> games = await _manager.GetNbaGamesNext24Hrs();
+            List<GameVM> games = await _manager.GetNbaGamesUpcoming();
 
             return Ok(games);
         }

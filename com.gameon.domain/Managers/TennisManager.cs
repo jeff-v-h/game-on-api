@@ -43,12 +43,45 @@ namespace com.gameon.domain.Managers
             return scheduleVMs;
         }
 
-        public async Task<List<SportEventVM>> GetDailySchedule(string dateString)
+        public async Task<List<SportEventVM>> GetMatchesUpcoming()
+        {
+            // Get matches for today and tomorrow
+            var today = DateTime.UtcNow;
+            var tomorrow = today.AddDays(1);
+            var matchesToday = await _service.GetDaySchedule(today);
+            var matchesTomorrow = await _service.GetDaySchedule(tomorrow);
+
+            // Only return the matches that have not started
+            var upcoming = matchesToday.FindAll(m => m.Status == "not_started");
+            upcoming.AddRange(matchesTomorrow);
+
+            var scheduleVMs = new List<SportEventVM>();
+            foreach (var u in upcoming) scheduleVMs.Add(new SportEventVM(u));
+
+            return scheduleVMs;
+        }
+
+        public async Task<List<SportEventVM>> GetMatchesLive()
+        {
+            // Get matches for today and tomorrow
+            var today = DateTime.UtcNow;
+            var matchesToday = await _service.GetDaySchedule(today);
+
+            // Only return the matches that have not started
+            var matches = matchesToday.FindAll(m => m.Status == "live");
+
+            var scheduleVMs = new List<SportEventVM>();
+            foreach (var m in matches) scheduleVMs.Add(new SportEventVM(m));
+
+            return scheduleVMs;
+        }
+
+        public async Task<List<SportEventVM>> GetDaySchedule(string dateString)
         {
             DateTime date;
             List<SportEvent> schedule;
-            if (DateTime.TryParse(dateString, out date)) schedule = await _service.GetDailySchedule(date);
-            else schedule = await _service.GetDailySchedule();
+            if (DateTime.TryParse(dateString, out date)) schedule = await _service.GetDaySchedule(date);
+            else schedule = await _service.GetDaySchedule();
 
             var scheduleVMs = new List<SportEventVM>();
             foreach (var s in schedule) scheduleVMs.Add(new SportEventVM(s));

@@ -43,7 +43,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<FixtureVM>), 200)]
         public async Task<IActionResult> GetEplGamesUpcoming()
         {
-            var schedule = await _manager.GetGamesNext24Hrs("epl");
+            var schedule = await _manager.GetGamesUpcoming("epl");
 
             return Ok(schedule);
         }
@@ -83,7 +83,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<FixtureVM>), 200)]
         public async Task<IActionResult> GetChampionsLeagueGamesUpcoming()
         {
-            var schedule = await _manager.GetGamesNext24Hrs("championsleague");
+            var schedule = await _manager.GetGamesUpcoming("championsleague");
 
             return Ok(schedule);
         }
@@ -123,7 +123,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<FixtureVM>), 200)]
         public async Task<IActionResult> GetEuropaLeagueGamesUpcoming()
         {
-            var schedule = await _manager.GetGamesNext24Hrs("europaleague");
+            var schedule = await _manager.GetGamesUpcoming("europaleague");
 
             return Ok(schedule);
         }

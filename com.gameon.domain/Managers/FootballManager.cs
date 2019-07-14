@@ -39,7 +39,7 @@ namespace com.gameon.domain.Managers
         /**
          * Get games within next 24 hours. Does not return games that have started. (GetLiveGames() does that)
          */
-        public async Task<List<FixtureVM>> GetGamesNext24Hrs(string league)
+        public async Task<List<FixtureVM>> GetGamesUpcoming(string league)
         {
             var fixtures = await _service.GetSchedule(league);
 

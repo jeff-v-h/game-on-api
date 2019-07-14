@@ -10,7 +10,7 @@ namespace com.gameon.data.ThirdPartyApis.Interfaces
         Task<List<Tournament>> GetTournaments();
         Task<InfoApi> GetTournamentInfo(string id);
         Task<List<SportEvent>> GetTournamentSchedule(string id);
-        Task<List<SportEvent>> GetDailySchedule(DateTime? datetime = null);
+        Task<List<SportEvent>> GetDaySchedule(DateTime? datetime = null);
         Task<List<AssociationRankings>> GetPlayerRankings();
     }
 }

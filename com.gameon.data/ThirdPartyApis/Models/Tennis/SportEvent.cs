@@ -14,7 +14,8 @@ namespace com.gameon.data.ThirdPartyApis.Models.Tennis
 
         [JsonProperty("start_time_tbd")]
         public bool StartTimeTbd { get; set; }
-
+        
+        /** "closed", "live", "not_started" */
         [JsonProperty("status")]
         public string Status { get; set; }
 

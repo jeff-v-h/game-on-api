@@ -82,7 +82,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<List<SportEvent>> GetDailySchedule(DateTime? datetime = null)
+        public async Task<List<SportEvent>> GetDaySchedule(DateTime? datetime = null)
         {
             // Create date string to be used in request url
             var date = (datetime == null) ? DateTime.UtcNow : datetime.Value;

@@ -4,8 +4,6 @@ namespace com.gameon.domain.ViewModels.Tennis
 {
     public class CompetitorVM : PlayerVM
     {
-        public string Nationality { get; set; }
-        public string CountryCode { get; set; }
         public int? Seed { get; set; }
         public int? BracketNumber { get; set; }
         public string Qualifier { get; set; }
