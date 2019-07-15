@@ -49,6 +49,29 @@ namespace GameOnApi.Controllers
             return Ok(schedule);
         }
 
+        // GET api/tennis/matches
+        [HttpGet("schedule")]
+        [HttpGet("matches")]
+        [ProducesResponseType(typeof(List<SportEventVM>), 200)]
+        public async Task<IActionResult> GetMatches([FromQuery] string date)
+        {
+            var schedule = (date == null) ? await _manager.GetMatches()
+                : await _manager.GetDaySchedule(date);
+
+            return Ok(schedule);
+        }
+        
+        // GET api/tennis/matches/today
+        [HttpGet("schedule/today")]
+        [HttpGet("matches/today")]
+        [ProducesResponseType(typeof(List<SportEventVM>), 200)]
+        public async Task<IActionResult> GetMatchesToday()
+        {
+            var schedule = await _manager.GetDaySchedule();
+
+            return Ok(schedule);
+        }
+        
         // GET api/tennis/matches/upcoming
         [HttpGet("schedule/upcoming")]
         [HttpGet("matches/upcoming")]
@@ -67,17 +90,6 @@ namespace GameOnApi.Controllers
         public async Task<IActionResult> GetMatchesLive()
         {
             var schedule = await _manager.GetMatchesLive();
-
-            return Ok(schedule);
-        }
-
-        // GET api/tennis/schedule
-        [HttpGet("schedule")]
-        [HttpGet("matches")]
-        [ProducesResponseType(typeof(List<SportEventVM>), 200)]
-        public async Task<IActionResult> GetMatchesForDay([FromQuery] string date)
-        {
-            var schedule = await _manager.GetDaySchedule(date);
 
             return Ok(schedule);
         }

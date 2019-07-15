@@ -91,7 +91,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             var dateString = date.Year + "-" + month + "-" + day;
 
             // Create the request url
-            var mainUrl = _host + _settings["DailySchedule"].Replace("{date}", dateString);
+            var mainUrl = _host + _settings["DaySchedule"].Replace("{date}", dateString);
             var requestUrl = BuildUrlWithQueryParams(mainUrl);
 
             var response = await _client.GetAsync(requestUrl);

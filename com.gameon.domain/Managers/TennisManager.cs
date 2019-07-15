@@ -11,6 +11,8 @@ namespace com.gameon.domain.Managers
     public class TennisManager : ITennisManager
     {
         private readonly ITennisApiService _service;
+        string[] _atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
+
         public TennisManager(ITennisApiService service)
         {
             _service = service;
@@ -43,6 +45,25 @@ namespace com.gameon.domain.Managers
             return scheduleVMs;
         }
 
+        // This will get matches for today and tomorrow
+        public async Task<List<SportEventVM>> GetMatches()
+        {
+            // Get matches for today and tomorrow
+            var today = DateTime.UtcNow;
+            var tomorrow = today.AddDays(1);
+            var matchesToday = await _service.GetDaySchedule(today);
+            var matchesTomorrow = await _service.GetDaySchedule(tomorrow);
+
+            // Only return the matches that have not started and are at a professional tournament
+            var matches = matchesToday.FindAll(m => Array.IndexOf(_atpLevels, m.Tournament.Category.Level) > -1);
+            matches.AddRange(matchesTomorrow);
+
+            var matchVMs = new List<SportEventVM>();
+            foreach (var m in matches) matchVMs.Add(new SportEventVM(m));
+
+            return matchVMs;
+        }
+
         public async Task<List<SportEventVM>> GetMatchesUpcoming()
         {
             // Get matches for today and tomorrow
@@ -52,8 +73,7 @@ namespace com.gameon.domain.Managers
             var matchesTomorrow = await _service.GetDaySchedule(tomorrow);
 
             // Only return the matches that have not started and are at a professional tournament
-            string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
-            var upcoming = matchesToday.FindAll(m => m.Status == "not_started" && Array.IndexOf(atpLevels, m.Tournament.Category.Level) > -1);
+            var upcoming = matchesToday.FindAll(m => m.Status == "not_started" && Array.IndexOf(_atpLevels, m.Tournament.Category.Level) > -1);
             upcoming.AddRange(matchesTomorrow);
 
             var scheduleVMs = new List<SportEventVM>();
@@ -69,8 +89,7 @@ namespace com.gameon.domain.Managers
             var matchesToday = await _service.GetDaySchedule(today);
 
             // Only return the matches that have not started and are at a professional tournament
-            string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
-            var matches = matchesToday.FindAll(m => m.Status == "live" && Array.IndexOf(atpLevels, m.Tournament.Category.Level) > -1);
+            var matches = matchesToday.FindAll(m => m.Status == "live" && Array.IndexOf(_atpLevels, m.Tournament.Category.Level) > -1);
 
             var scheduleVMs = new List<SportEventVM>();
             foreach (var m in matches) scheduleVMs.Add(new SportEventVM(m));
@@ -78,7 +97,7 @@ namespace com.gameon.domain.Managers
             return scheduleVMs;
         }
 
-        public async Task<List<SportEventVM>> GetDaySchedule(string dateString)
+        public async Task<List<SportEventVM>> GetDaySchedule(string dateString = null)
         {
             DateTime date;
             List<SportEvent> schedule;
@@ -90,16 +109,6 @@ namespace com.gameon.domain.Managers
 
             return scheduleVMs;
         }
-
-        //public async Task<List<>> GetLiveMatches()
-        //{
-        //    var schedule = await _service.GetLiveSchedule();
-
-        //    var scheduleVMs = new List<>();
-        //    foreach (var s in schedule) scheduleVMs.Add(new (s));
-
-        //    return scheduleVMs;
-        //}
 
         public async Task<List<AssociationRankingsVM>> GetPlayerRankings()
         {
