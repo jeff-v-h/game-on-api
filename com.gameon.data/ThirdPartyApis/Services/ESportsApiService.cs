@@ -10,7 +10,7 @@ using System.Web;
 
 namespace com.gameon.data.ThirdPartyApis.Services
 {
-    public class ESportsApiService : IESportsApiService
+    public class EsportsApiService : IEsportsApiService
     {
         private readonly HttpClient _client;
         private IConfigurationSection _settings;
@@ -20,10 +20,10 @@ namespace com.gameon.data.ThirdPartyApis.Services
         public bool IsError = false;
         public string ErrorMessage;
 
-        public ESportsApiService(IConfiguration config, HttpClient client)
+        public EsportsApiService(IConfiguration config, HttpClient client)
         {
             _client = client;
-            _settings = config.GetSection("ESportsApi");
+            _settings = config.GetSection("EsportsApi");
             _host = _settings["Host"];
             _apiKey = _settings["ApiKeyValue"];
             _apiKeyQuery = _settings["ApiKeyQuery"];

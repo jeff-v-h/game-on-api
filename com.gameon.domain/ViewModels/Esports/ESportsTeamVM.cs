@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace com.gameon.domain.ViewModels.Esports
 {
-    public class ESportsTeamVM : ESportsTeamBaseVM
+    public class EsportsTeamVM : EsportsTeamBaseVM
     {
-        public List<ESportsPlayerVM> Players { get; set; }
+        public List<EsportsPlayerVM> Players { get; set; }
 
-        public ESportsTeamVM(Team t)
+        public EsportsTeamVM(Team t)
         {
             Slug = t.Slug;
             Name = t.Name;
@@ -17,14 +17,14 @@ namespace com.gameon.domain.ViewModels.Esports
             Players = MapPlayers(t.Players);
         }
 
-        private List<ESportsPlayerVM> MapPlayers(List<Player> players)
+        private List<EsportsPlayerVM> MapPlayers(List<Player> players)
         {
             if (players == null) return null;
 
-            var list = new List<ESportsPlayerVM>();
+            var list = new List<EsportsPlayerVM>();
 
             for (int i = 0; i < players.Count; i++)
-                list.Add(new ESportsPlayerVM(players[i]));
+                list.Add(new EsportsPlayerVM(players[i]));
 
             return list;
         }

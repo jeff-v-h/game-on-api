@@ -16,7 +16,7 @@ namespace com.gameon.domain.Managers
             _repo = repo;
         }
 
-        // CRUD methods for private database. For requests to third party APIs check ESportsManager
+        // CRUD methods for private database. For requests to third party APIs check EsportsManager
         public List<DotaVM> GetAll()
         {
             var dotaList = _repo.GetAll();

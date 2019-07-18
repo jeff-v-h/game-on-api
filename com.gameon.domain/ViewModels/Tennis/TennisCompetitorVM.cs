@@ -2,14 +2,14 @@
 
 namespace com.gameon.domain.ViewModels.Tennis
 {
-    public class CompetitorVM : PlayerVM
+    public class TennisCompetitorVM : PlayerVM
     {
         public int? Seed { get; set; }
         public int? BracketNumber { get; set; }
         public string Qualifier { get; set; }
         public string QualificationPath { get; set; }
 
-        public CompetitorVM(Competitor c)
+        public TennisCompetitorVM(Competitor c)
         {
             Id = c.Id;
             Name = c.Name;

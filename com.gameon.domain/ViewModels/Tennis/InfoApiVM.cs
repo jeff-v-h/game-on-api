@@ -12,7 +12,7 @@ namespace com.gameon.domain.ViewModels.Tennis
         public InfoVM Info { get; set; }
         public CoverageInfoVM CoverageInfo { get; set; }
         public PlayerBaseVM WinnerLastSeason { get; set; }
-        public List<CompetitorVM> Competitors { get; set; }
+        public List<TennisCompetitorVM> Competitors { get; set; }
         public List<StageVM> Stages { get; set; }
 
         public InfoApiVM(InfoApi i)
@@ -29,15 +29,15 @@ namespace com.gameon.domain.ViewModels.Tennis
             Stages = MapStages(i.Stages);
         }
 
-        private List<CompetitorVM> MapCompetitors(List<Competitor> competitors)
+        private List<TennisCompetitorVM> MapCompetitors(List<Competitor> competitors)
         {
             if (competitors == null) return null;
 
-            var list = new List<CompetitorVM>();
+            var list = new List<TennisCompetitorVM>();
 
             for (int i = 0; i < competitors.Count; i++)
             {
-                list.Add(new CompetitorVM(competitors[i]));
+                list.Add(new TennisCompetitorVM(competitors[i]));
             }
 
             return list;

@@ -3,7 +3,7 @@ using System;
 
 namespace com.gameon.domain.ViewModels.Esports
 {
-    public class ESportsGameVM
+    public class EsportsGameVM
     {
         public string WinnerType { get; set; }
         public WinnerVM Winner { get; set; }
@@ -16,7 +16,7 @@ namespace com.gameon.domain.ViewModels.Esports
         public DateTime? EndAt { get; set; }
         public DateTime? BeginAt { get; set; }
 
-        public ESportsGameVM(Game g)
+        public EsportsGameVM(Game g)
         {
             WinnerType = g.WinnerType;
             Winner = (g.Winner != null) ? new WinnerVM(g.Winner) : null;

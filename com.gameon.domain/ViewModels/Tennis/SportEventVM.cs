@@ -13,7 +13,7 @@ namespace com.gameon.domain.ViewModels.Tennis
         public TournamentRoundVM TournamentRound { get; set; }
         public SeasonVM Season { get; set; }
         public TournamentVM Tournament { get; set; }
-        public List<CompetitorVM> Competitors { get; set; }
+        public List<TennisCompetitorVM> Competitors { get; set; }
         public VenueVM Venue { get; set; }
         public bool Estimated { get; set; }
         public SportEventVM(SportEvent s)
@@ -30,15 +30,15 @@ namespace com.gameon.domain.ViewModels.Tennis
             Estimated = s.Estimated;
         }
 
-        private List<CompetitorVM> MapCompetitors(List<Competitor> competitors)
+        private List<TennisCompetitorVM> MapCompetitors(List<Competitor> competitors)
         {
             if (competitors == null) return null;
 
-            var list = new List<CompetitorVM>();
+            var list = new List<TennisCompetitorVM>();
 
             for (int i = 0; i < competitors.Count; i++)
             {
-                list.Add(new CompetitorVM(competitors[i]));
+                list.Add(new TennisCompetitorVM(competitors[i]));
             }
 
             return list;

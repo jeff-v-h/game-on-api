@@ -9,21 +9,21 @@ namespace GameOnApi.Controllers
     [Produces("application/json")]
     [Route("api")]
     [ApiController]
-    public class ESportsController : ControllerBase
+    public class EsportsController : ControllerBase
     {
-        private readonly IESportsManager _manager;
+        private readonly IEsportsManager _manager;
 
-        public ESportsController(IESportsManager manager)
+        public EsportsController(IEsportsManager manager)
         {
             _manager = manager;
         }
 
         // GET api/esports/tournaments
         [HttpGet("esports/tournaments")]
-        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
-        public async Task<IActionResult> GetESportsTournaments([FromQuery] string timeFrame)
+        [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
+        public async Task<IActionResult> GetEsportsTournaments([FromQuery] string timeFrame)
         {
-            List<ESportsTournamentVM> tournaments = await _manager.GetTournaments(timeFrame: timeFrame);
+            List<EsportsTournamentVM> tournaments = await _manager.GetTournaments(timeFrame: timeFrame);
 
             return Ok(tournaments);
         }
@@ -31,7 +31,7 @@ namespace GameOnApi.Controllers
         // GET api/esports/matches
         [HttpGet("esports/matches")]
         [ProducesResponseType(typeof(List<MatchVM>), 200)]
-        public async Task<IActionResult> GetESportsMatches([FromQuery] string timeFrame)
+        public async Task<IActionResult> GetEsportsMatches([FromQuery] string timeFrame)
         {
             // Get most recent matches from any tournament or for specific tournament
             List<MatchVM> matches = await _manager.GetMatches(timeFrame: timeFrame);
@@ -41,7 +41,7 @@ namespace GameOnApi.Controllers
 
         // GET api/dota/tournaments
         [HttpGet("dota/tournaments")]
-        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
+        [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
         public async Task<IActionResult> GetDotaTournaments()
         {
             var tournaments = await _manager.GetTournaments("Dota");
@@ -51,7 +51,7 @@ namespace GameOnApi.Controllers
 
         // GET api/dota/teams
         [HttpGet("dota/teams")]
-        [ProducesResponseType(typeof(List<ESportsTeamVM>), 200)]
+        [ProducesResponseType(typeof(List<EsportsTeamVM>), 200)]
         public async Task<IActionResult> GetDotaTeams()
         {
             var teams = await _manager.GetTeams("Dota");
@@ -84,7 +84,7 @@ namespace GameOnApi.Controllers
 
         // GET api/lol/tournaments
         [HttpGet("lol/tournaments")]
-        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
+        [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
         public async Task<IActionResult> GetLolTournaments()
         {
             var tournaments = await _manager.GetTournaments("LeagueOfLegends");
@@ -94,7 +94,7 @@ namespace GameOnApi.Controllers
 
         // GET api/lol/teams
         [HttpGet("lol/teams")]
-        [ProducesResponseType(typeof(List<ESportsTeamVM>), 200)]
+        [ProducesResponseType(typeof(List<EsportsTeamVM>), 200)]
         public async Task<IActionResult> GetLolTeams()
         {
             var teams = await _manager.GetTeams("LeagueOfLegends");
@@ -127,7 +127,7 @@ namespace GameOnApi.Controllers
 
         // GET api/overwatch/tournaments
         [HttpGet("overwatch/tournaments")]
-        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
+        [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
         public async Task<IActionResult> GetOverwatchTournaments()
         {
             var tournaments = await _manager.GetTournaments("Overwatch");
@@ -137,7 +137,7 @@ namespace GameOnApi.Controllers
 
         // GET api/overwatch/teams
         [HttpGet("overwatch/teams")]
-        [ProducesResponseType(typeof(List<ESportsTeamVM>), 200)]
+        [ProducesResponseType(typeof(List<EsportsTeamVM>), 200)]
         public async Task<IActionResult> GetOverwatchTeams()
         {
             var teams = await _manager.GetTeams("Overwatch");
@@ -170,7 +170,7 @@ namespace GameOnApi.Controllers
 
         // GET api/csgo/tournaments
         [HttpGet("csgo/tournaments")]
-        [ProducesResponseType(typeof(List<ESportsTournamentVM>), 200)]
+        [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
         public async Task<IActionResult> GetCsgoTournaments()
         {
             var tournaments = await _manager.GetTournaments("CounterStrikeGlobalOffensive");
@@ -180,7 +180,7 @@ namespace GameOnApi.Controllers
 
         // GET api/csgo/teams
         [HttpGet("csgo/teams")]
-        [ProducesResponseType(typeof(List<ESportsTeamVM>), 200)]
+        [ProducesResponseType(typeof(List<EsportsTeamVM>), 200)]
         public async Task<IActionResult> GetCsgoTeams()
         {
             var teams = await _manager.GetTeams("CounterStrikeGlobalOffensive");

@@ -50,7 +50,8 @@ namespace GameOnApi
             services.AddTransient<IFootballManager, FootballManager>();
             services.AddTransient<INbaManager, NbaManager>();
             services.AddTransient<ITennisManager, TennisManager>();
-            services.AddTransient<IESportsManager, ESportsManager>();
+            services.AddTransient<IEsportsManager, EsportsManager>();
+            services.AddTransient<IGeneralManager, GeneralManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

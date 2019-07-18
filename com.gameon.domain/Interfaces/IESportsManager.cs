@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace com.gameon.domain.Interfaces
 {
-    public interface IESportsManager
+    public interface IEsportsManager
     {
-        Task<List<ESportsTournamentVM>> GetTournaments(string game = null, string timeFrame = null);
-        Task<List<ESportsTeamVM>> GetTeams(string game);
+        Task<List<EsportsTournamentVM>> GetTournaments(string game = null, string timeFrame = null);
+        Task<List<EsportsTeamVM>> GetTeams(string game);
         Task<List<SeriesVM>> GetSeries(string game);
         Task<List<MatchVM>> GetMatches(string game = null, int? tournamentId = null, string timeFrame = null);
     }

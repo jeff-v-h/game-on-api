@@ -2,7 +2,7 @@
 
 namespace com.gameon.domain.ViewModels.Esports
 {
-    public class ESportsPlayerVM
+    public class EsportsPlayerVM
     {
         public string Slug { get; set; }
         public object Role { get; set; }
@@ -13,7 +13,7 @@ namespace com.gameon.domain.ViewModels.Esports
         public string Hometown { get; set; }
         public string FirstName { get; set; }
 
-        public ESportsPlayerVM(Player p)
+        public EsportsPlayerVM(Player p)
         {
             Slug = p.Slug;
             Role = p.Role;

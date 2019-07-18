@@ -2,7 +2,7 @@
 
 namespace com.gameon.domain.ViewModels.Esports
 {
-    public class ESportsTeamBaseVM
+    public class EsportsTeamBaseVM
     {
         public string Slug { get; set; }
         public string Name { get; set; }
@@ -10,7 +10,7 @@ namespace com.gameon.domain.ViewModels.Esports
         public int? Id { get; set; }
         public string Acronym { get; set; }
 
-        public ESportsTeamBaseVM(TeamBase t)
+        public EsportsTeamBaseVM(TeamBase t)
         {
             Slug = t.Slug;
             Name = t.Name;
@@ -19,6 +19,6 @@ namespace com.gameon.domain.ViewModels.Esports
             Acronym = t.Acronym;
         }
 
-        public ESportsTeamBaseVM() { }
+        public EsportsTeamBaseVM() { }
     }
 }

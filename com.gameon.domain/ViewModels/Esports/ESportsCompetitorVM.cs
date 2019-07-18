@@ -2,15 +2,15 @@
 
 namespace com.gameon.domain.ViewModels.Esports
 {
-    public class ESportsCompetitorVM
+    public class EsportsCompetitorVM
     {
         public string Type { get; set; }
-        public ESportsTeamBaseVM Opponent { get; set; }
+        public EsportsTeamBaseVM Opponent { get; set; }
 
-        public ESportsCompetitorVM(Competitor t)
+        public EsportsCompetitorVM(Competitor t)
         {
             Type = t.Type;
-            Opponent = (t.Opponent != null) ? new ESportsTeamBaseVM(t.Opponent) : null;
+            Opponent = (t.Opponent != null) ? new EsportsTeamBaseVM(t.Opponent) : null;
         }
     }
 }

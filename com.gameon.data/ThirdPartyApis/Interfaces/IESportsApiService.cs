@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace com.gameon.data.ThirdPartyApis.Interfaces
 {
-    public interface IESportsApiService
+    public interface IEsportsApiService
     {
         Task<List<Tournament>> GetTournaments(string game = null, string timeFrame = null);
         Task<List<Team>> GetTeams(string game);
