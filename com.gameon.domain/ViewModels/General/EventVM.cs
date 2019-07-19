@@ -7,6 +7,8 @@ namespace com.gameon.domain.ViewModels.General
     public class EventVM
     {
         public string Id;
+        public DateTime? StartTime;
+        public DateTime? EndTime;
         public string Name;
         public string Sport;
         public string LeagueOrTournament;
@@ -15,6 +17,8 @@ namespace com.gameon.domain.ViewModels.General
         public EventVM(GameVM g)
         {
             Id = "nba" + g.GameId;
+            StartTime = g.StartTimeUTC ?? null;
+            EndTime = g.EndTimeUTC ?? null;
             Name = g.HTeam.ShortName + "v" + g.VTeam.ShortName;
             Sport = "Basketball";
             LeagueOrTournament = "NBA";

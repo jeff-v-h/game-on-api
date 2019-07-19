@@ -4,6 +4,7 @@ using com.gameon.domain.ViewModels.General;
 using com.gameon.domain.ViewModels.Nba;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace com.gameon.domain.Managers
@@ -24,30 +25,79 @@ namespace com.gameon.domain.Managers
             _esportsManager = esportsManager;
         }
 
-        public async Task<List<EventVM>> GetEvents()
+        public async Task<SortedEventsVM> GetEventsAsync()
         {
             // Get the matches for each sport
-            var nbaTask = GetNbaEvents();
-            var eplTask = GetEplEvents();
-            var europaLeagueTask = GetEuropaLeagueEvents();
-            var championsLeagueTask = GetChampionsLeagueEvents();
-            var tennisTask = GetTennisEvents();
-            var esportsTask = GetEsportsEvents();
+            var nbaTask = GetNbaEventsAsync();
+            var eplTask = GetEplEventsAsync();
+            var europaLeagueTask = GetEuropaLeagueEventsAsync();
+            var championsLeagueTask = GetChampionsLeagueEventsAsync();
+            var tennisTask = GetTennisEventsAsync();
+            var esportsTask = GetEsportsEventsAsync();
 
-            var tasks = await Task.WhenAll(nbaTask, eplTask, europaLeagueTask, championsLeagueTask, tennisTask, esportsTask);
-            // Sort through each event
+            var allTasks = new List<Task<SortedEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, tennisTask, esportsTask };
 
+            var liveEvents = new List<EventVM>();
+            var upcomingEvents = new List<EventVM>();
+            var completedEvents = new List<EventVM>();
+            
+            // Each time a task is finished, add the events into their respective lists
+            while (allTasks.Any())
+            {
+                Task<SortedEventsVM> finishedTask = await Task.WhenAny(allTasks);
+                allTasks.Remove(finishedTask);
+
+                SortedEventsVM games = await finishedTask;
+                liveEvents.AddRange(games.Live);
+                upcomingEvents.AddRange(games.Upcoming);
+                completedEvents.AddRange(games.RecentlyCompleted);
+
+                if (finishedTask == nbaTask)
+                {
+                    Console.WriteLine("nbaTask is ready");
+                }
+                else if (finishedTask == eplTask)
+                {
+                    Console.WriteLine("eplTask is ready");
+                }
+                else if (finishedTask == europaLeagueTask)
+                {
+                    Console.WriteLine("europaLeagueTask is ready");
+                }
+                else if (finishedTask == championsLeagueTask)
+                {
+                    Console.WriteLine("championsLeagueTask is ready");
+                }
+                else if (finishedTask == tennisTask)
+                {
+                    Console.WriteLine("tennisTask is ready");
+                }
+                else if (finishedTask == esportsTask)
+                {
+                    Console.WriteLine("esportsTask is ready");
+                }
+            }
+
+            // Once all tasks are finished, order them by date
+            var allEventsSorted = new SortedEventsVM
+            {
+                Live = liveEvents.OrderBy(x => x.StartTime).ToList(),
+                Upcoming = upcomingEvents.OrderBy(x => x.StartTime).ToList(),
+                RecentlyCompleted = completedEvents.OrderByDescending(x => x.StartTime).ToList()
+            };
+
+            return allEventsSorted;
         }
 
-        private async Task<SortedEventsVM> GetNbaEvents()
+        private async Task<SortedEventsVM> GetNbaEventsAsync()
         {
-            var nbaGames = await _nbaManager.GetNbaSchedule();
-
+            var getGames = _nbaManager.GetNbaSchedule();
             SortedEventsVM events = new SortedEventsVM();
-
             var now = DateTime.UtcNow;
             var time12HrsAgo = now.AddHours(-12);
             var timeIn24Hrs = now.AddHours(24);
+
+            var nbaGames = await getGames;
 
             // Loop through all games and get the recently completed, live and upcoming games
             // Pass into and create an EventVM object for if it matches above criteria
@@ -83,7 +133,7 @@ namespace com.gameon.domain.Managers
             return events;
         }
 
-        private async Task<SortedEventsVM> GetEplEvents()
+        private async Task<SortedEventsVM> GetEplEventsAsync()
         {
             var nbaGames = await _nbaManager.GetNbaSchedule();
 
@@ -128,7 +178,7 @@ namespace com.gameon.domain.Managers
         }
         
 
-        private async Task<SortedEventsVM> GetEuropaLeagueEvents()
+        private async Task<SortedEventsVM> GetEuropaLeagueEventsAsync()
         {
             var nbaGames = await _nbaManager.GetNbaSchedule();
 
@@ -173,7 +223,7 @@ namespace com.gameon.domain.Managers
         }
         
 
-        private async Task<SortedEventsVM> GetChampionsLeagueEvents()
+        private async Task<SortedEventsVM> GetChampionsLeagueEventsAsync()
         {
             var nbaGames = await _nbaManager.GetNbaSchedule();
 
@@ -217,7 +267,7 @@ namespace com.gameon.domain.Managers
             return events;
         }
 
-        private async Task<SortedEventsVM> GetTennisEvents()
+        private async Task<SortedEventsVM> GetTennisEventsAsync()
         {
             var nbaGames = await _nbaManager.GetNbaSchedule();
 
@@ -261,7 +311,7 @@ namespace com.gameon.domain.Managers
             return events;
         }
 
-        private async Task<SortedEventsVM> GetEsportsEvents()
+        private async Task<SortedEventsVM> GetEsportsEventsAsync()
         {
             var nbaGames = await _nbaManager.GetNbaSchedule();
 

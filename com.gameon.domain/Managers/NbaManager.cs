@@ -1,4 +1,5 @@
 ﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+using com.gameon.data.ThirdPartyApis.Models.Nba;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels.Nba;
 using System;
@@ -40,11 +41,13 @@ namespace com.gameon.domain.Managers
          */
         public async Task<List<GameVM>> GetNbaGamesUpcoming()
         {
-            var games = await _service.GetNbaSchedule();
+            Task<List<Game>> getSchedule = _service.GetNbaSchedule();
 
             // Filter games to find those that will happen within the next 24 hours
             var today = DateTime.UtcNow.Ticks;
             var in24Hours = today + TimeSpan.TicksPerDay;
+
+            var games = await getSchedule;
             var gamesNext24 = games.FindAll(g => g.StartTimeUTC.HasValue 
                 && g.StartTimeUTC.Value.Ticks > today
                 && g.StartTimeUTC.Value.Ticks < in24Hours);
