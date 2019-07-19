@@ -5,6 +5,9 @@ namespace com.gameon.data.ThirdPartyApis.Models.Esports
 {
     public class Match : MatchBase
     {
+        [JsonProperty("videogame")]
+        public VideoGame VideoGame { get; set; }
+
         [JsonProperty("videogame_version")]
         public object VideoGameVersion { get; set; }
 

@@ -5,6 +5,7 @@ namespace com.gameon.domain.ViewModels.Esports
 {
     public class MatchVM : MatchBaseVM
     {
+        public VideoGameVM VideoGame { get; set; }
         public TournamentBaseVM Tournament { get; set; }
         public EsportsTeamBaseVM Winner { get; set; }
         public int SeriesId { get; set; }
@@ -17,6 +18,7 @@ namespace com.gameon.domain.ViewModels.Esports
 
         public MatchVM(Match m)
         {
+            VideoGame = (m.VideoGame != null) ? new VideoGameVM(m.VideoGame) : null;
             BeginAt = m.BeginAt;
             Draw = m.Draw;
             EndAt = m.EndAt;
