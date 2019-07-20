@@ -26,9 +26,9 @@ namespace com.gameon.domain.Managers
 
         public async Task<SortedEventsVM> GetEventsAsync()
         {
-            //var now = DateTime.UtcNow;
-            var input = "\"2019-03-03T00:00:00.000Z\"";
-            var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
+            var now = DateTime.UtcNow;
+            //var input = "\"2019-01-06T00:00:00.000Z\"";
+            //var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
 
             // Get the matches for each sport
             var nbaTask = GetNbaEventsAsync(now);

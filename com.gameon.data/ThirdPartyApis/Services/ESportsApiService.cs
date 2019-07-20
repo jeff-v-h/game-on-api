@@ -17,8 +17,6 @@ namespace com.gameon.data.ThirdPartyApis.Services
         private string _host;
         private string _apiKey;
         private string _apiKeyQuery;
-        public bool IsError = false;
-        public string ErrorMessage;
 
         public EsportsApiService(IConfiguration config, HttpClient client)
         {
@@ -52,12 +50,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<List<Tournament>>(jsonString);
                 return result;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<List<EsportsTeam>> GetTeamsAsync(string game)
@@ -74,12 +67,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<List<EsportsTeam>>(jsonString);
                 return result;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<List<Series>> GetSeriesAsync(string game)
@@ -96,12 +84,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<List<Series>>(jsonString);
                 return result;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<List<Match>> GetMatchesAsync(string game = null, string timeFrame = null)
@@ -113,8 +96,9 @@ namespace com.gameon.data.ThirdPartyApis.Services
             if (timeFrame != null) mainUrl += "/" + timeFrame;
 
             string requestUrl = (timeFrame == "upcoming") ? BuildUrlWithQueryParams(mainUrl, sortBy: "begin_at")
-                : BuildUrlWithQueryParams(mainUrl, sortBy: "-begin_at", thenBy: "-end_at");
-
+                : BuildUrlWithQueryParams(mainUrl);
+                //: BuildUrlWithQueryParams(mainUrl, sortBy: "-begin_at", thenBy: "-end_at");
+            requestUrl += "&per_page=100";
             var response = await _client.GetAsync(requestUrl);
 
             if (response.IsSuccessStatusCode)
@@ -123,12 +107,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<List<Match>>(jsonString);
                 return result;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         // Separate to GetMatchesAsync since having a tournamentId means needing a game specified
@@ -147,12 +126,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<List<Match>>(jsonString);
                 return result;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<List<LiveMatch>> GetLiveMatchesAsync()
@@ -169,12 +143,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<List<LiveMatch>>(jsonString);
                 return result;
             }
-            else
-            {
-                IsError = true;
-                ErrorMessage = response.ReasonPhrase;
-                throw new Exception(response.ReasonPhrase);
-            }
+            else throw new Exception(response.ReasonPhrase);
         }
 
         // Add parameters to url

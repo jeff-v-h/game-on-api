@@ -4,6 +4,7 @@ using com.gameon.data.ThirdPartyApis.Models.Nba;
 using com.gameon.data.ThirdPartyApis.Models.Tennis;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace com.gameon.domain.ViewModels.General
 {
@@ -64,8 +65,36 @@ namespace com.gameon.domain.ViewModels.General
             EndTime = e?.EndAt;
             Name = e.Name;
             Sport = e.VideoGame.Name;
-            LeagueOrTournament = e.Tournament.Name;
+            LeagueOrTournament = GetEsportsTournamentName(e);
             Competitors = MapEsportsCompetitors(e.Opponents, e.Results);
+        }
+
+        private string GetEsportsTournamentName(Match e)
+        {
+            string name = "";
+            if (!string.IsNullOrEmpty(e.League.Name)) name += e.League.Name;
+            if (!string.IsNullOrEmpty(e.Series.Name))
+            {
+                if (!string.IsNullOrEmpty(name)) name += " ";
+                name += e.Series.Name;
+            }
+            if (!string.IsNullOrEmpty(e.Tournament.Name))
+            {
+                if (!string.IsNullOrEmpty(name)) name += " ";
+                name += e.Tournament.Name;
+            }
+
+            /** Using slug */
+            //var nameParts = e.Tournament.Slug.Split("-");
+            //string name = "";
+            //foreach (var part in nameParts)
+            //{
+            //    name += part.First().ToString().ToUpper() + part.Substring(1) + " ";
+            //}
+            //// Remove the last space
+            //name = name.Remove(name.Length - 1);
+
+            return name;
         }
 
         private List<CompetitorVM> MapEsportsCompetitors(List<Competitor> opponents, List<Result> results)
