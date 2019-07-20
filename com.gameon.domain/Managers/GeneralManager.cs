@@ -27,7 +27,7 @@ namespace com.gameon.domain.Managers
         public async Task<SortedEventsVM> GetEventsAsync()
         {
             //var now = DateTime.UtcNow;
-            var input = "\"2019-04-23T12:00:00.000Z\"";
+            var input = "\"2019-03-03T00:00:00.000Z\"";
             var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
 
             // Get the matches for each sport
@@ -38,8 +38,7 @@ namespace com.gameon.domain.Managers
             //var tennisTask = GetTennisEventsAsync(now);
             var esportsTask = GetEsportsEventsAsync(now);
 
-            //var allTasks = new List<Task<SortedEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
-            var allTasks = new List<Task<SortedEventsVM>> { nbaTask };
+            var allTasks = new List<Task<SortedEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
 
             var liveEvents = new List<EventVM>();
             var upcomingEvents = new List<EventVM>();
@@ -55,31 +54,6 @@ namespace com.gameon.domain.Managers
                 if (games.Live != null) liveEvents.AddRange(games.Live);
                 if (games.Upcoming != null) upcomingEvents.AddRange(games.Upcoming);
                 if (games.RecentlyCompleted != null) completedEvents.AddRange(games.RecentlyCompleted);
-
-                if (finishedTask == nbaTask)
-                {
-                    Console.WriteLine("nbaTask is ready");
-                }
-                else if (finishedTask == eplTask)
-                {
-                    Console.WriteLine("eplTask is ready");
-                }
-                else if (finishedTask == europaLeagueTask)
-                {
-                    Console.WriteLine("europaLeagueTask is ready");
-                }
-                else if (finishedTask == championsLeagueTask)
-                {
-                    Console.WriteLine("championsLeagueTask is ready");
-                }
-                //else if (finishedTask == tennisTask)
-                //{
-                //    Console.WriteLine("tennisTask is ready");
-                //}
-                else if (finishedTask == esportsTask)
-                {
-                    Console.WriteLine("esportsTask is ready");
-                }
             }
 
             // Once all tasks are finished, order them by date
@@ -98,7 +72,7 @@ namespace com.gameon.domain.Managers
             var getGames = _nbaService.GetNbaScheduleAsync();
             var time12HrsAgo = now.AddHours(-12);
             var timeIn24Hrs = now.AddHours(24);
-            SortedEventsVM events = new SortedEventsVM
+            var events = new SortedEventsVM
             {
                 Live = new List<EventVM>(),
                 RecentlyCompleted = new List<EventVM>(),
@@ -145,41 +119,44 @@ namespace com.gameon.domain.Managers
 
         private async Task<SortedEventsVM> GetFootballEventsAsync(string league, DateTime now)
         {
-            var getGames = _footballService.GetScheduleAsync(league);
-            SortedEventsVM events = new SortedEventsVM();
-            var time12HrsAgo = now.AddHours(-12);
+            var getMatchesTask = _footballService.GetScheduleAsync(league);
+            var time14HrsAgo = now.AddHours(-14);
             var timeIn24Hrs = now.AddHours(24);
+            var events = new SortedEventsVM
+            {
+                Live = new List<EventVM>(),
+                RecentlyCompleted = new List<EventVM>(),
+                Upcoming = new List<EventVM>()
+            };
 
-            var games = await getGames;
+            var matches = await getMatchesTask;
 
             // Loop through all games and get the recently completed, live and upcoming games
             // Pass into and create an EventVM object for if it matches above criteria
-            for (int i = 0; i < games.Count; i++)
+            for (int i = 0; i < matches.Count; i++)
             {
-                var game = games[i];
+                var match = matches[i];
 
-                if (game.Status == "Match Finished")
+                if (match.EventDate.HasValue)
                 {
-                    // Keep nested to ensure game does not go through check for live or upcoming
-                    if (game.EventDate.HasValue)
+                    var startTime = match.EventDate.Value;
+
+                    //if (game.StatusGame == "Not Started")
+                    if (now < startTime)
                     {
-                        // Only add to recently completed if it finished less than 12 hours ago (end time > the time 12 hrs ago)
-                        var value = DateTime.Compare(game.EventDate.Value, time12HrsAgo);
-                        if (value > 0) events.RecentlyCompleted.Add(new EventVM(game));
+                        var isUpcoming = startTime < timeIn24Hrs;
+                        if (isUpcoming) events.Upcoming.Add(new EventVM(match));
                     }
-                }
-                else if (game.Status == "Not Started")
-                {
-                    if (game.EventDate.HasValue)
+                    else if (match.Status == "Match Finished")
                     {
-                        var startTime = game.EventDate.Value;
-                        if (DateTime.Compare(startTime, timeIn24Hrs) < 0)
-                            events.Upcoming.Add(new EventVM(game));
+                        var isRecentlyCompleted = startTime > time14HrsAgo;
+                        if (isRecentlyCompleted) events.RecentlyCompleted.Add(new EventVM(match));
                     }
-                }
-                else
-                {
-                    events.Live.Add(new EventVM(game));
+                    //else if (now >= startTime) // only works when not using fake date
+                    else if (now >= startTime && match.Status != "Not Started" && match.Status != "Match Finished")
+                    {
+                        events.Live.Add(new EventVM(match));
+                    }
                 }
             }
 
@@ -196,9 +173,14 @@ namespace com.gameon.domain.Managers
 
             // Create variables
             string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
-            SortedEventsVM events = new SortedEventsVM();
             var time14HrsAgo = now.AddHours(-14); // use 14 instead of 12 since no endtime
             var timeIn24Hrs = now.AddHours(24);
+            var events = new SortedEventsVM
+            {
+                Live = new List<EventVM>(),
+                RecentlyCompleted = new List<EventVM>(),
+                Upcoming = new List<EventVM>()
+            };
 
             // Await the async tasks
             var matchesToday = await getMatchesTodayTask;
@@ -242,39 +224,44 @@ namespace com.gameon.domain.Managers
 
         private async Task<SortedEventsVM> GetEsportsEventsAsync(DateTime now)
         {
-            var getMatches = _esportsService.GetMatchesAsync();
-            SortedEventsVM events = new SortedEventsVM();
+            var getMatchesTask = _esportsService.GetMatchesAsync();
             var time12HrsAgo = now.AddHours(-12);
             var timeIn24Hrs = now.AddHours(24);
+            var events = new SortedEventsVM
+            {
+                Live = new List<EventVM>(),
+                RecentlyCompleted = new List<EventVM>(),
+                Upcoming = new List<EventVM>()
+            };
 
-            var matches = await getMatches;
+            var matches = await getMatchesTask;
 
             for (int i = 0; i < matches.Count; i++)
             {
                 var match = matches[i];
 
-                if (match.Status == "finished")
+                if (match.BeginAt.HasValue)
                 {
-                    // Keep nested to ensure game does not go through check for live or upcoming
-                    if (match.EndAt.HasValue)
+                    var startTime = match.BeginAt.Value;
+
+                    //if (game.StatusGame == "not_started")
+                    if (now < startTime)
                     {
-                        // Only add to recently completed if it finished less than 12 hours ago (end time > the time 12 hrs ago)
-                        var value = DateTime.Compare(match.EndAt.Value, time12HrsAgo);
-                        if (value > 0) events.RecentlyCompleted.Add(new EventVM(match));
+                        var isUpcoming = startTime < timeIn24Hrs;
+                        if (isUpcoming) events.Upcoming.Add(new EventVM(match));
                     }
-                }
-                else if (match.Status == "not_started")
-                {
-                    if (match.BeginAt.HasValue)
+                    //else if (match.Status == "finished")
+                    else if (match.EndAt.HasValue)
                     {
-                        var startTime = match.BeginAt.Value;
-                        if (DateTime.Compare(startTime, timeIn24Hrs) < 0)
-                            events.Upcoming.Add(new EventVM(match));
+                        var endTime = match.EndAt.Value;
+                        var isRecentlyCompleted = endTime > time12HrsAgo;
+                        if (isRecentlyCompleted) events.RecentlyCompleted.Add(new EventVM(match));
                     }
-                }
-                else
-                {
-                    events.Live.Add(new EventVM(match));
+                    //else if (now >= startTime) // only works when not using fake date
+                    else if (now >= startTime && match.Status != "not_started" && match.Status != "finished")
+                    {
+                        events.Live.Add(new EventVM(match));
+                    }
                 }
             }
 
