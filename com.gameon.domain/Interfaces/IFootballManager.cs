@@ -6,9 +6,9 @@ namespace com.gameon.domain.Interfaces
 {
     public interface IFootballManager
     {
-        Task<List<FixtureVM>> GetSchedule(string league);
-        Task<List<FixtureVM>> GetLiveGames(string league);
-        Task<List<FixtureVM>> GetGamesUpcoming(string league);
-        Task<List<TeamVM>> GetTeams(string league);
+        Task<List<FixtureVM>> GetScheduleAsync(string league);
+        Task<List<FixtureVM>> GetLiveGamesAsync(string league);
+        Task<List<FixtureVM>> GetGamesUpcomingAsync(string league);
+        Task<List<TeamVM>> GetTeamsAsync(string league);
     }
 }

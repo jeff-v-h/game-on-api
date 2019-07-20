@@ -7,7 +7,7 @@ namespace com.gameon.domain.ViewModels.Esports
     {
         public List<EsportsPlayerVM> Players { get; set; }
 
-        public EsportsTeamVM(Team t)
+        public EsportsTeamVM(EsportsTeam t)
         {
             Slug = t.Slug;
             Name = t.Name;

@@ -15,9 +15,9 @@ namespace com.gameon.domain.Managers
             _service = service;
         }
 
-        public async Task<List<EsportsTournamentVM>> GetTournaments(string game = null, string timeFrame = null)
+        public async Task<List<EsportsTournamentVM>> GetTournamentsAsync(string game = null, string timeFrame = null)
         {
-            List<Tournament> tournaments = await _service.GetTournaments(game, timeFrame);
+            List<Tournament> tournaments = await _service.GetTournamentsAsync(game, timeFrame);
 
             var tournamentVMs = new List<EsportsTournamentVM>();
             foreach (var t in tournaments) tournamentVMs.Add(new EsportsTournamentVM(t));
@@ -25,9 +25,9 @@ namespace com.gameon.domain.Managers
             return tournamentVMs;
         }
 
-        public async Task<List<EsportsTeamVM>> GetTeams(string game)
+        public async Task<List<EsportsTeamVM>> GetTeamsAsync(string game)
         {
-            var teams = await _service.GetTeams(game);
+            var teams = await _service.GetTeamsAsync(game);
 
             var teamVMs = new List<EsportsTeamVM>();
             foreach (var t in teams) teamVMs.Add(new EsportsTeamVM(t));
@@ -35,9 +35,9 @@ namespace com.gameon.domain.Managers
             return teamVMs;
         }
 
-        public async Task<List<SeriesVM>> GetSeries(string game)
+        public async Task<List<SeriesVM>> GetSeriesAsync(string game)
         {
-            var series = await _service.GetSeries(game);
+            var series = await _service.GetSeriesAsync(game);
 
             var seriesVM = new List<SeriesVM>();
             // Due to api sort by descending starts with null dates, must not return the beginning few objects
@@ -49,14 +49,14 @@ namespace com.gameon.domain.Managers
         }
 
         // Get matches for specified game or all, game and tournament and either with a specified timeframe (eg. "upcoming")
-        public async Task<List<MatchVM>> GetMatches(string game = null, int? tournamentId = null, string timeFrame = null)
+        public async Task<List<MatchVM>> GetMatchesAsync(string game = null, int? tournamentId = null, string timeFrame = null)
         {
             // Determine whether to get most recent matches for the game or for a specific tournament
             List<Match> matches;
 
-            if (game == null) matches = await _service.GetMatches(timeFrame: timeFrame);
-            else if (tournamentId.HasValue) matches = await _service.GetTournamentMatches(game, tournamentId.Value, timeFrame);
-            else matches = await _service.GetMatches(game, timeFrame: timeFrame);
+            if (game == null) matches = await _service.GetMatchesAsync(timeFrame: timeFrame);
+            else if (tournamentId.HasValue) matches = await _service.GetTournamentMatchesAsync(game, tournamentId.Value, timeFrame);
+            else matches = await _service.GetMatchesAsync(game, timeFrame: timeFrame);
 
             // Convert to view model
             var matchVM = new List<MatchVM>();

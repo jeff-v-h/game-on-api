@@ -26,7 +26,7 @@ namespace com.gameon.domain.ViewModels.Esports
             BeginAt = t.BeginAt;
         }
 
-        private List<EsportsTeamBaseVM> MapTeams(List<TeamBase> teams)
+        private List<EsportsTeamBaseVM> MapTeams(List<EsportsTeamBase> teams)
         {
             if (teams == null) return null;
 

@@ -14,7 +14,7 @@ namespace com.gameon.domain.ViewModels.Football
         public string VenueCity { get; set; }
         public int? VenueCapacity { get; set; }
 
-        public TeamVM(Team t)
+        public TeamVM(FootballTeam t)
         {
             Name = t.Name;
             Code = t.Code;

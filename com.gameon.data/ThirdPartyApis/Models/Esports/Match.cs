@@ -15,7 +15,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Esports
         public TournamentBase Tournament { get; set; }
 
         [JsonProperty("winner")]
-        public TeamBase Winner { get; set; }
+        public EsportsTeamBase Winner { get; set; }
 
         [JsonProperty("serie_id")]
         public int SeriesId { get; set; }

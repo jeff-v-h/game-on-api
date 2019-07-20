@@ -1,6 +1,6 @@
 ﻿namespace com.gameon.data.ThirdPartyApis.Models.Nba
 {
-    public class TeamBase
+    public class NbaTeamBase
     {
         public string FullName { get; set; }
         public string TeamId { get; set; }

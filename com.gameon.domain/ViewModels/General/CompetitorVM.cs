@@ -1,7 +1,7 @@
-﻿using com.gameon.domain.ViewModels.Esports;
-using com.gameon.domain.ViewModels.Football;
-using com.gameon.domain.ViewModels.Nba;
-using com.gameon.domain.ViewModels.Tennis;
+﻿using com.gameon.data.ThirdPartyApis.Models.Nba;
+using com.gameon.data.ThirdPartyApis.Models.Football;
+using com.gameon.data.ThirdPartyApis.Models.Tennis;
+using com.gameon.data.ThirdPartyApis.Models.Esports;
 
 namespace com.gameon.domain.ViewModels.General
 {
@@ -15,7 +15,7 @@ namespace com.gameon.domain.ViewModels.General
         public string Rank;
 
         // NBA
-        public CompetitorVM(CompetingTeamVM c)
+        public CompetitorVM(CompetingTeam c)
         {
             Name = c.FullName;
             ShortName = c.NickName;
@@ -25,7 +25,7 @@ namespace com.gameon.domain.ViewModels.General
         }
 
         // Football
-        public CompetitorVM(TeamBaseVM t, int? goals)
+        public CompetitorVM(FootballTeamBase t, int? goals)
         {
             Name = t.TeamName;
             Thumbnail = t.Logo;
@@ -33,7 +33,7 @@ namespace com.gameon.domain.ViewModels.General
         }
         
         // Tennis
-        public CompetitorVM(TennisCompetitorVM c)
+        public CompetitorVM(TennisCompetitor c)
         {
             Name = c.Name;
             Abbreviation = c.Abbreviation;
@@ -41,7 +41,7 @@ namespace com.gameon.domain.ViewModels.General
         }
 
         // Esports
-        public CompetitorVM(EsportsTeamBaseVM c, int score)
+        public CompetitorVM(EsportsTeamBase c, int score)
         {
             Name = c.Name;
             Abbreviation = c.Acronym;

@@ -33,7 +33,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
         }
 
-        public async Task<List<Tournament>> GetTournaments(string game = null, string timeFrame = null)
+        public async Task<List<Tournament>> GetTournamentsAsync(string game = null, string timeFrame = null)
         {
             // Create the main url pathway
             var mainUrl = _host;
@@ -60,7 +60,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
-        public async Task<List<Team>> GetTeams(string game)
+        public async Task<List<EsportsTeam>> GetTeamsAsync(string game)
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Teams"];
@@ -71,7 +71,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             if (response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<List<Team>>(jsonString);
+                var result = JsonConvert.DeserializeObject<List<EsportsTeam>>(jsonString);
                 return result;
             }
             else
@@ -82,7 +82,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
-        public async Task<List<Series>> GetSeries(string game)
+        public async Task<List<Series>> GetSeriesAsync(string game)
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Series"];
@@ -104,7 +104,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
-        public async Task<List<Match>> GetMatches(string game = null, string timeFrame = null)
+        public async Task<List<Match>> GetMatchesAsync(string game = null, string timeFrame = null)
         {
             // Create the main url pathway
             var mainUrl = _host;
@@ -131,8 +131,8 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
-        // Separate to GetMatches since having a tournamentId means needing a game specified
-        public async Task<List<Match>> GetTournamentMatches(string game, int tournamentId, string timeFrame = null)
+        // Separate to GetMatchesAsync since having a tournamentId means needing a game specified
+        public async Task<List<Match>> GetTournamentMatchesAsync(string game, int tournamentId, string timeFrame = null)
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Matches"];
@@ -155,7 +155,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             }
         }
 
-        public async Task<List<LiveMatch>> GetLiveMatches()
+        public async Task<List<LiveMatch>> GetLiveMatchesAsync()
         {
             // Create the main url pathway
             var mainUrl = _host + "/lives";

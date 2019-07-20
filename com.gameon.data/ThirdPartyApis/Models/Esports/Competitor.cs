@@ -8,6 +8,6 @@ namespace com.gameon.data.ThirdPartyApis.Models.Esports
         public string Type { get; set; }
 
         [JsonProperty("opponent")]
-        public TeamBase Opponent { get; set; }
+        public EsportsTeamBase Opponent { get; set; }
     }
 }

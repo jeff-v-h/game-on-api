@@ -7,9 +7,9 @@ namespace com.gameon.data.ThirdPartyApis.Interfaces
 {
     public interface INbaApiService
     {
-        Task<List<Game>> GetNbaSchedule();
-        Task<List<Game>> GetNbaGames(DateTime? datetime = null);
-        Task<List<Team>> GetNbaTeams();
-        Task<List<Game>> GetNbaLiveGames();
+        Task<List<NbaGame>> GetNbaScheduleAsync();
+        Task<List<NbaGame>> GetNbaGames(DateTime? datetime = null);
+        Task<List<NbaTeam>> GetNbaTeamsAsync();
+        Task<List<NbaGame>> GetNbaLiveGamesAsync();
     }
 }

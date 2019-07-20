@@ -6,13 +6,13 @@ namespace com.gameon.domain.Interfaces
 {
     public interface ITennisManager
     {
-        Task<List<TournamentVM>> GetTournaments();
-        Task<InfoApiVM> GetTournamentInfo(string id);
-        Task<List<SportEventVM>> GetTournamentSchedule(string id);
-        Task<List<SportEventVM>> GetDaySchedule(string dateString = null);
-        Task<List<SportEventVM>> GetMatches();
-        Task<List<SportEventVM>> GetMatchesUpcoming();
-        Task<List<SportEventVM>> GetMatchesLive();
-        Task<List<AssociationRankingsVM>> GetPlayerRankings();
+        Task<List<TournamentVM>> GetTournamentsAsyncAsync();
+        Task<InfoApiVM> GetTournamentInfoAsync(string id);
+        Task<List<SportEventVM>> GetTournamentScheduleAsync(string id);
+        Task<List<SportEventVM>> GetDayScheduleAsync(string dateString = null);
+        Task<List<SportEventVM>> GetMatchesAsyncAsync();
+        Task<List<SportEventVM>> GetMatchesAsyncUpcomingAsync();
+        Task<List<SportEventVM>> GetMatchesAsyncLiveAsync();
+        Task<List<AssociationRankingsVM>> GetPlayerRankingsAsync();
     }
 }

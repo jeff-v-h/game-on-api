@@ -16,9 +16,9 @@ namespace com.gameon.domain.Managers
             _service = service;
         }
 
-        public async Task<List<GameVM>> GetNbaSchedule()
+        public async Task<List<GameVM>> GetNbaScheduleAsync()
         {
-            var games = await _service.GetNbaSchedule();
+            var games = await _service.GetNbaScheduleAsync();
 
             var gameVMs = new List<GameVM>();
             foreach (var f in games) gameVMs.Add(new GameVM(f));
@@ -26,9 +26,9 @@ namespace com.gameon.domain.Managers
             return gameVMs;
         }
 
-        public async Task<List<GameVM>> GetNbaLiveGames()
+        public async Task<List<GameVM>> GetNbaLiveGamesAsync()
         {
-            var games = await _service.GetNbaLiveGames();
+            var games = await _service.GetNbaLiveGamesAsync();
 
             var gameVMs = new List<GameVM>();
             foreach (var f in games) gameVMs.Add(new GameVM(f));
@@ -39,9 +39,9 @@ namespace com.gameon.domain.Managers
         /**
          * Get games within next 24 hours. Does not return games that have started. (Another function does that)
          */
-        public async Task<List<GameVM>> GetNbaGamesUpcoming()
+        public async Task<List<GameVM>> GetNbaGamesUpcomingAsync()
         {
-            Task<List<Game>> getSchedule = _service.GetNbaSchedule();
+            Task<List<NbaGame>> getSchedule = _service.GetNbaScheduleAsync();
 
             // Filter games to find those that will happen within the next 24 hours
             var today = DateTime.UtcNow.Ticks;
@@ -58,9 +58,9 @@ namespace com.gameon.domain.Managers
             return gameVMs;
         }
 
-        public async Task<List<NbaTeamVM>> GetNbaTeams()
+        public async Task<List<NbaTeamVM>> GetNbaTeamsAsync()
         {
-            var teams = await _service.GetNbaTeams();
+            var teams = await _service.GetNbaTeamsAsync();
 
             var teamVMs = new List<NbaTeamVM>();
             foreach (var t in teams) teamVMs.Add(new NbaTeamVM(t));

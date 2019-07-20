@@ -24,7 +24,7 @@ namespace com.gameon.domain.ViewModels.Nba
         public CompetingTeamVM VTeam { get; set; }
         public CompetingTeamVM HTeam { get; set; }
 
-        public GameVM(Game g)
+        public GameVM(NbaGame g)
         {
             SeasonYear = g.SeasonYear;
             League = g.League;

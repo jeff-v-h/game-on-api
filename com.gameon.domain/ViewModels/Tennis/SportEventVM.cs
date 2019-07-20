@@ -30,7 +30,7 @@ namespace com.gameon.domain.ViewModels.Tennis
             Estimated = s.Estimated;
         }
 
-        private List<TennisCompetitorVM> MapCompetitors(List<Competitor> competitors)
+        private List<TennisCompetitorVM> MapCompetitors(List<TennisCompetitor> competitors)
         {
             if (competitors == null) return null;
 

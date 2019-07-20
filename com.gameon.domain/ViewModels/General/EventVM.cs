@@ -1,7 +1,7 @@
-﻿using com.gameon.domain.ViewModels.Esports;
-using com.gameon.domain.ViewModels.Football;
-using com.gameon.domain.ViewModels.Nba;
-using com.gameon.domain.ViewModels.Tennis;
+﻿using com.gameon.data.ThirdPartyApis.Models.Esports;
+using com.gameon.data.ThirdPartyApis.Models.Football;
+using com.gameon.data.ThirdPartyApis.Models.Nba;
+using com.gameon.data.ThirdPartyApis.Models.Tennis;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +18,7 @@ namespace com.gameon.domain.ViewModels.General
         public List<CompetitorVM> Competitors;
 
         // NBA
-        public EventVM(GameVM g)
+        public EventVM(NbaGame g)
         {
             Id = "basketball-nba-" + g.GameId;
             StartTime = g.StartTimeUTC ?? null;
@@ -30,7 +30,7 @@ namespace com.gameon.domain.ViewModels.General
         }
 
         // Football
-        public EventVM(FixtureVM g)
+        public EventVM(Fixture g)
         {
             Id = "football-" + g.LeagueId + "-" + g.FixtureId;
             StartTime = g.EventDate ?? null;
@@ -45,7 +45,7 @@ namespace com.gameon.domain.ViewModels.General
         }
 
         // Tennis
-        public EventVM(SportEventVM e)
+        public EventVM(SportEvent e)
         {
             Id = "tennis-" + e.Id;
             StartTime = e.Scheduled ?? null;
@@ -57,7 +57,7 @@ namespace com.gameon.domain.ViewModels.General
         }
 
         // Esports
-        public EventVM(MatchVM e)
+        public EventVM(Match e)
         {
             Id = "esports-" + e.VideoGame.Id + "-" + e.Id;
             StartTime = e?.BeginAt;
@@ -68,7 +68,7 @@ namespace com.gameon.domain.ViewModels.General
             Competitors = MapEsportsCompetitors(e.Opponents, e.Results);
         }
 
-        private List<CompetitorVM> MapEsportsCompetitors(List<EsportsCompetitorVM> opponents, List<ResultVM> results)
+        private List<CompetitorVM> MapEsportsCompetitors(List<Competitor> opponents, List<Result> results)
         {
             var teams = new List<CompetitorVM>();
             foreach (var team in opponents)
@@ -79,7 +79,7 @@ namespace com.gameon.domain.ViewModels.General
             return teams;
         }
 
-        private List<CompetitorVM> MapTennisCompetitors(List<TennisCompetitorVM> competitors)
+        private List<CompetitorVM> MapTennisCompetitors(List<TennisCompetitor> competitors)
         {
             var players = new List<CompetitorVM>();
             foreach (var player in competitors)
@@ -89,7 +89,7 @@ namespace com.gameon.domain.ViewModels.General
             return players;
         }
 
-        private string GetTennisEventName(List<TennisCompetitorVM> competitors)
+        private string GetTennisEventName(List<TennisCompetitor> competitors)
         {
             if (competitors?.Count > 0)
             {
@@ -107,7 +107,7 @@ namespace com.gameon.domain.ViewModels.General
             }
         }
 
-        private List<CompetitorVM> MapFootballCompetitors(TeamBaseVM homeTeam, TeamBaseVM awayTeam, int? goalsHome, int? goalsAway)
+        private List<CompetitorVM> MapFootballCompetitors(FootballTeamBase homeTeam, FootballTeamBase awayTeam, int? goalsHome, int? goalsAway)
         {
             return new List<CompetitorVM>
             {
@@ -116,7 +116,7 @@ namespace com.gameon.domain.ViewModels.General
             };
         }
 
-        private List<CompetitorVM> MapNbaCompetitors(CompetingTeamVM hTeam, CompetingTeamVM vTeam)
+        private List<CompetitorVM> MapNbaCompetitors(CompetingTeam hTeam, CompetingTeam vTeam)
         {
             return new List<CompetitorVM>
             {

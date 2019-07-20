@@ -8,7 +8,7 @@ namespace com.gameon.domain.ViewModels.Football
         public string TeamName { get; set; }
         public string Logo { get; set; }
 
-        public TeamBaseVM(TeamBase t)
+        public TeamBaseVM(FootballTeamBase t)
         {
             TeamId = t.TeamId;
             TeamName = t.TeamName;

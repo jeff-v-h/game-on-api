@@ -32,7 +32,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("X-RapidAPI-Host", apiHostHeader);
         }
 
-        public async Task<List<Game>> GetNbaSchedule()
+        public async Task<List<NbaGame>> GetNbaScheduleAsync()
         {
             var path = _settings["Schedule"];
             var response = await _client.GetAsync(path);
@@ -43,11 +43,11 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<NbaApi>(jsonString);
                 return result.Api.Games;
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound) return new List<Game>();
+            else if (response.StatusCode == HttpStatusCode.NotFound) return new List<NbaGame>();
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<List<Game>> GetNbaLiveGames()
+        public async Task<List<NbaGame>> GetNbaLiveGamesAsync()
         {
             string path = _settings["Live"];
             var response = await _client.GetAsync(path);
@@ -58,11 +58,11 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<NbaApi>(jsonString);
                 return result.Api.Games;
             } 
-            else if (response.StatusCode == HttpStatusCode.NotFound) return new List<Game>();
+            else if (response.StatusCode == HttpStatusCode.NotFound) return new List<NbaGame>();
             else throw new Exception(response.ReasonPhrase); 
         }
 
-        public async Task<List<Game>> GetNbaGames(DateTime? datetime = null)
+        public async Task<List<NbaGame>> GetNbaGames(DateTime? datetime = null)
         {
             string path;
             if (datetime == null) path = _settings["Schedule"];
@@ -83,11 +83,11 @@ namespace com.gameon.data.ThirdPartyApis.Services
                 var result = JsonConvert.DeserializeObject<NbaApi>(jsonString);
                 return result.Api.Games;
             } 
-            else if (response.StatusCode == HttpStatusCode.NotFound) return new List<Game>();
+            else if (response.StatusCode == HttpStatusCode.NotFound) return new List<NbaGame>();
             else throw new Exception(response.ReasonPhrase); 
         }
 
-        public async Task<List<Team>> GetNbaTeams()
+        public async Task<List<NbaTeam>> GetNbaTeamsAsync()
         {
             var path = _settings["Teams"];
             var response = await _client.GetAsync(path);

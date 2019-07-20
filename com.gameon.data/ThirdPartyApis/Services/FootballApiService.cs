@@ -31,7 +31,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("X-RapidAPI-Host", apiHostHeader);
         }
 
-        public async Task<List<Fixture>> GetSchedule(string league)
+        public async Task<List<Fixture>> GetScheduleAsync(string league)
         {
             var path = _settings[GetLeagueNameString(league) + "Schedule"];
             var response = await _client.GetAsync(path);
@@ -45,7 +45,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<List<Fixture>> GetLiveGames(string league)
+        public async Task<List<Fixture>> GetLiveGamesAsync(string league)
         {
             var path = _settings[GetLeagueNameString(league) + "Live"];
             var response = await _client.GetAsync(path);
@@ -59,7 +59,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<List<Team>> GetTeams(string league)
+        public async Task<List<FootballTeam>> GetTeamsAsync(string league)
         {
             var path = _settings[GetLeagueNameString(league) + "Teams"];
             var response = await _client.GetAsync(path);

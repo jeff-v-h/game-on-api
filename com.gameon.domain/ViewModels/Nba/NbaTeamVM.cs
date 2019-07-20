@@ -9,7 +9,7 @@ namespace com.gameon.domain.ViewModels.Nba
         public string AllStar { get; set; }
         public LeaguesVM Leagues { get; set; }
 
-        public NbaTeamVM(Team t)
+        public NbaTeamVM(NbaTeam t)
         {
             FullName = t.FullName;
             TeamId = t.TeamId;

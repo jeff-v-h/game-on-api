@@ -1,5 +1,4 @@
 ﻿using com.gameon.data.ThirdPartyApis.Interfaces;
-using com.gameon.data.ThirdPartyApis.Models.Football;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels.Football;
 using System;
@@ -16,9 +15,9 @@ namespace com.gameon.domain.Managers
             _service = service;
         }
 
-        public async Task<List<FixtureVM>> GetSchedule(string league)
+        public async Task<List<FixtureVM>> GetScheduleAsync(string league)
         {
-            var fixtures = await _service.GetSchedule(league);
+            var fixtures = await _service.GetScheduleAsync(league);
 
             var fixtureVMs = new List<FixtureVM>();
             foreach (var f in fixtures) fixtureVMs.Add(new FixtureVM(f));
@@ -26,9 +25,9 @@ namespace com.gameon.domain.Managers
             return fixtureVMs;
         }
 
-        public async Task<List<FixtureVM>> GetLiveGames(string league)
+        public async Task<List<FixtureVM>> GetLiveGamesAsync(string league)
         {
-            var fixtures = await _service.GetLiveGames(league);
+            var fixtures = await _service.GetLiveGamesAsync(league);
 
             var fixtureVMs = new List<FixtureVM>();
             foreach (var f in fixtures) fixtureVMs.Add(new FixtureVM(f));
@@ -37,11 +36,11 @@ namespace com.gameon.domain.Managers
         }
 
         /**
-         * Get games within next 24 hours. Does not return games that have started. (GetLiveGames() does that)
+         * Get games within next 24 hours. Does not return games that have started. (GetLiveGamesAsync() does that)
          */
-        public async Task<List<FixtureVM>> GetGamesUpcoming(string league)
+        public async Task<List<FixtureVM>> GetGamesUpcomingAsync(string league)
         {
-            var fixtures = await _service.GetSchedule(league);
+            var fixtures = await _service.GetScheduleAsync(league);
 
             // Filter games to find those that will happen within the next 24 hours
             var now = DateTime.UtcNow.Ticks;
@@ -56,9 +55,9 @@ namespace com.gameon.domain.Managers
             return fixtureVMs;
         }
 
-        public async Task<List<TeamVM>> GetTeams(string league)
+        public async Task<List<TeamVM>> GetTeamsAsync(string league)
         {
-            var teams = await _service.GetTeams(league);
+            var teams = await _service.GetTeamsAsync(league);
 
             var teamVMs = new List<TeamVM>();
             foreach (var t in teams) teamVMs.Add(new TeamVM(t));

@@ -21,9 +21,9 @@ namespace GameOnApi.Controllers
         // GET api/basketball/nba/schedule
         [HttpGet("nba/schedule")]
         [ProducesResponseType(typeof(List<GameVM>), 200)]
-        public async Task<IActionResult> GetNbaSchedule()
+        public async Task<IActionResult> GetNbaScheduleAsync()
         {
-            var games = await _manager.GetNbaSchedule();
+            var games = await _manager.GetNbaScheduleAsync();
 
             return Ok(games);
         }
@@ -33,7 +33,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<GameVM>), 200)]
         public async Task<IActionResult> GetNbaGames()
         {
-            List<GameVM> games = await _manager.GetNbaLiveGames();
+            List<GameVM> games = await _manager.GetNbaLiveGamesAsync();
 
             return Ok(games);
         }
@@ -41,9 +41,9 @@ namespace GameOnApi.Controllers
         // GET api/basketball/nba/games/upcoming
         [HttpGet("nba/games/upcoming")]
         [ProducesResponseType(typeof(List<GameVM>), 200)]
-        public async Task<IActionResult> GetNbaGamesUpcoming()
+        public async Task<IActionResult> GetNbaGamesUpcomingAsync()
         {
-            List<GameVM> games = await _manager.GetNbaGamesUpcoming();
+            List<GameVM> games = await _manager.GetNbaGamesUpcomingAsync();
 
             return Ok(games);
         }
@@ -51,9 +51,9 @@ namespace GameOnApi.Controllers
         // GET api/basketball/nba/teams
         [HttpGet("nba/teams")]
         [ProducesResponseType(typeof(List<NbaTeamVM>), 200)]
-        public async Task<IActionResult> GetNbaTeams()
+        public async Task<IActionResult> GetNbaTeamsAsync()
         {
-            var teams = await _manager.GetNbaTeams();
+            var teams = await _manager.GetNbaTeamsAsync();
 
             return Ok(teams);
         }

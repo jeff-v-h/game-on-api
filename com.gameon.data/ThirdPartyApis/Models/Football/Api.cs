@@ -12,6 +12,6 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
         public List<Fixture> Fixtures;
 
         [JsonProperty("teams")]
-        public List<Team> Teams;
+        public List<FootballTeam> Teams;
     }
 }

@@ -6,9 +6,9 @@ namespace com.gameon.domain.Interfaces
 {
     public interface INbaManager
     {
-        Task<List<GameVM>> GetNbaSchedule();
-        Task<List<NbaTeamVM>> GetNbaTeams();
-        Task<List<GameVM>> GetNbaGamesUpcoming();
-        Task<List<GameVM>> GetNbaLiveGames();
+        Task<List<GameVM>> GetNbaScheduleAsync();
+        Task<List<NbaTeamVM>> GetNbaTeamsAsync();
+        Task<List<GameVM>> GetNbaGamesUpcomingAsync();
+        Task<List<GameVM>> GetNbaLiveGamesAsync();
     }
 }

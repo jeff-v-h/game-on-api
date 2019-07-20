@@ -43,10 +43,10 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
         public object Referee { get; set; }
 
         [JsonProperty("homeTeam")]
-        public TeamBase HomeTeam { get; set; }
+        public FootballTeamBase HomeTeam { get; set; }
 
         [JsonProperty("awayTeam")]
-        public TeamBase AwayTeam { get; set; }
+        public FootballTeamBase AwayTeam { get; set; }
 
         [JsonProperty("goalsHomeTeam")]
         public int? GoalsHomeTeam { get; set; }

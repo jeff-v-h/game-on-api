@@ -23,7 +23,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
         public async Task<IActionResult> GetEsportsTournaments([FromQuery] string timeFrame)
         {
-            List<EsportsTournamentVM> tournaments = await _manager.GetTournaments(timeFrame: timeFrame);
+            List<EsportsTournamentVM> tournaments = await _manager.GetTournamentsAsync(timeFrame: timeFrame);
 
             return Ok(tournaments);
         }
@@ -34,7 +34,7 @@ namespace GameOnApi.Controllers
         public async Task<IActionResult> GetEsportsMatches([FromQuery] string timeFrame)
         {
             // Get most recent matches from any tournament or for specific tournament
-            List<MatchVM> matches = await _manager.GetMatches(timeFrame: timeFrame);
+            List<MatchVM> matches = await _manager.GetMatchesAsync(timeFrame: timeFrame);
 
             return Ok(matches);
         }
@@ -44,7 +44,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
         public async Task<IActionResult> GetDotaTournaments()
         {
-            var tournaments = await _manager.GetTournaments("Dota");
+            var tournaments = await _manager.GetTournamentsAsync("Dota");
 
             return Ok(tournaments);
         }
@@ -54,7 +54,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<EsportsTeamVM>), 200)]
         public async Task<IActionResult> GetDotaTeams()
         {
-            var teams = await _manager.GetTeams("Dota");
+            var teams = await _manager.GetTeamsAsync("Dota");
 
             return Ok(teams);
         }
@@ -64,7 +64,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
         public async Task<IActionResult> GetDotaSeries()
         {
-            var series = await _manager.GetSeries("Dota");
+            var series = await _manager.GetSeriesAsync("Dota");
 
             return Ok(series);
         }
@@ -76,8 +76,8 @@ namespace GameOnApi.Controllers
         {
             // Get most recent matches from any tournament or for specific tournament
             List<MatchVM> matches;
-            if (tournamentId.HasValue) matches = await _manager.GetMatches("Dota", tournamentId);
-            else matches = await _manager.GetMatches("Dota");
+            if (tournamentId.HasValue) matches = await _manager.GetMatchesAsync("Dota", tournamentId);
+            else matches = await _manager.GetMatchesAsync("Dota");
 
             return Ok(matches);
         }
@@ -87,7 +87,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
         public async Task<IActionResult> GetLolTournaments()
         {
-            var tournaments = await _manager.GetTournaments("LeagueOfLegends");
+            var tournaments = await _manager.GetTournamentsAsync("LeagueOfLegends");
 
             return Ok(tournaments);
         }
@@ -97,7 +97,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<EsportsTeamVM>), 200)]
         public async Task<IActionResult> GetLolTeams()
         {
-            var teams = await _manager.GetTeams("LeagueOfLegends");
+            var teams = await _manager.GetTeamsAsync("LeagueOfLegends");
 
             return Ok(teams);
         }
@@ -107,7 +107,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
         public async Task<IActionResult> GetLolSeries()
         {
-            var series = await _manager.GetSeries("LeagueOfLegends");
+            var series = await _manager.GetSeriesAsync("LeagueOfLegends");
 
             return Ok(series);
         }
@@ -119,8 +119,8 @@ namespace GameOnApi.Controllers
         {
             // Get most recent matches from any tournament or for specific tournament
             List<MatchVM> matches;
-            if (tournamentId.HasValue) matches = await _manager.GetMatches("LeagueOfLegends", tournamentId);
-            else matches = await _manager.GetMatches("LeagueOfLegends");
+            if (tournamentId.HasValue) matches = await _manager.GetMatchesAsync("LeagueOfLegends", tournamentId);
+            else matches = await _manager.GetMatchesAsync("LeagueOfLegends");
 
             return Ok(matches);
         }
@@ -130,7 +130,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
         public async Task<IActionResult> GetOverwatchTournaments()
         {
-            var tournaments = await _manager.GetTournaments("Overwatch");
+            var tournaments = await _manager.GetTournamentsAsync("Overwatch");
 
             return Ok(tournaments);
         }
@@ -140,7 +140,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<EsportsTeamVM>), 200)]
         public async Task<IActionResult> GetOverwatchTeams()
         {
-            var teams = await _manager.GetTeams("Overwatch");
+            var teams = await _manager.GetTeamsAsync("Overwatch");
 
             return Ok(teams);
         }
@@ -150,7 +150,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
         public async Task<IActionResult> GetOverwatchSeries()
         {
-            var series = await _manager.GetSeries("Overwatch");
+            var series = await _manager.GetSeriesAsync("Overwatch");
 
             return Ok(series);
         }
@@ -162,8 +162,8 @@ namespace GameOnApi.Controllers
         {
             // Get most recent matches from any tournament or for specific tournament
             List<MatchVM> matches;
-            if (tournamentId.HasValue) matches = await _manager.GetMatches("Overwatch", tournamentId);
-            else matches = await _manager.GetMatches("Overwatch");
+            if (tournamentId.HasValue) matches = await _manager.GetMatchesAsync("Overwatch", tournamentId);
+            else matches = await _manager.GetMatchesAsync("Overwatch");
 
             return Ok(matches);
         }
@@ -173,7 +173,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
         public async Task<IActionResult> GetCsgoTournaments()
         {
-            var tournaments = await _manager.GetTournaments("CounterStrikeGlobalOffensive");
+            var tournaments = await _manager.GetTournamentsAsync("CounterStrikeGlobalOffensive");
 
             return Ok(tournaments);
         }
@@ -183,7 +183,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<EsportsTeamVM>), 200)]
         public async Task<IActionResult> GetCsgoTeams()
         {
-            var teams = await _manager.GetTeams("CounterStrikeGlobalOffensive");
+            var teams = await _manager.GetTeamsAsync("CounterStrikeGlobalOffensive");
 
             return Ok(teams);
         }
@@ -193,7 +193,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
         public async Task<IActionResult> GetCsgoSeries()
         {
-            var series = await _manager.GetSeries("CounterStrikeGlobalOffensive");
+            var series = await _manager.GetSeriesAsync("CounterStrikeGlobalOffensive");
 
             return Ok(series);
         }
@@ -205,8 +205,8 @@ namespace GameOnApi.Controllers
         {
             // Get most recent matches from any tournament or for specific tournament
             List<MatchVM> matches;
-            if (tournamentId.HasValue) matches = await _manager.GetMatches("CounterStrikeGlobalOffensive", tournamentId);
-            else matches = await _manager.GetMatches("CounterStrikeGlobalOffensive");
+            if (tournamentId.HasValue) matches = await _manager.GetMatchesAsync("CounterStrikeGlobalOffensive", tournamentId);
+            else matches = await _manager.GetMatchesAsync("CounterStrikeGlobalOffensive");
 
             return Ok(matches);
         }

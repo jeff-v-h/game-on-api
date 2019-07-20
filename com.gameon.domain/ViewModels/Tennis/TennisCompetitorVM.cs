@@ -9,7 +9,7 @@ namespace com.gameon.domain.ViewModels.Tennis
         public string Qualifier { get; set; }
         public string QualificationPath { get; set; }
 
-        public TennisCompetitorVM(Competitor c)
+        public TennisCompetitorVM(TennisCompetitor c)
         {
             Id = c.Id;
             Name = c.Name;

@@ -23,7 +23,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<TournamentVM>), 200)]
         public async Task<IActionResult> GetTennisTournaments()
         {
-            var tournaments = await _manager.GetTournaments();
+            var tournaments = await _manager.GetTournamentsAsyncAsync();
 
             return Ok(tournaments);
         }
@@ -33,7 +33,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(InfoApiVM), 200)]
         public async Task<IActionResult> GetTennisTournamentInfo(string id)
         {
-            var info = await _manager.GetTournamentInfo(id);
+            var info = await _manager.GetTournamentInfoAsync(id);
 
             return Ok(info);
         }
@@ -44,7 +44,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SportEventVM>), 200)]
         public async Task<IActionResult> GetTennisTournamentSchedule(string id)
         {
-            var schedule = await _manager.GetTournamentSchedule(id);
+            var schedule = await _manager.GetTournamentScheduleAsync(id);
 
             return Ok(schedule);
         }
@@ -53,10 +53,10 @@ namespace GameOnApi.Controllers
         [HttpGet("schedule")]
         [HttpGet("matches")]
         [ProducesResponseType(typeof(List<SportEventVM>), 200)]
-        public async Task<IActionResult> GetMatches([FromQuery] string date)
+        public async Task<IActionResult> GetMatchesAsync([FromQuery] string date)
         {
-            var schedule = (date == null) ? await _manager.GetMatches()
-                : await _manager.GetDaySchedule(date);
+            var schedule = (date == null) ? await _manager.GetMatchesAsyncAsync()
+                : await _manager.GetDayScheduleAsync(date);
 
             return Ok(schedule);
         }
@@ -65,9 +65,9 @@ namespace GameOnApi.Controllers
         [HttpGet("schedule/today")]
         [HttpGet("matches/today")]
         [ProducesResponseType(typeof(List<SportEventVM>), 200)]
-        public async Task<IActionResult> GetMatchesToday()
+        public async Task<IActionResult> GetMatchesAsyncToday()
         {
-            var schedule = await _manager.GetDaySchedule();
+            var schedule = await _manager.GetDayScheduleAsync();
 
             return Ok(schedule);
         }
@@ -76,9 +76,9 @@ namespace GameOnApi.Controllers
         [HttpGet("schedule/upcoming")]
         [HttpGet("matches/upcoming")]
         [ProducesResponseType(typeof(List<SportEventVM>), 200)]
-        public async Task<IActionResult> GetMatchesUpcoming()
+        public async Task<IActionResult> GetMatchesAsyncUpcoming()
         {
-            var schedule = await _manager.GetMatchesUpcoming();
+            var schedule = await _manager.GetMatchesAsyncUpcomingAsync();
 
             return Ok(schedule);
         }
@@ -87,9 +87,9 @@ namespace GameOnApi.Controllers
         [HttpGet("schedule/live")]
         [HttpGet("matches/live")]
         [ProducesResponseType(typeof(List<SportEventVM>), 200)]
-        public async Task<IActionResult> GetMatchesLive()
+        public async Task<IActionResult> GetMatchesAsyncLive()
         {
-            var schedule = await _manager.GetMatchesLive();
+            var schedule = await _manager.GetMatchesAsyncLiveAsync();
 
             return Ok(schedule);
         }
@@ -99,7 +99,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<AssociationRankingsVM>), 200)]
         public async Task<IActionResult> GetPlayerRankings()
         {
-            var rankings = await _manager.GetPlayerRankings();
+            var rankings = await _manager.GetPlayerRankingsAsync();
 
             return Ok(rankings);
         }

@@ -2,7 +2,7 @@
 
 namespace com.gameon.data.ThirdPartyApis.Models.Nba
 {
-    public class Game
+    public class NbaGame
     {
         public string SeasonYear { get; set; }
         public string League { get; set; }

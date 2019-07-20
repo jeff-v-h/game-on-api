@@ -3,7 +3,7 @@
 namespace com.gameon.data.ThirdPartyApis.Models.Football
 {
 
-    public class Team : TeamBase
+    public class FootballTeam : FootballTeamBase
     {
         [JsonProperty("name")]
         public string Name { get; set; }

@@ -2,7 +2,7 @@
 
 namespace com.gameon.data.ThirdPartyApis.Models.Tennis
 {
-    public class Competitor : Player
+    public class TennisCompetitor : Player
     {
         [JsonProperty("seed")]
         public int? Seed { get; set; }

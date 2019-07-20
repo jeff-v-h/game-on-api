@@ -29,7 +29,7 @@ namespace com.gameon.domain.ViewModels.Tennis
             Stages = MapStages(i.Stages);
         }
 
-        private List<TennisCompetitorVM> MapCompetitors(List<Competitor> competitors)
+        private List<TennisCompetitorVM> MapCompetitors(List<TennisCompetitor> competitors)
         {
             if (competitors == null) return null;
 

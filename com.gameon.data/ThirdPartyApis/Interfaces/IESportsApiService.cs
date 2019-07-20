@@ -6,10 +6,10 @@ namespace com.gameon.data.ThirdPartyApis.Interfaces
 {
     public interface IEsportsApiService
     {
-        Task<List<Tournament>> GetTournaments(string game = null, string timeFrame = null);
-        Task<List<Team>> GetTeams(string game);
-        Task<List<Series>> GetSeries(string game);
-        Task<List<Match>> GetMatches(string game = null, string timeFrame = null);
-        Task<List<Match>> GetTournamentMatches(string game, int tournamentId, string timeFrame = null);
+        Task<List<Tournament>> GetTournamentsAsync(string game = null, string timeFrame = null);
+        Task<List<EsportsTeam>> GetTeamsAsync(string game);
+        Task<List<Series>> GetSeriesAsync(string game);
+        Task<List<Match>> GetMatchesAsync(string game = null, string timeFrame = null);
+        Task<List<Match>> GetTournamentMatchesAsync(string game, int tournamentId, string timeFrame = null);
     }
 }

@@ -31,7 +31,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
         }
 
-        public async Task<List<Tournament>> GetTournaments()
+        public async Task<List<Tournament>> GetTournamentsAsyncAsync()
         {
             // Create the main url pathway
             var mainUrl = _host + _settings["Tournaments"];
@@ -48,7 +48,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<InfoApi> GetTournamentInfo(string id)
+        public async Task<InfoApi> GetTournamentInfoAsync(string id)
         {
             // Create the main url pathway
             var mainUrl = _host + _settings["TournamentInfo"].Replace("{id}", id);
@@ -65,7 +65,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<List<SportEvent>> GetTournamentSchedule(string id)
+        public async Task<List<SportEvent>> GetTournamentScheduleAsync(string id)
         {
             // Create the main url pathway
             var mainUrl = _host +  _settings["TournamentSchedule"].Replace("{id}", id);
@@ -82,7 +82,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<List<SportEvent>> GetDaySchedule(DateTime? datetime = null)
+        public async Task<List<SportEvent>> GetDayScheduleAsync(DateTime? datetime = null)
         {
             // Create date string to be used in request url
             var date = (datetime == null) ? DateTime.UtcNow : datetime.Value;
@@ -105,7 +105,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<List<AssociationRankings>> GetPlayerRankings()
+        public async Task<List<AssociationRankings>> GetPlayerRankingsAsync()
         {
             // Create the main url pathway
             var mainUrl = _host + _settings["PlayerRankings"];

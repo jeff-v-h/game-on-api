@@ -7,10 +7,10 @@ namespace com.gameon.data.ThirdPartyApis.Interfaces
 {
     public interface ITennisApiService
     {
-        Task<List<Tournament>> GetTournaments();
-        Task<InfoApi> GetTournamentInfo(string id);
-        Task<List<SportEvent>> GetTournamentSchedule(string id);
-        Task<List<SportEvent>> GetDaySchedule(DateTime? datetime = null);
-        Task<List<AssociationRankings>> GetPlayerRankings();
+        Task<List<Tournament>> GetTournamentsAsyncAsync();
+        Task<InfoApi> GetTournamentInfoAsync(string id);
+        Task<List<SportEvent>> GetTournamentScheduleAsync(string id);
+        Task<List<SportEvent>> GetDayScheduleAsync(DateTime? datetime = null);
+        Task<List<AssociationRankings>> GetPlayerRankingsAsync();
     }
 }
