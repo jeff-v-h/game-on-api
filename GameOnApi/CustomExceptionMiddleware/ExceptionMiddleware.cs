@@ -38,7 +38,7 @@ namespace GameOnApi.CustomExceptionMiddleware
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             return context.Response.WriteAsync(
-                new ErrorResponse(context.Response.StatusCode, exception.Message, errorId).ToString());
+                new ErrorResponse(context.Response.StatusCode, exception.Message, errorId, exception.StackTrace).ToString());
         }
     }
 }

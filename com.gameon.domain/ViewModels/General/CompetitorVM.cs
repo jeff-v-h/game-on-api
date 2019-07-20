@@ -13,7 +13,6 @@ namespace com.gameon.domain.ViewModels.General
         public string Thumbnail;
         public string Score;
         public string Rank;
-        private EsportsTeamBaseVM opponent;
 
         // NBA
         public CompetitorVM(CompetingTeamVM c)
@@ -22,7 +21,7 @@ namespace com.gameon.domain.ViewModels.General
             ShortName = c.NickName;
             Abbreviation = c.ShortName;
             Thumbnail = c.Logo;
-            Score = c.Score.Points;
+            Score = c.Score?.Points;
         }
 
         // Football
@@ -41,6 +40,7 @@ namespace com.gameon.domain.ViewModels.General
             Rank = c.Seed?.ToString();
         }
 
+        // Esports
         public CompetitorVM(EsportsTeamBaseVM c, int score)
         {
             Name = c.Name;

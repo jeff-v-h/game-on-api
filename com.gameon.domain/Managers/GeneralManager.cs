@@ -25,15 +25,20 @@ namespace com.gameon.domain.Managers
 
         public async Task<SortedEventsVM> GetEventsAsync()
         {
-            // Get the matches for each sport
-            var nbaTask = GetNbaEventsAsync();
-            var eplTask = GetFootballEventsAsync("epl");
-            var europaLeagueTask = GetFootballEventsAsync("europaLeague");
-            var championsLeagueTask = GetFootballEventsAsync("championsleague");
-            var tennisTask = GetTennisEventsAsync();
-            var esportsTask = GetEsportsEventsAsync();
+            //var now = DateTime.UtcNow;
+            var input = "\"2019-04-23T12:00:00.000Z\"";
+            var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
 
-            var allTasks = new List<Task<SortedEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, tennisTask, esportsTask };
+            // Get the matches for each sport
+            var nbaTask = GetNbaEventsAsync(now);
+            var eplTask = GetFootballEventsAsync("epl", now);
+            var europaLeagueTask = GetFootballEventsAsync("europaLeague", now);
+            var championsLeagueTask = GetFootballEventsAsync("championsleague", now);
+            //var tennisTask = GetTennisEventsAsync(now);
+            var esportsTask = GetEsportsEventsAsync(now);
+
+            //var allTasks = new List<Task<SortedEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
+            var allTasks = new List<Task<SortedEventsVM>> { nbaTask };
 
             var liveEvents = new List<EventVM>();
             var upcomingEvents = new List<EventVM>();
@@ -46,9 +51,9 @@ namespace com.gameon.domain.Managers
                 allTasks.Remove(finishedTask);
 
                 SortedEventsVM games = await finishedTask;
-                liveEvents.AddRange(games.Live);
-                upcomingEvents.AddRange(games.Upcoming);
-                completedEvents.AddRange(games.RecentlyCompleted);
+                if (games.Live != null) liveEvents.AddRange(games.Live);
+                if (games.Upcoming != null) upcomingEvents.AddRange(games.Upcoming);
+                if (games.RecentlyCompleted != null) completedEvents.AddRange(games.RecentlyCompleted);
 
                 if (finishedTask == nbaTask)
                 {
@@ -66,10 +71,10 @@ namespace com.gameon.domain.Managers
                 {
                     Console.WriteLine("championsLeagueTask is ready");
                 }
-                else if (finishedTask == tennisTask)
-                {
-                    Console.WriteLine("tennisTask is ready");
-                }
+                //else if (finishedTask == tennisTask)
+                //{
+                //    Console.WriteLine("tennisTask is ready");
+                //}
                 else if (finishedTask == esportsTask)
                 {
                     Console.WriteLine("esportsTask is ready");
@@ -87,13 +92,17 @@ namespace com.gameon.domain.Managers
             return allEventsSorted;
         }
 
-        private async Task<SortedEventsVM> GetNbaEventsAsync()
+        private async Task<SortedEventsVM> GetNbaEventsAsync(DateTime now)
         {
             var getGames = _nbaManager.GetNbaSchedule();
-            SortedEventsVM events = new SortedEventsVM();
-            var now = DateTime.UtcNow;
             var time12HrsAgo = now.AddHours(-12);
             var timeIn24Hrs = now.AddHours(24);
+            SortedEventsVM events = new SortedEventsVM
+            {
+                Live = new List<EventVM>(),
+                RecentlyCompleted = new List<EventVM>(),
+                Upcoming = new List<EventVM>()
+            };
 
             var nbaGames = await getGames;
 
@@ -103,39 +112,40 @@ namespace com.gameon.domain.Managers
             {
                 var game = nbaGames[i];
 
-                if (game.StatusGame == "Finished")
+                if (game.StartTimeUTC.HasValue)
                 {
-                    // Keep nested to ensure game does not go through check for live or upcoming
-                    if (game.EndTimeUTC.HasValue)
+                    var startTime = game.StartTimeUTC.Value;
+
+                    //if (game.StatusGame == "Scheduled")
+                    if (now < startTime)
                     {
+                        var isUpcoming = startTime < timeIn24Hrs;
+                        if (isUpcoming) events.Upcoming.Add(new EventVM(game));
+                    }
+                    //else if (game.StatusGame == "Finished")
+                    else if (game.EndTimeUTC.HasValue)
+                    {
+                        var endTime = game.EndTimeUTC.Value;
+                        var isRecentlyCompleted = endTime > time12HrsAgo;
+                        // Keep nested to ensure game does not go through check for live or upcoming
                         // Only add to recently completed if it finished less than 12 hours ago (end time > the time 12 hrs ago)
-                        var value = DateTime.Compare(game.EndTimeUTC.Value, time12HrsAgo);
-                        if (value > 0) events.RecentlyCompleted.Add(new EventVM(game));
+                        if (isRecentlyCompleted) events.RecentlyCompleted.Add(new EventVM(game));
                     }
-                }
-                else if (game.StatusGame == "Scheduled")
-                {
-                    if (game.StartTimeUTC.HasValue)
+                    //else if (now >= startTime) // only works when not using fake date
+                    else if (now >= startTime && game.StatusGame != "Scheduled" && game.StatusGame != "Finished" )
                     {
-                        var startTime = game.StartTimeUTC.Value;
-                        if (DateTime.Compare(startTime, timeIn24Hrs) < 0)
-                            events.Upcoming.Add(new EventVM(game));
+                        events.Live.Add(new EventVM(game));
                     }
-                }
-                else
-                {
-                    events.Live.Add(new EventVM(game));
                 }
             }
 
             return events;
         }
 
-        private async Task<SortedEventsVM> GetFootballEventsAsync(string league)
+        private async Task<SortedEventsVM> GetFootballEventsAsync(string league, DateTime now)
         {
             var getGames = _footballManager.GetSchedule(league);
             SortedEventsVM events = new SortedEventsVM();
-            var now = DateTime.UtcNow;
             var time12HrsAgo = now.AddHours(-12);
             var timeIn24Hrs = now.AddHours(24);
 
@@ -175,11 +185,10 @@ namespace com.gameon.domain.Managers
             return events;
         }
         
-        private async Task<SortedEventsVM> GetTennisEventsAsync()
+        private async Task<SortedEventsVM> GetTennisEventsAsync(DateTime now)
         {
             var getMatches = _tennisManager.GetMatches();
             SortedEventsVM events = new SortedEventsVM();
-            var now = DateTime.UtcNow;
             var time12HrsAgo = now.AddHours(-12);
             var timeIn24Hrs = now.AddHours(24);
 
@@ -217,11 +226,10 @@ namespace com.gameon.domain.Managers
             return events;
         }
 
-        private async Task<SortedEventsVM> GetEsportsEventsAsync()
+        private async Task<SortedEventsVM> GetEsportsEventsAsync(DateTime now)
         {
             var getMatches = _esportsManager.GetMatches();
             SortedEventsVM events = new SortedEventsVM();
-            var now = DateTime.UtcNow;
             var time12HrsAgo = now.AddHours(-12);
             var timeIn24Hrs = now.AddHours(24);
 

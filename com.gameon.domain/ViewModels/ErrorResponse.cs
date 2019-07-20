@@ -8,13 +8,15 @@ namespace com.gameon.domain.ViewModels
         public int? Status { get; set; }
         public string Detail { get; set; }
         public string ErrorId { get; set; }
+        public string StackTrace { get; set; }
 
-        public ErrorResponse(int statusCode, string message = null, string errorId = null)
+        public ErrorResponse(int statusCode, string message = null, string errorId = null, string stack = null)
         {
             Title = GetDefaultTitleForStatusCode(statusCode);
             Status = statusCode;
             Detail = message ?? GetDefaultMessageForStatusCode(statusCode);
             ErrorId = errorId;
+            StackTrace = stack;
         }
 
         private static string GetDefaultTitleForStatusCode(int statusCode)
