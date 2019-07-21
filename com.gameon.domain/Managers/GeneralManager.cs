@@ -1,4 +1,5 @@
 ﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+using com.gameon.data.ThirdPartyApis.Models.Tennis;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.ViewModels.General;
 using System;
@@ -26,9 +27,9 @@ namespace com.gameon.domain.Managers
 
         public async Task<SortedEventsVM> GetEventsAsync()
         {
-            var now = DateTime.UtcNow;
-            //var input = "\"2019-01-06T00:00:00.000Z\"";
-            //var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
+            //var now = DateTime.UtcNow;
+            var input = "\"2019-02-12T00:00:00.000Z\"";
+            var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
 
             // Get the matches for each sport
             var nbaTask = GetNbaEventsAsync(now);
@@ -168,8 +169,14 @@ namespace com.gameon.domain.Managers
             // Get matches for today and tomorrow
             var today = DateTime.UtcNow;
             var tomorrow = today.AddDays(1);
+            var yesterday = today.AddDays(-1);
             var getMatchesTodayTask = _tennisService.GetDayScheduleAsync(today);
             var getMatchesTomorrowTask = _tennisService.GetDayScheduleAsync(tomorrow);
+
+            // Get events for day before if before midday to have more for reently completed
+            var timeMidday = new DateTime(today.Year, today.Month, today.Day, 12, 0, 0);
+            var isBeforeMidday = today < timeMidday;
+            var getMatchesYesterdayTask = (isBeforeMidday) ? _tennisService.GetDayScheduleAsync() : null;
 
             // Create variables
             string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
@@ -181,13 +188,21 @@ namespace com.gameon.domain.Managers
                 RecentlyCompleted = new List<EventVM>(),
                 Upcoming = new List<EventVM>()
             };
+            var matches = new List<SportEvent>();
 
             // Await the async tasks
+            var matchesYesterday = (isBeforeMidday) ? await getMatchesYesterdayTask : null;
             var matchesToday = await getMatchesTodayTask;
             var matchesTomorrow = await getMatchesTomorrowTask;
 
             // Only return the matches that are at a professional tournament
-            var matches = matchesToday.FindAll(m => Array.IndexOf(atpLevels, m.Tournament.Category.Level) > -1);
+            if (isBeforeMidday)
+            {
+                var matchesYesterdaySorted = matchesYesterday.FindAll(m => Array.IndexOf(atpLevels, m.Tournament.Category.Level) > -1);
+                matches.AddRange(matchesYesterdaySorted);
+            }
+            var matchesTodaySorted = matchesToday.FindAll(m => Array.IndexOf(atpLevels, m.Tournament.Category.Level) > -1);
+            matches.AddRange(matchesTodaySorted);
             var matchesTomorrowSorted = matchesTomorrow.FindAll(m => Array.IndexOf(atpLevels, m.Tournament.Category.Level) > -1);
             matches.AddRange(matchesTomorrowSorted);
 
