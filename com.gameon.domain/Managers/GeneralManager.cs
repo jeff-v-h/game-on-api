@@ -27,9 +27,9 @@ namespace com.gameon.domain.Managers
 
         public async Task<SortedEventsVM> GetEventsAsync()
         {
-            //var now = DateTime.UtcNow;
-            var input = "\"2019-02-12T00:00:00.000Z\"";
-            var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
+            var now = DateTime.UtcNow;
+            //var input = "\"2019-02-12T00:00:00.000Z\"";
+            //var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
 
             // Get the matches for each sport
             var nbaTask = GetNbaEventsAsync(now);
@@ -281,6 +281,233 @@ namespace com.gameon.domain.Managers
             }
 
             return events;
+        }
+
+        public async Task<SortedWeekEventsVM> GetSortedWeekEvents()
+        {
+            var now = DateTime.UtcNow;
+            //var input = "\"2019-02-12T00:00:00.000Z\"";
+            //var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
+
+            // Get the matches for each sport
+            var nbaTask = GetNbaWeekEventsAsync(now);
+            var eplTask = GetFootballWeekEventsAsync("epl", now);
+            var europaLeagueTask = GetFootballWeekEventsAsync("europaLeague", now);
+            var championsLeagueTask = GetFootballWeekEventsAsync("championsleague", now);
+            //var tennisTask = GetTennisWeekEventsAsync(now);
+            var esportsTask = GetEsportsWeekEventsAsync(now);
+
+            var allTasks = new List<Task<SortedWeekEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
+
+            var eventsToday = new List<EventVM>();
+            var eventsTomorrow = new List<EventVM>();
+            var eventsDay3 = new List<EventVM>();
+            var eventsDay4 = new List<EventVM>();
+            var eventsDay5 = new List<EventVM>();
+            var eventsDay6 = new List<EventVM>();
+            var eventsDay7 = new List<EventVM>();
+
+            // Each time a task is finished, add the events into their respective lists
+            while (allTasks.Any())
+            {
+                Task<SortedWeekEventsVM> finishedTask = await Task.WhenAny(allTasks);
+                allTasks.Remove(finishedTask);
+
+                SortedWeekEventsVM games = await finishedTask;
+                if (games.Today != null) eventsToday.AddRange(games.Today);
+                if (games.Tomorrow != null) eventsTomorrow.AddRange(games.Tomorrow);
+                if (games.Day3 != null) eventsDay3.AddRange(games.Day3);
+                if (games.Day4 != null) eventsDay3.AddRange(games.Day4);
+                if (games.Day5 != null) eventsDay3.AddRange(games.Day5);
+                if (games.Day6 != null) eventsDay3.AddRange(games.Day6);
+                if (games.Day7 != null) eventsDay3.AddRange(games.Day7);
+            }
+
+            // Once all tasks are finished, order them by date
+            var allEventsSorted = new SortedWeekEventsVM
+            {
+                Today = eventsToday.OrderBy(x => x.StartTime).ToList(),
+                Tomorrow = eventsTomorrow.OrderBy(x => x.StartTime).ToList(),
+                Day3 = eventsDay3.OrderBy(x => x.StartTime).ToList(),
+                Day4 = eventsDay4.OrderBy(x => x.StartTime).ToList(),
+                Day5 = eventsDay5.OrderBy(x => x.StartTime).ToList(),
+                Day6 = eventsDay6.OrderBy(x => x.StartTime).ToList(),
+                Day7 = eventsDay7.OrderBy(x => x.StartTime).ToList()
+            };
+
+            return allEventsSorted;
+        }
+
+
+        private async Task<SortedWeekEventsVM> GetNbaWeekEventsAsync(DateTime now)
+        {
+            var getGames = _nbaService.GetNbaScheduleAsync();
+
+            SortedWeekEventsVM events = GetEmptySortedWeekObject();
+            var tomorrow = now.AddDays(1);
+            var day3 = now.AddDays(2);
+            var day4 = now.AddDays(3);
+            var day5 = now.AddDays(4);
+            var day6 = now.AddDays(5);
+            var day7 = now.AddDays(6);
+
+            var nbaGames = await getGames;
+
+            // Loop through all games and get games within the next 7 days
+            // Pass into and create an EventVM object if it matches this criteria
+            for (int i = 0; i < nbaGames.Count; i++)
+            {
+                var game = nbaGames[i];
+
+                if (game.StartTimeUTC.HasValue)
+                {
+                    var startDate = game.StartTimeUTC.Value.Date;
+
+                    if (startDate == now.Date) events.Today.Add(new EventVM(game));
+                    else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(game));
+                    else if (startDate == day3.Date) events.Day3.Add(new EventVM(game));
+                    else if (startDate == day4.Date) events.Day4.Add(new EventVM(game));
+                    else if (startDate == day5.Date) events.Day5.Add(new EventVM(game));
+                    else if (startDate == day6.Date) events.Day6.Add(new EventVM(game));
+                    else if (startDate == day7.Date) events.Day7.Add(new EventVM(game));
+                }
+            }
+
+            return events;
+        }
+
+        private async Task<SortedWeekEventsVM> GetFootballWeekEventsAsync(string league, DateTime now)
+        {
+            var getMatchesTask = _footballService.GetScheduleAsync(league);
+
+            SortedWeekEventsVM events = GetEmptySortedWeekObject();
+            var tomorrow = now.AddDays(1);
+            var day3 = now.AddDays(2);
+            var day4 = now.AddDays(3);
+            var day5 = now.AddDays(4);
+            var day6 = now.AddDays(5);
+            var day7 = now.AddDays(6);
+
+            var matches = await getMatchesTask;
+
+            // Loop through all games and get games within the next 7 days
+            // Pass into and create an EventVM object if it matches this criteria
+            for (int i = 0; i < matches.Count; i++)
+            {
+                var match = matches[i];
+
+                if (match.EventDate.HasValue)
+                {
+                    var startDate = match.EventDate.Value.Date;
+
+                    if (startDate == now.Date) events.Today.Add(new EventVM(match));
+                    else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(match));
+                    else if (startDate == day3.Date) events.Day3.Add(new EventVM(match));
+                    else if (startDate == day4.Date) events.Day4.Add(new EventVM(match));
+                    else if (startDate == day5.Date) events.Day5.Add(new EventVM(match));
+                    else if (startDate == day6.Date) events.Day6.Add(new EventVM(match));
+                    else if (startDate == day7.Date) events.Day7.Add(new EventVM(match));
+                }
+            }
+
+            return events;
+        }
+
+        private async Task<SortedWeekEventsVM> GetTennisWeekEventsAsync(DateTime now)
+        {
+            var getTournaments = _tennisService.GetTournamentsAsync();
+
+            // Create variables
+            SortedWeekEventsVM events = GetEmptySortedWeekObject();
+            var tomorrow = now.AddDays(1);
+            var day3 = now.AddDays(2);
+            var day4 = now.AddDays(3);
+            var day5 = now.AddDays(4);
+            var day6 = now.AddDays(5);
+            var day7 = now.AddDays(6);
+            string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
+
+            // Await the async task
+            var tournaments = await getTournaments;
+
+            for (int i = 0; i < tournaments.Count; i++)
+            {
+                var tournament = tournaments[i];
+                bool isTopTournament = Array.IndexOf(atpLevels, tournament.Category?.Level) > -1;
+                // date is in format "2019-05-31"
+                var dateParts = tournament.CurrentSeason?.StartDate?.Split("-");
+
+                if (isTopTournament && 
+                    dateParts.Length == 3 && 
+                    Int32.TryParse(dateParts[0], out int year) &&
+                    Int32.TryParse(dateParts[1], out int month) &&
+                    Int32.TryParse(dateParts[2], out int day))
+                {
+                    var startDate = new DateTime(year, month, day);
+
+                    if (startDate == now.Date) events.Today.Add(new EventVM(tournament));
+                    else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));
+                    else if (startDate == day3.Date) events.Day3.Add(new EventVM(tournament));
+                    else if (startDate == day4.Date) events.Day4.Add(new EventVM(tournament));
+                    else if (startDate == day5.Date) events.Day5.Add(new EventVM(tournament));
+                    else if (startDate == day6.Date) events.Day6.Add(new EventVM(tournament));
+                    else if (startDate == day7.Date) events.Day7.Add(new EventVM(tournament));
+                }
+            }
+
+            return events;
+        }
+
+        private async Task<SortedWeekEventsVM> GetEsportsWeekEventsAsync(DateTime now)
+        {
+            var getTournaments = _esportsService.GetTournamentsAsync();
+
+            // Create variables
+            var events = GetEmptySortedWeekObject();
+            var tomorrow = now.AddDays(1);
+            var day3 = now.AddDays(2);
+            var day4 = now.AddDays(3);
+            var day5 = now.AddDays(4);
+            var day6 = now.AddDays(5);
+            var day7 = now.AddDays(6);
+
+            // Await the async task
+            var tournaments = await getTournaments;
+
+            for (int i = 0; i < tournaments.Count; i++)
+            {
+                var tournament = tournaments[i];
+                // date is in format "2019-05-31"
+
+                if (tournament.BeginAt.HasValue)
+                {
+                    var startDate = tournament.BeginAt.Value;
+
+                    if (startDate == now.Date) events.Today.Add(new EventVM(tournament));
+                    else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));
+                    else if (startDate == day3.Date) events.Day3.Add(new EventVM(tournament));
+                    else if (startDate == day4.Date) events.Day4.Add(new EventVM(tournament));
+                    else if (startDate == day5.Date) events.Day5.Add(new EventVM(tournament));
+                    else if (startDate == day6.Date) events.Day6.Add(new EventVM(tournament));
+                    else if (startDate == day7.Date) events.Day7.Add(new EventVM(tournament));
+                }
+            }
+
+            return events;
+        }
+
+        private SortedWeekEventsVM GetEmptySortedWeekObject()
+        {
+            return new SortedWeekEventsVM
+            {
+                Today = new List<EventVM>(),
+                Tomorrow = new List<EventVM>(),
+                Day3 = new List<EventVM>(),
+                Day4 = new List<EventVM>(),
+                Day5 = new List<EventVM>(),
+                Day6 = new List<EventVM>(),
+                Day7 = new List<EventVM>()
+            };
         }
     }
 }
