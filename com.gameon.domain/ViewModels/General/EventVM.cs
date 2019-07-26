@@ -4,7 +4,6 @@ using com.gameon.data.ThirdPartyApis.Models.Nba;
 using com.gameon.data.ThirdPartyApis.Models.Tennis;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace com.gameon.domain.ViewModels.General
 {
@@ -45,10 +44,10 @@ namespace com.gameon.domain.ViewModels.General
             Competitors = MapFootballCompetitors(g.HomeTeam, g.AwayTeam, g.GoalsHomeTeam, g.GoalsAwayTeam);
         }
 
-        // Tennis
+        // Tennis map match
         public EventVM(SportEvent e)
         {
-            Id = "tennis-" + e.Id;
+            Id = "tennis-match-" + e.Id;
             StartTime = e.Scheduled ?? null;
             EndTime = null;
             Name = GetTennisEventName(e.Competitors);
@@ -57,16 +56,54 @@ namespace com.gameon.domain.ViewModels.General
             Competitors = MapTennisCompetitors(e.Competitors); // TODO get scores and pass into
         }
 
-        // Esports
+        // Tennis map tournament
+        public EventVM(TennisTournament e)
+        {
+            Id = "tennis-tournament-" + e.Id;
+            StartTime = MapTennisDateString(e.CurrentSeason?.StartDate);
+            EndTime = MapTennisDateString(e.CurrentSeason?.EndDate);
+            Name = e.Name;
+            Sport = "Tennis";
+            LeagueOrTournament = e.Name;
+        }
+
+        // Esports Match
         public EventVM(Match e)
         {
-            Id = "esports-" + e.VideoGame.Id + "-" + e.Id;
+            Id = "esports-" + e.VideoGame.Id + "-match-" + e.Id;
             StartTime = e?.BeginAt;
             EndTime = e?.EndAt;
             Name = e.Name;
             Sport = e.VideoGame.Name;
             LeagueOrTournament = GetEsportsTournamentName(e);
             Competitors = MapEsportsCompetitors(e.Opponents, e.Results);
+        }
+        
+        // Esports Tournament
+        public EventVM(EsportsTournament e)
+        {
+            Id = "esports-" + e.VideoGame.Id + "-tournament-" + e.Id;
+            StartTime = e?.BeginAt;
+            EndTime = e?.EndAt;
+            Name = GetEsportsTournamentName(e);
+            Sport = e.VideoGame.Name;
+            LeagueOrTournament = GetEsportsTournamentName(e);
+            Competitors = MapEsportsCompetitors(e.Teams);
+        }
+
+        private DateTime? MapTennisDateString(string date)
+        {
+            var dateParts = date.Split("-");
+
+            if (dateParts.Length == 3 &&
+                Int32.TryParse(dateParts[0], out int year) &&
+                Int32.TryParse(dateParts[1], out int month) &&
+                Int32.TryParse(dateParts[2], out int day))
+            {
+                return new DateTime(year, month, day);
+            }
+
+            return null;
         }
 
         private string GetEsportsTournamentName(Match e)
@@ -95,6 +132,33 @@ namespace com.gameon.domain.ViewModels.General
             //name = name.Remove(name.Length - 1);
 
             return name;
+        }
+
+        private string GetEsportsTournamentName(EsportsTournament e)
+        {
+            string name = "";
+            if (!string.IsNullOrEmpty(e.League.Name)) name += e.League.Name;
+            if (!string.IsNullOrEmpty(e.Series.Name))
+            {
+                if (!string.IsNullOrEmpty(name)) name += " ";
+                name += e.Series.Name;
+            }
+            if (!string.IsNullOrEmpty(e.Name))
+            {
+                if (!string.IsNullOrEmpty(name)) name += " ";
+                name += e.Name;
+            }
+
+            return name;
+        }
+
+        private List<CompetitorVM> MapEsportsCompetitors(List<EsportsTeamBase> teams)
+        {
+            var competitors = new List<CompetitorVM>();
+
+            foreach (var team in teams) competitors.Add(new CompetitorVM(team, null));
+
+            return competitors;
         }
 
         private List<CompetitorVM> MapEsportsCompetitors(List<Competitor> opponents, List<Result> results)

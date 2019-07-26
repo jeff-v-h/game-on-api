@@ -10,7 +10,7 @@ namespace com.gameon.domain.ViewModels.Esports
         public List<MatchBaseVM> Matches { get; set; }
         public LeagueVM League { get; set; }
 
-        public EsportsTournamentVM(Tournament t)
+        public EsportsTournamentVM(EsportsTournament t)
         {
             WinnerType = t.WinnerType;
             Teams = MapTeams(t.Teams);

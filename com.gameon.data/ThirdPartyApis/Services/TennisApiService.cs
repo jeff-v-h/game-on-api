@@ -31,7 +31,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
         }
 
-        public async Task<List<Tournament>> GetTournamentsAsyncAsync()
+        public async Task<List<TennisTournament>> GetTournamentsAsync()
         {
             // Create the main url pathway
             var mainUrl = _host + _settings["Tournaments"];

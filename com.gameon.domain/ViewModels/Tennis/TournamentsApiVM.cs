@@ -12,7 +12,7 @@ namespace com.gameon.domain.ViewModels.Tennis
             Tournaments = MapTournaments(t.Tournaments);
         }
 
-        private List<TournamentVM> MapTournaments(List<Tournament> tournaments)
+        private List<TournamentVM> MapTournaments(List<TennisTournament> tournaments)
         {
             if (tournaments == null) return null;
 

@@ -12,7 +12,7 @@ namespace com.gameon.domain.ViewModels.Tennis
         public bool CountryFormat { get; set; }
         public string ParentId { get; set; }
 
-        public TournamentVM(Tournament t)
+        public TournamentVM(TennisTournament t)
         {
             Id = t.Id;
             Name = t.Name;

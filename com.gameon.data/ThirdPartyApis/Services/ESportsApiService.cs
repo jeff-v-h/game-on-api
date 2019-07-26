@@ -31,7 +31,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
         }
 
-        public async Task<List<Tournament>> GetTournamentsAsync(string game = null, string timeFrame = null)
+        public async Task<List<EsportsTournament>> GetTournamentsAsync(string game = null, string timeFrame = null)
         {
             // Create the main url pathway
             var mainUrl = _host;
@@ -47,7 +47,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             if (response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<List<Tournament>>(jsonString);
+                var result = JsonConvert.DeserializeObject<List<EsportsTournament>>(jsonString);
                 return result;
             }
             else throw new Exception(response.ReasonPhrase);

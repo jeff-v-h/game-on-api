@@ -26,7 +26,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Tennis
         public Season Season { get; set; }
 
         [JsonProperty("tournament")]
-        public Tournament Tournament { get; set; }
+        public TennisTournament Tournament { get; set; }
 
         [JsonProperty("competitors")]
         public List<TennisCompetitor> Competitors { get; set; }

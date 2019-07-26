@@ -17,7 +17,7 @@ namespace com.gameon.domain.Managers
 
         public async Task<List<EsportsTournamentVM>> GetTournamentsAsync(string game = null, string timeFrame = null)
         {
-            List<Tournament> tournaments = await _service.GetTournamentsAsync(game, timeFrame);
+            List<EsportsTournament> tournaments = await _service.GetTournamentsAsync(game, timeFrame);
 
             var tournamentVMs = new List<EsportsTournamentVM>();
             foreach (var t in tournaments) tournamentVMs.Add(new EsportsTournamentVM(t));

@@ -23,7 +23,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<TournamentVM>), 200)]
         public async Task<IActionResult> GetTennisTournaments()
         {
-            var tournaments = await _manager.GetTournamentsAsyncAsync();
+            var tournaments = await _manager.GetTournamentsAsync();
 
             return Ok(tournaments);
         }

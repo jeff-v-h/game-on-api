@@ -7,7 +7,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Tennis
     public class InfoApi : ApiBase
     {
         [JsonProperty("tournament")]
-        public Tournament Tournament { get; set; }
+        public TennisTournament Tournament { get; set; }
 
         [JsonProperty("season")]
         public Season Season { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace com.gameon.data.ThirdPartyApis.Models.Esports
 {
-    public class Tournament : TournamentBase
+    public class EsportsTournament : TournamentBase
     {
         [JsonProperty("videogame")]
         public VideoGame VideoGame { get; set; }

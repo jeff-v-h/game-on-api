@@ -41,7 +41,7 @@ namespace com.gameon.domain.ViewModels.General
         }
 
         // Esports
-        public CompetitorVM(EsportsTeamBase c, int score)
+        public CompetitorVM(EsportsTeamBase c, int? score)
         {
             Name = c.Name;
             Abbreviation = c.Acronym;
