@@ -283,19 +283,24 @@ namespace com.gameon.domain.Managers
             return events;
         }
 
-        public async Task<SortedWeekEventsVM> GetSortedWeekEventsAsync()
+        /**
+         * startDateString in format: "yyyy-mm-dd"
+         */
+        public async Task<SortedWeekEventsVM> GetSortedWeekEventsAsync(string weekStartDateString = null)
         {
-            var now = DateTime.UtcNow;
-            //var input = "\"2019-02-17T00:00:00.000Z\"";
-            //var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
+            DateTime weekStartDate = (weekStartDateString == null) ? DateTime.UtcNow
+                : GetDateFromReverseStringFormat(weekStartDateString);
+
+            //var input = "\"2019-04-20T00:00:00.000Z\"";
+            //var weekStartDate = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
 
             // Get the matches for each sport
-            var nbaTask = GetNbaWeekEventsAsync(now);
-            var eplTask = GetFootballWeekEventsAsync("epl", now);
-            var europaLeagueTask = GetFootballWeekEventsAsync("europaLeague", now);
-            var championsLeagueTask = GetFootballWeekEventsAsync("championsleague", now);
-            //var tennisTask = GetTennisWeekEventsAsync(now);
-            var esportsTask = GetEsportsWeekEventsAsync(now);
+            var nbaTask = GetNbaWeekEventsAsync(weekStartDate);
+            var eplTask = GetFootballWeekEventsAsync("epl", weekStartDate);
+            var europaLeagueTask = GetFootballWeekEventsAsync("europaLeague", weekStartDate);
+            var championsLeagueTask = GetFootballWeekEventsAsync("championsleague", weekStartDate);
+            //var tennisTask = GetTennisWeekEventsAsync(weekStartDate);
+            var esportsTask = GetEsportsWeekEventsAsync(weekStartDate);
 
             var allTasks = new List<Task<SortedWeekEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
 
@@ -313,14 +318,14 @@ namespace com.gameon.domain.Managers
                 Task<SortedWeekEventsVM> finishedTask = await Task.WhenAny(allTasks);
                 allTasks.Remove(finishedTask);
 
-                SortedWeekEventsVM games = await finishedTask;
-                if (games.Today != null) eventsToday.AddRange(games.Today);
-                if (games.Tomorrow != null) eventsTomorrow.AddRange(games.Tomorrow);
-                if (games.Day3 != null) eventsDay3.AddRange(games.Day3);
-                if (games.Day4 != null) eventsDay4.AddRange(games.Day4);
-                if (games.Day5 != null) eventsDay5.AddRange(games.Day5);
-                if (games.Day6 != null) eventsDay6.AddRange(games.Day6);
-                if (games.Day7 != null) eventsDay7.AddRange(games.Day7);
+                SortedWeekEventsVM events = await finishedTask;
+                if (events.Today != null) eventsToday.AddRange(events.Today);
+                if (events.Tomorrow != null) eventsTomorrow.AddRange(events.Tomorrow);
+                if (events.Day3 != null) eventsDay3.AddRange(events.Day3);
+                if (events.Day4 != null) eventsDay4.AddRange(events.Day4);
+                if (events.Day5 != null) eventsDay5.AddRange(events.Day5);
+                if (events.Day6 != null) eventsDay6.AddRange(events.Day6);
+                if (events.Day7 != null) eventsDay7.AddRange(events.Day7);
             }
 
             // Once all tasks are finished, order them by date
@@ -338,18 +343,44 @@ namespace com.gameon.domain.Managers
             return allEventsSorted;
         }
 
+        /**
+         * dateString in format: "yyyy-mm-dd"
+         */
+        private DateTime GetDateFromReverseStringFormat(string dateString)
+        {
+            var dateParts = dateString.Split("-");
 
-        private async Task<SortedWeekEventsVM> GetNbaWeekEventsAsync(DateTime now)
+            if (dateParts.Length == 3)
+            {
+                if (Int32.TryParse(dateParts[0], out int year) &&
+                    Int32.TryParse(dateParts[1], out int month) &&
+                    Int32.TryParse(dateParts[2], out int day))
+                {
+                    return new DateTime(year, month, day);
+                }
+                else
+                {
+                    throw new Exception("Date provided needs to be numbers separated by a dash");
+                }
+            }
+            else
+            {
+                throw new Exception("Date provided needs to be in format 'yyyy-mm-dd'");
+            }
+        }
+
+
+        private async Task<SortedWeekEventsVM> GetNbaWeekEventsAsync(DateTime weekStartDate)
         {
             var getGames = _nbaService.GetNbaScheduleAsync();
 
             SortedWeekEventsVM events = GetEmptySortedWeekObject();
-            var tomorrow = now.AddDays(1);
-            var day3 = now.AddDays(2);
-            var day4 = now.AddDays(3);
-            var day5 = now.AddDays(4);
-            var day6 = now.AddDays(5);
-            var day7 = now.AddDays(6);
+            var tomorrow = weekStartDate.AddDays(1);
+            var day3 = weekStartDate.AddDays(2);
+            var day4 = weekStartDate.AddDays(3);
+            var day5 = weekStartDate.AddDays(4);
+            var day6 = weekStartDate.AddDays(5);
+            var day7 = weekStartDate.AddDays(6);
 
             var nbaGames = await getGames;
 
@@ -363,7 +394,7 @@ namespace com.gameon.domain.Managers
                 {
                     var startDate = game.StartTimeUTC.Value.Date;
 
-                    if (startDate == now.Date) events.Today.Add(new EventVM(game));
+                    if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(game));
                     else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(game));
                     else if (startDate == day3.Date) events.Day3.Add(new EventVM(game));
                     else if (startDate == day4.Date) events.Day4.Add(new EventVM(game));
@@ -376,17 +407,17 @@ namespace com.gameon.domain.Managers
             return events;
         }
 
-        private async Task<SortedWeekEventsVM> GetFootballWeekEventsAsync(string league, DateTime now)
+        private async Task<SortedWeekEventsVM> GetFootballWeekEventsAsync(string league, DateTime weekStartDate)
         {
             var getMatchesTask = _footballService.GetScheduleAsync(league);
 
             SortedWeekEventsVM events = GetEmptySortedWeekObject();
-            var tomorrow = now.AddDays(1);
-            var day3 = now.AddDays(2);
-            var day4 = now.AddDays(3);
-            var day5 = now.AddDays(4);
-            var day6 = now.AddDays(5);
-            var day7 = now.AddDays(6);
+            var tomorrow = weekStartDate.AddDays(1);
+            var day3 = weekStartDate.AddDays(2);
+            var day4 = weekStartDate.AddDays(3);
+            var day5 = weekStartDate.AddDays(4);
+            var day6 = weekStartDate.AddDays(5);
+            var day7 = weekStartDate.AddDays(6);
 
             var matches = await getMatchesTask;
 
@@ -400,7 +431,7 @@ namespace com.gameon.domain.Managers
                 {
                     var startDate = match.EventDate.Value.Date;
 
-                    if (startDate == now.Date) events.Today.Add(new EventVM(match));
+                    if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(match));
                     else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(match));
                     else if (startDate == day3.Date) events.Day3.Add(new EventVM(match));
                     else if (startDate == day4.Date) events.Day4.Add(new EventVM(match));
@@ -413,18 +444,18 @@ namespace com.gameon.domain.Managers
             return events;
         }
 
-        private async Task<SortedWeekEventsVM> GetTennisWeekEventsAsync(DateTime now)
+        private async Task<SortedWeekEventsVM> GetTennisWeekEventsAsync(DateTime weekStartDate)
         {
             var getTournaments = _tennisService.GetTournamentsAsync();
 
             // Create variables
             SortedWeekEventsVM events = GetEmptySortedWeekObject();
-            var tomorrow = now.AddDays(1);
-            var day3 = now.AddDays(2);
-            var day4 = now.AddDays(3);
-            var day5 = now.AddDays(4);
-            var day6 = now.AddDays(5);
-            var day7 = now.AddDays(6);
+            var tomorrow = weekStartDate.AddDays(1);
+            var day3 = weekStartDate.AddDays(2);
+            var day4 = weekStartDate.AddDays(3);
+            var day5 = weekStartDate.AddDays(4);
+            var day6 = weekStartDate.AddDays(5);
+            var day7 = weekStartDate.AddDays(6);
             string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
 
             // Await the async task
@@ -446,7 +477,7 @@ namespace com.gameon.domain.Managers
                     var startDateTime = new DateTime(year, month, day);
                     var startDate = startDateTime.Date;
 
-                    if (startDate == now.Date) events.Today.Add(new EventVM(tournament));
+                    if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(tournament));
                     else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));
                     else if (startDate == day3.Date) events.Day3.Add(new EventVM(tournament));
                     else if (startDate == day4.Date) events.Day4.Add(new EventVM(tournament));
@@ -459,18 +490,18 @@ namespace com.gameon.domain.Managers
             return events;
         }
 
-        private async Task<SortedWeekEventsVM> GetEsportsWeekEventsAsync(DateTime now)
+        private async Task<SortedWeekEventsVM> GetEsportsWeekEventsAsync(DateTime weekStartDate)
         {
             var getTournaments = _esportsService.GetTournamentsAsync();
 
             // Create variables
             var events = GetEmptySortedWeekObject();
-            var tomorrow = now.AddDays(1);
-            var day3 = now.AddDays(2);
-            var day4 = now.AddDays(3);
-            var day5 = now.AddDays(4);
-            var day6 = now.AddDays(5);
-            var day7 = now.AddDays(6);
+            var tomorrow = weekStartDate.AddDays(1);
+            var day3 = weekStartDate.AddDays(2);
+            var day4 = weekStartDate.AddDays(3);
+            var day5 = weekStartDate.AddDays(4);
+            var day6 = weekStartDate.AddDays(5);
+            var day7 = weekStartDate.AddDays(6);
 
             // Await the async task
             var tournaments = await getTournaments;
@@ -484,7 +515,7 @@ namespace com.gameon.domain.Managers
                 {
                     var startDate = tournament.BeginAt.Value.Date;
 
-                    if (startDate == now.Date) events.Today.Add(new EventVM(tournament));
+                    if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(tournament));
                     else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));
                     else if (startDate == day3.Date) events.Day3.Add(new EventVM(tournament));
                     else if (startDate == day4.Date) events.Day4.Add(new EventVM(tournament));

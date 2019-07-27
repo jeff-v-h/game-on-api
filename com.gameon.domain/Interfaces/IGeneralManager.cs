@@ -6,6 +6,6 @@ namespace com.gameon.domain.Interfaces
     public interface IGeneralManager
     {
         Task<SortedEventsVM> GetEventsAsync();
-        Task<SortedWeekEventsVM> GetSortedWeekEventsAsync();
+        Task<SortedWeekEventsVM> GetSortedWeekEventsAsync(string weekStartDateString = null);
     }
 }
