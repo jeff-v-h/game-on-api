@@ -15,6 +15,7 @@ namespace com.gameon.domain.ViewModels.General
         public string Name;
         public string Sport;
         public string LeagueOrTournament;
+        public bool IsTournament;
         public List<CompetitorVM> Competitors;
 
         // NBA
@@ -65,6 +66,7 @@ namespace com.gameon.domain.ViewModels.General
             Name = e.Name;
             Sport = "Tennis";
             LeagueOrTournament = e.Name;
+            IsTournament = true;
         }
 
         // Esports Match
@@ -88,6 +90,7 @@ namespace com.gameon.domain.ViewModels.General
             Name = GetEsportsTournamentName(e);
             Sport = e.VideoGame.Name;
             LeagueOrTournament = GetEsportsTournamentName(e);
+            IsTournament = true;
             Competitors = MapEsportsCompetitors(e.Teams);
         }
 
