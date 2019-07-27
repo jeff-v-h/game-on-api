@@ -484,6 +484,47 @@ namespace com.gameon.domain.Managers
                     else if (startDate == day5.Date) events.Day5.Add(new EventVM(tournament));
                     else if (startDate == day6.Date) events.Day6.Add(new EventVM(tournament));
                     else if (startDate == day7.Date) events.Day7.Add(new EventVM(tournament));
+
+                    bool isWithinWeek = false;
+                    // Get matches for tournament if it any of it's days lie within the dates above.
+                    if (startDate <= day7.Date)
+                    {
+                        var endDateParts = tournament.CurrentSeason?.EndDate?.Split("-");
+
+                        if (endDateParts.Length == 3 &&
+                            Int32.TryParse(dateParts[0], out int endDateYear) &&
+                            Int32.TryParse(dateParts[1], out int endDateMonth) &&
+                            Int32.TryParse(dateParts[2], out int endDateDay))
+                        {
+                            var endDateTime = new DateTime(endDateYear, endDateMonth, endDateDay);
+                            var endDate = endDateTime.Date;
+                            if (endDate >= weekStartDate.Date) isWithinWeek = true;
+                        }
+                        else if (startDate >= weekStartDate.Date) isWithinWeek = true;
+                    }
+
+                    if (isWithinWeek)
+                    {
+                        var tournamentsMatches = await _tennisService.GetTournamentScheduleAsync(tournament.Id);
+
+                        for (int j = 0; j < tournamentsMatches.Count; j++)
+                        {
+                            var match = tournamentsMatches[j];
+
+                            if (match.Scheduled.HasValue)
+                            {
+                                var matchStartDate = match.Scheduled.Value.Date;
+
+                                if (matchStartDate == weekStartDate.Date) events.Today.Add(new EventVM(match));
+                                else if (matchStartDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(match));
+                                else if (matchStartDate == day3.Date) events.Day3.Add(new EventVM(match));
+                                else if (matchStartDate == day4.Date) events.Day4.Add(new EventVM(match));
+                                else if (matchStartDate == day5.Date) events.Day5.Add(new EventVM(match));
+                                else if (matchStartDate == day6.Date) events.Day6.Add(new EventVM(match));
+                                else if (matchStartDate == day7.Date) events.Day7.Add(new EventVM(match));
+                            }
+                        }
+                    }
                 }
             }
 
@@ -524,10 +565,19 @@ namespace com.gameon.domain.Managers
                     else if (startDate == day7.Date) events.Day7.Add(new EventVM(tournament));
 
                     // Get matches for tournament if it any of it's days lie within the dates above.
-                    // Use startdate value to check if not enddate value exists
-                    if ((startDate <= day7.Date) && 
-                        ((tournament.EndAt.HasValue && tournament.EndAt.Value.Date >= weekStartDate.Date) ||
-                        startDate >= weekStartDate.Date))
+                    bool isWithinWeek = false;
+
+                    if (startDate <= day7.Date)
+                    {
+                        if (tournament.EndAt.HasValue)
+                        {
+                            var endDate = tournament.EndAt.Value.Date;
+                            if (endDate >= weekStartDate.Date) isWithinWeek = true;
+                        }
+                        else if (startDate >= weekStartDate.Date) isWithinWeek = true;
+                    }
+
+                    if (isWithinWeek)
                     {
                         var esport = tournament.VideoGame.Name.Replace(" ", "");
                         var tournamentsMatches = await _esportsService.GetTournamentMatchesAsync(esport, tournament.Id);
