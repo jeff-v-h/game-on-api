@@ -283,10 +283,10 @@ namespace com.gameon.domain.Managers
             return events;
         }
 
-        public async Task<SortedWeekEventsVM> GetSortedWeekEvents()
+        public async Task<SortedWeekEventsVM> GetSortedWeekEventsAsync()
         {
             var now = DateTime.UtcNow;
-            //var input = "\"2019-02-12T00:00:00.000Z\"";
+            //var input = "\"2019-02-17T00:00:00.000Z\"";
             //var now = DateTime.ParseExact(input, "'\"'yyyy-MM-dd'T'HH:mm:ss.fff'Z\"'", null);
 
             // Get the matches for each sport
@@ -317,10 +317,10 @@ namespace com.gameon.domain.Managers
                 if (games.Today != null) eventsToday.AddRange(games.Today);
                 if (games.Tomorrow != null) eventsTomorrow.AddRange(games.Tomorrow);
                 if (games.Day3 != null) eventsDay3.AddRange(games.Day3);
-                if (games.Day4 != null) eventsDay3.AddRange(games.Day4);
-                if (games.Day5 != null) eventsDay3.AddRange(games.Day5);
-                if (games.Day6 != null) eventsDay3.AddRange(games.Day6);
-                if (games.Day7 != null) eventsDay3.AddRange(games.Day7);
+                if (games.Day4 != null) eventsDay4.AddRange(games.Day4);
+                if (games.Day5 != null) eventsDay5.AddRange(games.Day5);
+                if (games.Day6 != null) eventsDay6.AddRange(games.Day6);
+                if (games.Day7 != null) eventsDay7.AddRange(games.Day7);
             }
 
             // Once all tasks are finished, order them by date
@@ -443,7 +443,8 @@ namespace com.gameon.domain.Managers
                     Int32.TryParse(dateParts[1], out int month) &&
                     Int32.TryParse(dateParts[2], out int day))
                 {
-                    var startDate = new DateTime(year, month, day);
+                    var startDateTime = new DateTime(year, month, day);
+                    var startDate = startDateTime.Date;
 
                     if (startDate == now.Date) events.Today.Add(new EventVM(tournament));
                     else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));
@@ -481,7 +482,7 @@ namespace com.gameon.domain.Managers
 
                 if (tournament.BeginAt.HasValue)
                 {
-                    var startDate = tournament.BeginAt.Value;
+                    var startDate = tournament.BeginAt.Value.Date;
 
                     if (startDate == now.Date) events.Today.Add(new EventVM(tournament));
                     else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));

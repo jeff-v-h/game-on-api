@@ -19,6 +19,16 @@ namespace GameOnApi.Controllers
             _manager = manager;
         }
 
+        // GET api/general/events/week
+        [HttpGet("events/week")]
+        [ProducesResponseType(typeof(SortedWeekEventsVM), 200)]
+        public async Task<IActionResult> GetSortedWeekEvents()
+        {
+            var events = await _manager.GetSortedWeekEventsAsync();
+
+            return Ok(events);
+        }
+
         // GET api/general/events
         [HttpGet("events")]
         [ProducesResponseType(typeof(SortedEventsVM), 200)]
