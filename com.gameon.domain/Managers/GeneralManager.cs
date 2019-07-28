@@ -477,13 +477,13 @@ namespace com.gameon.domain.Managers
                     var startDateTime = new DateTime(year, month, day);
                     var startDate = startDateTime.Date;
 
-                    if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(tournament));
-                    else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));
-                    else if (startDate == day3.Date) events.Day3.Add(new EventVM(tournament));
-                    else if (startDate == day4.Date) events.Day4.Add(new EventVM(tournament));
-                    else if (startDate == day5.Date) events.Day5.Add(new EventVM(tournament));
-                    else if (startDate == day6.Date) events.Day6.Add(new EventVM(tournament));
-                    else if (startDate == day7.Date) events.Day7.Add(new EventVM(tournament));
+                    //if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(tournament));
+                    //else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));
+                    //else if (startDate == day3.Date) events.Day3.Add(new EventVM(tournament));
+                    //else if (startDate == day4.Date) events.Day4.Add(new EventVM(tournament));
+                    //else if (startDate == day5.Date) events.Day5.Add(new EventVM(tournament));
+                    //else if (startDate == day6.Date) events.Day6.Add(new EventVM(tournament));
+                    //else if (startDate == day7.Date) events.Day7.Add(new EventVM(tournament));
 
                     bool isWithinWeek = false;
                     // Get matches for tournament if it any of it's days lie within the dates above.
