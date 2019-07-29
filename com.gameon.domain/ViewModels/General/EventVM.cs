@@ -12,6 +12,8 @@ namespace com.gameon.domain.ViewModels.General
         public string Id;
         public DateTime? StartTime;
         public DateTime? EndTime;
+        // "Completed", "Live" ("Ongoing" if isTournament), "Upcoming", "Postponed", "Canceled", ""
+        public string Status;
         public string Name;
         public string Sport;
         public string LeagueOrTournament;
@@ -24,6 +26,10 @@ namespace com.gameon.domain.ViewModels.General
             Id = "basketball-nba-" + g.GameId;
             StartTime = g.StartTimeUTC ?? null;
             EndTime = g.EndTimeUTC ?? null;
+            Status = (g.StatusGame == "Finished") ? "Completed"
+                : (g.StatusGame == "Scheduled") ? "Upcoming"
+                : (g.StatusGame == "Live") ? "Live"
+                : "";
             Name = g.HTeam.ShortName + " v " + g.VTeam.ShortName;
             Sport = "Basketball";
             LeagueOrTournament = "NBA";
@@ -36,6 +42,12 @@ namespace com.gameon.domain.ViewModels.General
             Id = "football-" + g.LeagueId + "-" + g.FixtureId;
             StartTime = g.EventDate ?? null;
             EndTime = null;
+            // FT = full time, TBD = to be defined, PST = postponed, NS = not started, FH/SH = first/second half
+            Status = (g.StatusShort == "FT") ? "Completed"
+                : (g.StatusShort == "TBD" || g.StatusShort == "NS") ? "Upcoming"
+                : (g.StatusShort == "FH" || g.StatusShort == "SH") ? "Live" // TODO is there one for extra time or penalties?
+                : (g.StatusShort == "PST") ? "Postponed"
+                : "";
             Name = g.HomeTeam.TeamName + " v " + g.AwayTeam.TeamName;
             Sport = "Football";
             LeagueOrTournament = (g.LeagueId == 2) ? "EPL" 
@@ -51,6 +63,12 @@ namespace com.gameon.domain.ViewModels.General
             Id = "tennis-match-" + e.Id;
             StartTime = e.Scheduled ?? null;
             EndTime = null;
+            Status = (e.Status == "closed" || e.Status == "ended") ? "Completed"
+                : (e.Status == "not_started" || e.Status == "match_about_to_start") ? "Upcoming"
+                : (e.Status == "live") ? "Live"
+                : (e.Status == "interrupted" || e.Status == "suspended") ? "Postponed"
+                : (e.Status == "canceled" || e.Status == "abandoned") ? "Canceled"
+                : "";
             Name = GetTennisEventName(e.Competitors);
             Sport = "Tennis";
             LeagueOrTournament = e.Tournament.Name;
@@ -63,6 +81,7 @@ namespace com.gameon.domain.ViewModels.General
             Id = "tennis-tournament-" + e.Id;
             StartTime = MapTennisDateString(e.CurrentSeason?.StartDate);
             EndTime = MapTennisDateString(e.CurrentSeason?.EndDate);
+            Status = GetTennisTournamentStatus(e.CurrentSeason);
             Name = e.Name;
             Sport = "Tennis";
             LeagueOrTournament = e.Name;
@@ -75,6 +94,11 @@ namespace com.gameon.domain.ViewModels.General
             Id = "esports-" + e.VideoGame.Id + "-match-" + e.Id;
             StartTime = e?.BeginAt;
             EndTime = e?.EndAt;
+            Status = (e.Status == "finished") ? "Completed"
+                : (e.Status == "not_started") ? "Upcoming"
+                : (e.Status == "running") ? "Live"
+                : (e.Status == "canceled") ? "Canceled"
+                : "";
             Name = e.Name;
             Sport = e.VideoGame.Name;
             LeagueOrTournament = GetEsportsTournamentName(e);
@@ -87,6 +111,7 @@ namespace com.gameon.domain.ViewModels.General
             Id = "esports-" + e.VideoGame.Id + "-tournament-" + e.Id;
             StartTime = e?.BeginAt;
             EndTime = e?.EndAt;
+            Status = GetEsportsTournamentStatus(e);
             Name = GetEsportsTournamentName(e);
             Sport = e.VideoGame.Name;
             LeagueOrTournament = GetEsportsTournamentName(e);
@@ -107,6 +132,66 @@ namespace com.gameon.domain.ViewModels.General
             }
 
             return null;
+        }
+
+        private string GetTennisTournamentStatus(Season currentSeason)
+        {
+            if (currentSeason != null)
+            {
+                // date is in format "2019-05-31"
+                var dateParts = currentSeason.StartDate?.Split("-");
+                if (dateParts != null && dateParts.Length == 3 &&
+                    Int32.TryParse(dateParts[0], out int year) &&
+                    Int32.TryParse(dateParts[1], out int month) &&
+                    Int32.TryParse(dateParts[2], out int day))
+                {
+                    var now = DateTime.UtcNow;
+                    var startDateTime = new DateTime(year, month, day);
+
+                    if (now.Date < startDateTime.Date)
+                        return "Upcoming";
+                    else
+                    {
+                        var endDateParts = currentSeason.EndDate?.Split("-");
+                        if (endDateParts != null && endDateParts.Length == 3 &&
+                            Int32.TryParse(endDateParts[0], out int endYear) &&
+                            Int32.TryParse(endDateParts[1], out int endMonth) &&
+                            Int32.TryParse(endDateParts[2], out int endDay))
+                        {
+                            var endDateTime = new DateTime(endYear, endMonth, endDay);
+
+                            if (now.Date > endDateTime.Date)
+                                return "Completed";
+                            else
+                                return "Ongoing";
+                        }
+                        // Is start date but no end date, so assume ongoing
+                        else
+                            return "Ongoing";
+                    }
+                }
+            }
+            return "";
+        }
+
+        private string GetEsportsTournamentStatus(EsportsTournament tournament)
+        {
+            if (tournament != null)
+            {
+                var now = DateTime.UtcNow;
+
+                if (tournament.BeginAt.HasValue && now.Date < tournament.BeginAt.Value.Date)
+                    return "Upcoming";
+                else
+                {
+                    if (tournament.EndAt.HasValue && now.Date > tournament.EndAt.Value.Date)
+                        return "Completed";
+                    else
+                        return "Ongoing";
+                }
+            }
+           
+            return "";
         }
 
         private string GetEsportsTournamentName(Match e)

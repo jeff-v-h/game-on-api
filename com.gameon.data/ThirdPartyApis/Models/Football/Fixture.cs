@@ -30,6 +30,7 @@ namespace com.gameon.data.ThirdPartyApis.Models.Football
         [JsonProperty("status")]
         public string Status { get; set; }
 
+        // FT = full time, TBD = to be defined, PST = postponed, NS = not started, FH/SH = first/second half
         [JsonProperty("statusShort")]
         public string StatusShort { get; set; }
 
