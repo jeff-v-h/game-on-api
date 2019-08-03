@@ -7,5 +7,7 @@
         public string NickName { get; set; }
         public string Logo { get; set; }
         public string ShortName { get; set; }
+
+        public NbaTeamBaseVM() { }
     }
 }

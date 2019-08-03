@@ -22,9 +22,9 @@ namespace GameOnApi.Controllers
         // GET api/general/events/week
         [HttpGet("events/week")]
         [ProducesResponseType(typeof(SortedWeekEventsVM), 200)]
-        public async Task<IActionResult> GetSortedWeekEvents()
+        public async Task<IActionResult> GetSortedWeekEvents([FromQuery] string startDate)
         {
-            var events = await _manager.GetSortedWeekEventsAsync();
+            var events = await _manager.GetSortedWeekEventsAsync(startDate);
 
             return Ok(events);
         }

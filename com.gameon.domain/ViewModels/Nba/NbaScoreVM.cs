@@ -1,14 +1,23 @@
 ﻿using com.gameon.data.ThirdPartyApis.Models.Nba;
+using System.Collections.Generic;
 
 namespace com.gameon.domain.ViewModels.Nba
 {
-    public class NbaScoreVM
+    public class NbaScoreVM : NbaScoreBaseVM
     {
-        public string Points { get; set; }
+        public string Win { get; set; }
+        public string Loss { get; set; }
+        public string SeriesWin { get; set; }
+        public string SeriesLoss { get; set; }
+        public List<string> LineScore { get; set; }
 
-        public NbaScoreVM(Score s)
+        public NbaScoreVM(NbaScore s)
         {
-            Points = s.Points;
+            Win = s.Win;
+            Loss = s.Loss;
+            SeriesWin = s.SeriesWin;
+            SeriesLoss = s.SeriesLoss;
+            LineScore = s.LineScore;
         }
     }
 }

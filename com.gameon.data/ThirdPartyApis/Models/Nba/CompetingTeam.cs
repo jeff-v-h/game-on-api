@@ -2,6 +2,6 @@
 {
     public class CompetingTeam : NbaTeamBase
     {
-        public Score Score { get; set; }
+        public NbaScoreBase Score { get; set; }
     }
 }
