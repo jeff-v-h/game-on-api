@@ -4,7 +4,7 @@ namespace com.gameon.domain.ViewModels.Nba
 {
     public class CompetingTeamVM : NbaTeamBaseVM
     {
-        public NbaScoreVM Score { get; set; }
+        public NbaScoreBaseVM Score { get; set; }
 
         public CompetingTeamVM(CompetingTeam c)
         {
@@ -13,7 +13,7 @@ namespace com.gameon.domain.ViewModels.Nba
             NickName = c.NickName;
             ShortName = c.ShortName;
             Logo = c.Logo;
-            Score = (c.Score != null) ? new NbaScoreVM(c.Score) : null;
+            Score = (c.Score != null) ? new NbaScoreBaseVM(c.Score) : null;
         }
     }
 }
