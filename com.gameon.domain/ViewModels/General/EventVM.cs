@@ -17,6 +17,7 @@ namespace com.gameon.domain.ViewModels.General
         public string Name;
         public string Sport;
         public string LeagueOrTournament;
+        public string Selector; // Used to select for dropdown
         public bool IsTournament;
         public List<CompetitorVM> Competitors;
 
@@ -33,6 +34,7 @@ namespace com.gameon.domain.ViewModels.General
             Name = g.HTeam.ShortName + " v " + g.VTeam.ShortName;
             Sport = "Basketball";
             LeagueOrTournament = "NBA";
+            Selector = "nba";
             Competitors = MapNbaCompetitors(g.HTeam, g.VTeam);
         }
 
@@ -54,6 +56,10 @@ namespace com.gameon.domain.ViewModels.General
                 : (g.LeagueId == 132) ? "Champions League"
                 : (g.LeagueId == 137) ? "Europa League"
                 : null;
+            Selector = (g.LeagueId == 2) ? "epl"
+                : (g.LeagueId == 132) ? "champions league"
+                : (g.LeagueId == 137) ? "europa league"
+                : "football";
             Competitors = MapFootballCompetitors(g.HomeTeam, g.AwayTeam, g.GoalsHomeTeam, g.GoalsAwayTeam);
         }
 
@@ -72,6 +78,7 @@ namespace com.gameon.domain.ViewModels.General
             Name = GetTennisEventName(e.Competitors);
             Sport = "Tennis";
             LeagueOrTournament = e.Tournament.Name;
+            Selector = "tennis";
             Competitors = MapTennisCompetitors(e.Competitors); // TODO get scores and pass into
         }
 
@@ -85,6 +92,7 @@ namespace com.gameon.domain.ViewModels.General
             Name = e.Name;
             Sport = "Tennis";
             LeagueOrTournament = e.Name;
+            Selector = "tennis";
             IsTournament = true;
         }
 
@@ -102,9 +110,10 @@ namespace com.gameon.domain.ViewModels.General
             Name = e.Name;
             Sport = e.VideoGame.Name;
             LeagueOrTournament = GetEsportsTournamentName(e);
+            Selector = GetEsportsSelector(e.VideoGame.Name);
             Competitors = MapEsportsCompetitors(e.Opponents, e.Results);
         }
-        
+
         // Esports Tournament
         public EventVM(EsportsTournament e)
         {
@@ -115,6 +124,7 @@ namespace com.gameon.domain.ViewModels.General
             Name = GetEsportsTournamentName(e);
             Sport = e.VideoGame.Name;
             LeagueOrTournament = GetEsportsTournamentName(e);
+            Selector = GetEsportsSelector(e.VideoGame.Name);
             IsTournament = true;
             Competitors = MapEsportsCompetitors(e.Teams);
         }
@@ -238,6 +248,23 @@ namespace com.gameon.domain.ViewModels.General
             }
 
             return name;
+        }
+
+        private string GetEsportsSelector(string name)
+        {
+            switch (name)
+            {
+                case "Dota 2":
+                    return "dota";
+                case "LoL":
+                    return "lol";
+                case "CS:GO":
+                    return "csgo";
+                case "Overwatch":
+                    return "overwatch";
+                default:
+                    return "esport";
+            }
         }
 
         private List<CompetitorVM> MapEsportsCompetitors(List<EsportsTeamBase> teams)
