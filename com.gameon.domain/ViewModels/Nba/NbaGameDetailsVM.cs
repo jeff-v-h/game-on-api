@@ -29,6 +29,19 @@ namespace com.gameon.domain.ViewModels.Nba
             StatusGame = g.StatusGame;
             VTeam = (g.VTeam != null) ? new CompetingTeamDetailsVM(g.VTeam) : null;
             HTeam = (g.HTeam != null) ? new CompetingTeamDetailsVM(g.HTeam) : null;
+            Officials = MapOfficials(g.Officials);
+        }
+
+        private List<OfficialVM> MapOfficials(List<Official> officials)
+        {
+            if (officials == null) return null;
+
+            var list = new List<OfficialVM>();
+
+            for (int i = 0; i < officials.Count; i++)
+                list.Add(new OfficialVM(officials[i]));
+
+            return list;
         }
     }
 }

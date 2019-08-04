@@ -18,6 +18,7 @@ namespace com.gameon.domain.ViewModels.Nba
             SeriesWin = s.SeriesWin;
             SeriesLoss = s.SeriesLoss;
             LineScore = s.LineScore;
+            Points = s.Points;
         }
     }
 }
