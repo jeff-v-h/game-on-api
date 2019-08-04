@@ -10,5 +10,6 @@ namespace com.gameon.domain.Interfaces
         Task<List<NbaTeamVM>> GetNbaTeamsAsync();
         Task<List<NbaGameVM>> GetNbaGamesUpcomingAsync();
         Task<List<NbaGameVM>> GetNbaLiveGamesAsync();
+        Task<NbaGameDetailsVM> GetNbaGameDetailsAsync(string gameId);
     }
 }

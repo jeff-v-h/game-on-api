@@ -62,7 +62,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase); 
         }
 
-        public async Task<List<NbaGame>> GetNbaGames(DateTime? datetime = null)
+        public async Task<List<NbaGame>> GetNbaGamesAsync(DateTime? datetime = null)
         {
             string path;
             if (datetime == null) path = _settings["Schedule"];
@@ -85,6 +85,21 @@ namespace com.gameon.data.ThirdPartyApis.Services
             } 
             else if (response.StatusCode == HttpStatusCode.NotFound) return new List<NbaGame>();
             else throw new Exception(response.ReasonPhrase); 
+        }
+
+        public async Task<NbaGameDetails> GetNbaGameDetailsAsync(string gameId)
+        {
+            string path = _settings["GameDetails"].Replace("{gameId}", gameId);
+            var response = await _client.GetAsync(path);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<NbaApi>(jsonString);
+                return result.Api.Game[0];
+            } 
+            else if (response.StatusCode == HttpStatusCode.NotFound) return null;
+            else throw new Exception(response.ReasonPhrase);
         }
 
         public async Task<List<NbaTeam>> GetNbaTeamsAsync()

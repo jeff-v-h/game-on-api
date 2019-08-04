@@ -58,6 +58,15 @@ namespace com.gameon.domain.Managers
             return gameVMs;
         }
 
+
+        // Get details for a specific game. Returns null if not found
+        public async Task<NbaGameDetailsVM> GetNbaGameDetailsAsync(string gameId)
+        {
+            var game = await _service.GetNbaGameDetailsAsync(gameId);
+
+            return (game != null) ? new NbaGameDetailsVM(game) : null;
+        }
+
         public async Task<List<NbaTeamVM>> GetNbaTeamsAsync()
         {
             var teams = await _service.GetNbaTeamsAsync();
