@@ -10,9 +10,9 @@ namespace com.gameon.domain.Interfaces
         Task<InfoApiVM> GetTournamentInfoAsync(string id);
         Task<List<SportEventVM>> GetTournamentScheduleAsync(string id);
         Task<List<SportEventVM>> GetDayScheduleAsync(string dateString = null);
-        Task<List<SportEventVM>> GetMatchesAsyncAsync();
-        Task<List<SportEventVM>> GetMatchesAsyncUpcomingAsync();
-        Task<List<SportEventVM>> GetMatchesAsyncLiveAsync();
+        Task<List<SportEventVM>> GetMatchesAsync();
+        Task<List<SportEventVM>> GetMatchesUpcomingAsync();
+        Task<List<SportEventVM>> GetMatchesLiveAsync();
         Task<List<AssociationRankingsVM>> GetPlayerRankingsAsync();
     }
 }

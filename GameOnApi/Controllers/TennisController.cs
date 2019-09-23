@@ -55,7 +55,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SportEventVM>), 200)]
         public async Task<IActionResult> GetMatchesAsync([FromQuery] string date)
         {
-            var schedule = (date == null) ? await _manager.GetMatchesAsyncAsync()
+            var schedule = (date == null) ? await _manager.GetMatchesAsync()
                 : await _manager.GetDayScheduleAsync(date);
 
             return Ok(schedule);
@@ -78,7 +78,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SportEventVM>), 200)]
         public async Task<IActionResult> GetMatchesAsyncUpcoming()
         {
-            var schedule = await _manager.GetMatchesAsyncUpcomingAsync();
+            var schedule = await _manager.GetMatchesUpcomingAsync();
 
             return Ok(schedule);
         }
@@ -89,7 +89,7 @@ namespace GameOnApi.Controllers
         [ProducesResponseType(typeof(List<SportEventVM>), 200)]
         public async Task<IActionResult> GetMatchesAsyncLive()
         {
-            var schedule = await _manager.GetMatchesAsyncLiveAsync();
+            var schedule = await _manager.GetMatchesLiveAsync();
 
             return Ok(schedule);
         }
