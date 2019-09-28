@@ -46,7 +46,7 @@ namespace com.gameon.domain.Managers
         }
 
         // This will get matches for today and tomorrow
-        public async Task<List<SportEventVM>> GetMatchesAsyncAsync()
+        public async Task<List<SportEventVM>> GetMatchesAsync()
         {
             // Get matches for today and tomorrow
             var today = DateTime.UtcNow;
@@ -68,7 +68,7 @@ namespace com.gameon.domain.Managers
             return matchVMs;
         }
 
-        public async Task<List<SportEventVM>> GetMatchesAsyncUpcomingAsync()
+        public async Task<List<SportEventVM>> GetMatchesUpcomingAsync()
         {
             // Get matches for today and tomorrow
             var today = DateTime.UtcNow;
@@ -86,7 +86,7 @@ namespace com.gameon.domain.Managers
             return scheduleVMs;
         }
 
-        public async Task<List<SportEventVM>> GetMatchesAsyncLiveAsync()
+        public async Task<List<SportEventVM>> GetMatchesLiveAsync()
         {
             // Get matches for today and tomorrow
             var today = DateTime.UtcNow;
