@@ -6,11 +6,6 @@ namespace com.gameon.domain.Models.ViewModels.Nba
     {
         public string Points { get; set; }
 
-        public NbaScoreBaseVM(NbaScoreBase s)
-        {
-            Points = s.Points;
-        }
-
         public NbaScoreBaseVM() { }
     }
 }
