@@ -47,6 +47,7 @@ namespace GameOnApi
                 mc.AddProfile(new EsportsProfile());
                 mc.AddProfile(new FootballProfile());
                 mc.AddProfile(new NbaProfile());
+                mc.AddProfile(new TennisProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

@@ -1,14 +1,7 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Tennis;
-
-namespace com.gameon.domain.Models.ViewModels.Tennis
+﻿namespace com.gameon.domain.Models.ViewModels.Tennis
 {
     public class CoverageInfoVM
     {
         public string LiveCoverage { get; set; }
-
-        public CoverageInfoVM(CoverageInfo c)
-        {
-            LiveCoverage = c.LiveCoverage;
-        }
     }
 }

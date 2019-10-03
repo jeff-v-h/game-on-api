@@ -1,5 +1,4 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Tennis;
-using System;
+﻿using System;
 
 namespace com.gameon.domain.Models.ViewModels.Tennis
 {
@@ -7,12 +6,6 @@ namespace com.gameon.domain.Models.ViewModels.Tennis
     {
         public DateTime? GeneratedAt { get; set; }
         public string Schema { get; set; }
-
-        public ApiBaseVM(ApiBase a)
-        {
-            GeneratedAt = a.GeneratedAt;
-            Schema = a.Schema;
-        }
 
         public ApiBaseVM() { }
     }

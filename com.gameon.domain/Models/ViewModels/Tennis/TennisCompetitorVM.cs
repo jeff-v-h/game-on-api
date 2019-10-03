@@ -1,6 +1,4 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Tennis;
-
-namespace com.gameon.domain.Models.ViewModels.Tennis
+﻿namespace com.gameon.domain.Models.ViewModels.Tennis
 {
     public class TennisCompetitorVM : PlayerVM
     {
@@ -8,18 +6,5 @@ namespace com.gameon.domain.Models.ViewModels.Tennis
         public int? BracketNumber { get; set; }
         public string Qualifier { get; set; }
         public string QualificationPath { get; set; }
-
-        public TennisCompetitorVM(TennisCompetitor c)
-        {
-            Id = c.Id;
-            Name = c.Name;
-            Abbreviation = c.Abbreviation;
-            Nationality = c.Nationality;
-            CountryCode = c.CountryCode;
-            Seed = c.Seed;
-            BracketNumber = c.BracketNumber;
-            Qualifier = c.Qualifier;
-            QualificationPath = c.QualificationPath;
-        }
     }
 }
