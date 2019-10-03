@@ -1,6 +1,4 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Esports;
-
-namespace com.gameon.domain.Models.ViewModels.Esports
+﻿namespace com.gameon.domain.Models.ViewModels.Esports
 {
     public class VideoGameVM
     {

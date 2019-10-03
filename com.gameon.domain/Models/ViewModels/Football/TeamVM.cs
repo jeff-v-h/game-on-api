@@ -1,6 +1,4 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Football;
-
-namespace com.gameon.domain.Models.ViewModels.Football
+﻿namespace com.gameon.domain.Models.ViewModels.Football
 {
     public class TeamVM
     {
@@ -13,18 +11,5 @@ namespace com.gameon.domain.Models.ViewModels.Football
         public string VenueAddress { get; set; }
         public string VenueCity { get; set; }
         public int? VenueCapacity { get; set; }
-
-        public TeamVM(FootballTeam t)
-        {
-            Name = t.Name;
-            Code = t.Code;
-            Country = t.Country;
-            Founded = t.Founded;
-            VenueName = t.VenueName;
-            VenueSurface = t.VenueSurface;
-            VenueAddress = t.VenueAddress;
-            VenueCity = t.VenueCity;
-            VenueCapacity = t.VenueCapacity;
-        }
     }
 }

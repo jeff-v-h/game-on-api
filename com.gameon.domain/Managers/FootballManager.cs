@@ -1,4 +1,5 @@
-﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+﻿using AutoMapper;
+using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.Models.ViewModels.Football;
 using System;
@@ -10,9 +11,11 @@ namespace com.gameon.domain.Managers
     public class FootballManager : IFootballManager
     {
         private readonly IFootballApiService _service;
-        public FootballManager(IFootballApiService service)
+        private readonly IMapper _mapper;
+        public FootballManager(IFootballApiService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         public async Task<List<FixtureVM>> GetScheduleAsync(string league)
@@ -20,7 +23,8 @@ namespace com.gameon.domain.Managers
             var fixtures = await _service.GetScheduleAsync(league);
 
             var fixtureVMs = new List<FixtureVM>();
-            foreach (var f in fixtures) fixtureVMs.Add(new FixtureVM(f));
+            foreach (var f in fixtures)
+                fixtureVMs.Add(_mapper.Map<FixtureVM>(f));
 
             return fixtureVMs;
         }
@@ -30,7 +34,8 @@ namespace com.gameon.domain.Managers
             var fixtures = await _service.GetLiveGamesAsync(league);
 
             var fixtureVMs = new List<FixtureVM>();
-            foreach (var f in fixtures) fixtureVMs.Add(new FixtureVM(f));
+            foreach (var f in fixtures)
+                fixtureVMs.Add(_mapper.Map<FixtureVM>(f));
 
             return fixtureVMs;
         }
@@ -50,7 +55,8 @@ namespace com.gameon.domain.Managers
                 && f.EventDate.Value.Ticks < ticks24HrsFromNow);
 
             var fixtureVMs = new List<FixtureVM>();
-            foreach (var game in gamesNext24) fixtureVMs.Add(new FixtureVM(game));
+            foreach (var game in gamesNext24)
+                fixtureVMs.Add(_mapper.Map<FixtureVM>(game));
 
             return fixtureVMs;
         }
@@ -60,7 +66,8 @@ namespace com.gameon.domain.Managers
             var teams = await _service.GetTeamsAsync(league);
 
             var teamVMs = new List<TeamVM>();
-            foreach (var t in teams) teamVMs.Add(new TeamVM(t));
+            foreach (var t in teams)
+                teamVMs.Add(_mapper.Map<TeamVM>(t));
 
             return teamVMs;
         }

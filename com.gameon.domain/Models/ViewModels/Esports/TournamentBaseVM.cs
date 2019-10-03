@@ -1,5 +1,4 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Esports;
-using System;
+﻿using System;
 
 namespace com.gameon.domain.Models.ViewModels.Esports
 {

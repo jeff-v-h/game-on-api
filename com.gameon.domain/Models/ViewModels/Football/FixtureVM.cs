@@ -1,5 +1,4 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Football;
-using System;
+﻿using System;
 
 namespace com.gameon.domain.Models.ViewModels.Football
 {
@@ -22,26 +21,5 @@ namespace com.gameon.domain.Models.ViewModels.Football
         public int? GoalsHomeTeam { get; set; }
         public int? GoalsAwayTeam { get; set; }
         public ScoreVM Score { get; set; }
-
-        public FixtureVM(Fixture f)
-        {
-            FixtureId = f.FixtureId;
-            LeagueId = f.LeagueId;
-            EventDate = f.EventDate;
-            EventTimestamp = f.EventTimestamp;
-            FirstHalfStart = f.FirstHalfStart;
-            SecondHalfStart = f.SecondHalfStart;
-            Round = f.Round;
-            Status = f.Status;
-            StatusShort = f.StatusShort;
-            Elapsed = f.Elapsed;
-            Venue = f.Venue;
-            Referee = f.Referee;
-            HomeTeam = (f.HomeTeam != null) ? new TeamBaseVM(f.HomeTeam) : null;
-            AwayTeam = (f.AwayTeam != null) ? new TeamBaseVM(f.AwayTeam) : null;
-            GoalsHomeTeam = f.GoalsHomeTeam;
-            GoalsAwayTeam = f.GoalsAwayTeam;
-            Score = (f.Score != null) ? new ScoreVM(f.Score) : null;
-        }
     }
 }

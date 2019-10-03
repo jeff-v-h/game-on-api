@@ -1,6 +1,4 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Football;
-
-namespace com.gameon.domain.Models.ViewModels.Football
+﻿namespace com.gameon.domain.Models.ViewModels.Football
 {
     public class ScoreVM
     {
@@ -8,13 +6,5 @@ namespace com.gameon.domain.Models.ViewModels.Football
         public string Fulltime { get; set; }
         public object Extratime { get; set; }
         public object Penalty { get; set; }
-
-        public ScoreVM(Score s)
-        {
-            Halftime = s.Halftime;
-            Fulltime = s.Fulltime;
-            Extratime = s.Extratime;
-            Penalty = s.Penalty;
-        }
     }
 }
