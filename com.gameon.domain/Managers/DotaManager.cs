@@ -1,4 +1,5 @@
-﻿using com.gameon.data.Database.Interfaces;
+﻿using AutoMapper;
+using com.gameon.data.Database.Interfaces;
 using com.gameon.data.Database.Models;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.Models.ViewModels.Dota2;
@@ -10,10 +11,12 @@ namespace com.gameon.domain.Managers
     public class DotaManager : IDotaManager
     {
         private readonly IDotaRepository _repo;
+        private readonly IMapper _mapper;
 
-        public DotaManager(IDotaRepository repo)
+        public DotaManager(IDotaRepository repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         // CRUD methods for private database. For requests to third party APIs check EsportsManager
@@ -23,7 +26,7 @@ namespace com.gameon.domain.Managers
 
             var dotaVMs = new List<DotaVM>();
 
-            foreach (Dota d in dotaList) dotaVMs.Add(new DotaVM(d));
+            foreach (Dota d in dotaList) dotaVMs.Add(_mapper.Map<DotaVM>(d));
 
             return dotaVMs;
         }
@@ -33,7 +36,7 @@ namespace com.gameon.domain.Managers
             var dota = _repo.Get(id);
 
             // return null if dota is null
-            return (dota != null) ? new DotaVM(dota) : null;
+            return (dota != null) ? _mapper.Map<DotaVM>(dota) : null;
         }
 
         public DotaVM Create(DotaVM dotaVM)
