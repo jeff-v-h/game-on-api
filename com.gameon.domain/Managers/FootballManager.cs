@@ -1,6 +1,6 @@
 ﻿using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels.Football;
+using com.gameon.domain.Models.ViewModels.Football;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

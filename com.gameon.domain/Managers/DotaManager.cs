@@ -1,7 +1,7 @@
 ﻿using com.gameon.data.Database.Interfaces;
 using com.gameon.data.Database.Models;
 using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels.Dota2;
+using com.gameon.domain.Models.ViewModels.Dota2;
 using System;
 using System.Collections.Generic;
 

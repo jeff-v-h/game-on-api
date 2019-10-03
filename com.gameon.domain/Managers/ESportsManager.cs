@@ -1,7 +1,7 @@
 ﻿using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.data.ThirdPartyApis.Models.Esports;
 using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels.Esports;
+using com.gameon.domain.Models.ViewModels.Esports;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
