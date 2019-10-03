@@ -7,12 +7,5 @@ namespace com.gameon.domain.Models.ViewModels.Esports
         public string Slug { get; set; }
         public string Name { get; set; }
         public int Id { get; set; }
-
-        public VideoGameVM(VideoGame v)
-        {
-            Slug = v.Slug;
-            Name = v.Name;
-            Id = v.Id;
-        }
     }
 }

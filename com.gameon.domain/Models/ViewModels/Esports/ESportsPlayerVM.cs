@@ -12,17 +12,5 @@ namespace com.gameon.domain.Models.ViewModels.Esports
         public int Id { get; set; }
         public string Hometown { get; set; }
         public string FirstName { get; set; }
-
-        public EsportsPlayerVM(Player p)
-        {
-            Slug = p.Slug;
-            Role = p.Role;
-            Name = p.Name;
-            LastName = p.LastName;
-            ImageUrl = p.ImageUrl;
-            Id = p.Id;
-            Hometown = p.Hometown;
-            FirstName = p.FirstName;
-        }
     }
 }

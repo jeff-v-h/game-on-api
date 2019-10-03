@@ -19,23 +19,6 @@ namespace com.gameon.domain.Models.ViewModels.Esports
         public bool Draw { get; set; }
         public DateTime? BeginAt { get; set; }
 
-        public MatchBaseVM(MatchBase m)
-        {
-            WinnerId = m.WinnerId;
-            TournamentId = m.TournamentId;
-            Status = m.Status;
-            Slug = m.Slug;
-            NumberOfGames = m.NumberOfGames;
-            Name = m.Name;
-            MatchType = m.MatchType;
-            Live = (m.Live != null) ? new LiveVM(m.Live) : null;
-            Id = m.Id;
-            Forfeit = m.Forfeit;
-            EndAt = m.EndAt;
-            Draw = m.Draw;
-            BeginAt = m.BeginAt;
-        }
-
         public MatchBaseVM() { }
     }
 }

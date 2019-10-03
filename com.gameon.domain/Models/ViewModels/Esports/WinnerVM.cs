@@ -6,11 +6,5 @@ namespace com.gameon.domain.Models.ViewModels.Esports
     {
         public string Type { get; set; }
         public int? Id { get; set; }
-
-        public WinnerVM(Winner w)
-        {
-            Type = w.Type;
-            Id = w.Id;
-        }
     }
 }

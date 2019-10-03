@@ -10,15 +10,5 @@ namespace com.gameon.domain.Models.ViewModels.Esports
         public bool LiveSupported { get; set; }
         public string ImageUrl { get; set; }
         public int Id { get; set; }
-
-        public LeagueVM(League l)
-        {
-            Url = l.Url;
-            Slug = l.Slug;
-            Name = l.Name;
-            LiveSupported = l.LiveSupported;
-            ImageUrl = l.ImageUrl;
-            Id = l.Id;
-        }
     }
 }

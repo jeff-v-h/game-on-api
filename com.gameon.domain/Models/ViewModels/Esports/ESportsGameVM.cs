@@ -1,5 +1,4 @@
-﻿using com.gameon.data.ThirdPartyApis.Models.Esports;
-using System;
+﻿using System;
 
 namespace com.gameon.domain.Models.ViewModels.Esports
 {
@@ -15,19 +14,5 @@ namespace com.gameon.domain.Models.ViewModels.Esports
         public bool Finished { get; set; }
         public DateTime? EndAt { get; set; }
         public DateTime? BeginAt { get; set; }
-
-        public EsportsGameVM(Game g)
-        {
-            WinnerType = g.WinnerType;
-            Winner = (g.Winner != null) ? new WinnerVM(g.Winner) : null;
-            Position = g.Position;
-            MatchId = g.MatchId;
-            Length = g.Length;
-            Id = g.Id;
-            Forfeit = g.Forfeit;
-            Finished = g.Finished;
-            EndAt = g.EndAt;
-            BeginAt = g.BeginAt;
-        }
     }
 }

@@ -10,15 +10,6 @@ namespace com.gameon.domain.Models.ViewModels.Esports
         public int? Id { get; set; }
         public string Acronym { get; set; }
 
-        public EsportsTeamBaseVM(EsportsTeamBase t)
-        {
-            Slug = t.Slug;
-            Name = t.Name;
-            ImageUrl = t.ImageUrl;
-            Id = t.Id;
-            Acronym = t.Acronym;
-        }
-
         public EsportsTeamBaseVM() { }
     }
 }

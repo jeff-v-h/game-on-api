@@ -15,8 +15,4 @@
     <ProjectReference Include="..\com.gameon.data\com.gameon.data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\MappingProfiles\" />
-  </ItemGroup>
-
 </Project>

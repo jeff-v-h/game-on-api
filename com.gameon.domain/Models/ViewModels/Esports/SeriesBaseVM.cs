@@ -19,23 +19,6 @@ namespace com.gameon.domain.Models.ViewModels.Esports
         public string Description { get; set; }
         public DateTime? BeginAt { get; set; }
 
-        public SeriesBaseVM(SeriesBase s)
-        {
-            Year = s.Year;
-            WinnerType = s.WinnerType;
-            WinnerId = s.WinnerId;
-            Slug = s.Slug;
-            Season = s.Season;
-            Prizepool = s.Prizepool;
-            Name = s.Name;
-            LeagueId = s.LeagueId;
-            Id = s.Id;
-            FullName = s.FullName;
-            EndAt = s.EndAt;
-            Description = s.Description;
-            BeginAt = s.BeginAt;
-        }
-
         public SeriesBaseVM() { }
     }
 }

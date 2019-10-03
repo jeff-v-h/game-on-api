@@ -6,11 +6,5 @@ namespace com.gameon.domain.Models.ViewModels.Esports
     {
         public int TeamId { get; set; }
         public int Score { get; set; }
-
-        public ResultVM(Result r)
-        {
-            TeamId = r.TeamId;
-            Score = r.Score;
-        }
     }
 }
