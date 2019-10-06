@@ -1,7 +1,7 @@
 ﻿using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.data.ThirdPartyApis.Models.Tennis;
 using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels.General;
+using com.gameon.domain.Models.ViewModels.General;
 using System;
 using System.Collections.Generic;
 using System.Linq;

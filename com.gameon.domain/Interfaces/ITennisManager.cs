@@ -1,4 +1,4 @@
-﻿using com.gameon.domain.ViewModels.Tennis;
+﻿using com.gameon.domain.Models.ViewModels.Tennis;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

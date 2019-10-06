@@ -1,7 +1,8 @@
-﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+﻿using AutoMapper;
+using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.data.ThirdPartyApis.Models.Tennis;
 using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels.Tennis;
+using com.gameon.domain.Models.ViewModels.Tennis;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ namespace com.gameon.domain.Managers
     public class TennisManager : ITennisManager
     {
         private readonly ITennisApiService _service;
+        private readonly IMapper _mapper;
         string[] _atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
 
-        public TennisManager(ITennisApiService service)
+        public TennisManager(ITennisApiService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         public async Task<List<TournamentVM>> GetTournamentsAsync()
@@ -23,7 +26,8 @@ namespace com.gameon.domain.Managers
             var tournaments = await _service.GetTournamentsAsync();
 
             var tournamentVMs = new List<TournamentVM>();
-            foreach (var t in tournaments) tournamentVMs.Add(new TournamentVM(t));
+            foreach (var t in tournaments)
+                tournamentVMs.Add(_mapper.Map<TournamentVM>(t));
 
             return tournamentVMs;
         }
@@ -32,7 +36,7 @@ namespace com.gameon.domain.Managers
         {
             var info = await _service.GetTournamentInfoAsync(id);
 
-            return new InfoApiVM(info);
+            return _mapper.Map<InfoApiVM>(info);
         }
 
         public async Task<List<SportEventVM>> GetTournamentScheduleAsync(string id)
@@ -40,7 +44,8 @@ namespace com.gameon.domain.Managers
             var schedule = await _service.GetTournamentScheduleAsync(id);
 
             var scheduleVMs = new List<SportEventVM>();
-            foreach (var s in schedule) scheduleVMs.Add(new SportEventVM(s));
+            foreach (var s in schedule)
+                scheduleVMs.Add(_mapper.Map<SportEventVM>(s));
 
             return scheduleVMs;
         }
@@ -63,7 +68,8 @@ namespace com.gameon.domain.Managers
             matches.AddRange(matchesTomorrowSorted);
 
             var matchVMs = new List<SportEventVM>();
-            foreach (var m in matches) matchVMs.Add(new SportEventVM(m));
+            foreach (var m in matches)
+                matchVMs.Add(_mapper.Map<SportEventVM>(m));
 
             return matchVMs;
         }
@@ -81,7 +87,8 @@ namespace com.gameon.domain.Managers
             upcoming.AddRange(matchesTomorrow);
 
             var scheduleVMs = new List<SportEventVM>();
-            foreach (var u in upcoming) scheduleVMs.Add(new SportEventVM(u));
+            foreach (var u in upcoming)
+                scheduleVMs.Add(_mapper.Map<SportEventVM>(u));
 
             return scheduleVMs;
         }
@@ -96,7 +103,8 @@ namespace com.gameon.domain.Managers
             var matches = matchesToday.FindAll(m => m.Status == "live" && Array.IndexOf(_atpLevels, m.Tournament.Category.Level) > -1);
 
             var scheduleVMs = new List<SportEventVM>();
-            foreach (var m in matches) scheduleVMs.Add(new SportEventVM(m));
+            foreach (var m in matches)
+                scheduleVMs.Add(_mapper.Map<SportEventVM>(m));
 
             return scheduleVMs;
         }
@@ -109,7 +117,8 @@ namespace com.gameon.domain.Managers
             else schedule = await _service.GetDayScheduleAsync();
 
             var scheduleVMs = new List<SportEventVM>();
-            foreach (var s in schedule) scheduleVMs.Add(new SportEventVM(s));
+            foreach (var s in schedule)
+                scheduleVMs.Add(_mapper.Map<SportEventVM>(s));
 
             return scheduleVMs;
         }
@@ -119,7 +128,8 @@ namespace com.gameon.domain.Managers
             var rankings = await _service.GetPlayerRankingsAsync();
 
             var rankingsVM = new List<AssociationRankingsVM>();
-            foreach (var r in rankings) rankingsVM.Add(new AssociationRankingsVM(r));
+            foreach (var r in rankings)
+                rankingsVM.Add(_mapper.Map<AssociationRankingsVM>(r));
 
             return rankingsVM;
         }

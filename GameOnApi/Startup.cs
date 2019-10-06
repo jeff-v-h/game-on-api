@@ -1,6 +1,8 @@
-﻿using com.gameon.domain.Frameworks;
+﻿using AutoMapper;
+using com.gameon.domain.Frameworks;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.Managers;
+using com.gameon.domain.Models.MappingProfiles;
 using GameOnApi.CustomExceptionMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,7 +40,21 @@ namespace GameOnApi
                     });
             });
 
+            // Register mapping
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new Dota2Profile());
+                mc.AddProfile(new EsportsProfile());
+                mc.AddProfile(new FootballProfile());
+                mc.AddProfile(new NbaProfile());
+                mc.AddProfile(new TennisProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Game On API", Version = "v1" });

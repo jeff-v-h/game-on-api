@@ -1,7 +1,8 @@
-﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+﻿using AutoMapper;
+using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.data.ThirdPartyApis.Models.Esports;
 using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels.Esports;
+using com.gameon.domain.Models.ViewModels.Esports;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,9 +11,11 @@ namespace com.gameon.domain.Managers
     public class EsportsManager : IEsportsManager
     {
         private readonly IEsportsApiService _service;
-        public EsportsManager(IEsportsApiService service)
+        private readonly IMapper _mapper;
+        public EsportsManager(IEsportsApiService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         public async Task<List<EsportsTournamentVM>> GetTournamentsAsync(string game = null, string timeFrame = null)
@@ -20,8 +23,9 @@ namespace com.gameon.domain.Managers
             List<EsportsTournament> tournaments = await _service.GetTournamentsAsync(game, timeFrame);
 
             var tournamentVMs = new List<EsportsTournamentVM>();
-            foreach (var t in tournaments) tournamentVMs.Add(new EsportsTournamentVM(t));
-
+            foreach (var t in tournaments)
+                tournamentVMs.Add(_mapper.Map<EsportsTournamentVM>(t));
+            
             return tournamentVMs;
         }
 
@@ -30,7 +34,8 @@ namespace com.gameon.domain.Managers
             var teams = await _service.GetTeamsAsync(game);
 
             var teamVMs = new List<EsportsTeamVM>();
-            foreach (var t in teams) teamVMs.Add(new EsportsTeamVM(t));
+            foreach (var t in teams)
+                teamVMs.Add(_mapper.Map<EsportsTeamVM>(t));
 
             return teamVMs;
         }
@@ -43,7 +48,7 @@ namespace com.gameon.domain.Managers
             // Due to api sort by descending starts with null dates, must not return the beginning few objects
             var indexFirst = series.FindIndex(x => !(x.BeginAt == null && x.EndAt == null));
             for (int i = indexFirst; i < series.Count; i++)
-                seriesVM.Add(new SeriesVM(series[i]));
+                seriesVM.Add(_mapper.Map<SeriesVM>(series[i]));
 
             return seriesVM;
         }
@@ -60,7 +65,7 @@ namespace com.gameon.domain.Managers
 
             // Convert to view model
             var matchVM = new List<MatchVM>();
-            foreach (var t in matches) matchVM.Add(new MatchVM(t));
+            foreach (var t in matches) matchVM.Add(_mapper.Map<MatchVM>(t));
 
             return matchVM;
         }
