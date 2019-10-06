@@ -1,6 +1,6 @@
 ﻿using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels.General;
-using com.gameon.domain.ViewModels.Nba;
+using com.gameon.domain.Models.ViewModels.General;
+using com.gameon.domain.Models.ViewModels.Nba;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

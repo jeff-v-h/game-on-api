@@ -1,5 +1,5 @@
 ﻿using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels.Football;
+using com.gameon.domain.Models.ViewModels.Football;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

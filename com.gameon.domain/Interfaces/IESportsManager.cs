@@ -1,4 +1,4 @@
-﻿using com.gameon.domain.ViewModels.Esports;
+﻿using com.gameon.domain.Models.ViewModels.Esports;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

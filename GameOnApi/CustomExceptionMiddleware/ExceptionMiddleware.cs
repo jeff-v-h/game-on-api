@@ -1,4 +1,4 @@
-﻿using com.gameon.domain.ViewModels;
+﻿using com.gameon.domain.Models.AppModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;

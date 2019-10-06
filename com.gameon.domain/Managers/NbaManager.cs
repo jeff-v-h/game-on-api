@@ -1,7 +1,8 @@
-﻿using com.gameon.data.ThirdPartyApis.Interfaces;
+﻿using AutoMapper;
+using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.data.ThirdPartyApis.Models.Nba;
 using com.gameon.domain.Interfaces;
-using com.gameon.domain.ViewModels.Nba;
+using com.gameon.domain.Models.ViewModels.Nba;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,9 +12,11 @@ namespace com.gameon.domain.Managers
     public class NbaManager : INbaManager
     {
         private readonly INbaApiService _service;
-        public NbaManager(INbaApiService service)
+        private readonly IMapper _mapper;
+        public NbaManager(INbaApiService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         public async Task<List<NbaGameVM>> GetNbaScheduleAsync()
@@ -21,7 +24,8 @@ namespace com.gameon.domain.Managers
             var games = await _service.GetNbaScheduleAsync();
 
             var gameVMs = new List<NbaGameVM>();
-            foreach (var f in games) gameVMs.Add(new NbaGameVM(f));
+            foreach (var g in games)
+                gameVMs.Add(_mapper.Map<NbaGameVM>(g));
 
             return gameVMs;
         }
@@ -31,7 +35,8 @@ namespace com.gameon.domain.Managers
             var games = await _service.GetNbaLiveGamesAsync();
 
             var gameVMs = new List<NbaGameVM>();
-            foreach (var f in games) gameVMs.Add(new NbaGameVM(f));
+            foreach (var g in games)
+                gameVMs.Add(_mapper.Map<NbaGameVM>(g));
 
             return gameVMs;
         }
@@ -53,7 +58,8 @@ namespace com.gameon.domain.Managers
                 && g.StartTimeUTC.Value.Ticks < in24Hours);
 
             var gameVMs = new List<NbaGameVM>();
-            foreach (var game in gamesNext24) gameVMs.Add(new NbaGameVM(game));
+            foreach (var game in gamesNext24)
+                gameVMs.Add(_mapper.Map<NbaGameVM>(game));
 
             return gameVMs;
         }
@@ -64,7 +70,7 @@ namespace com.gameon.domain.Managers
         {
             var game = await _service.GetNbaGameDetailsAsync(gameId);
 
-            return (game != null) ? new NbaGameDetailsVM(game) : null;
+            return (game != null) ? _mapper.Map<NbaGameDetailsVM>(game) : null;
         }
 
         public async Task<List<NbaTeamVM>> GetNbaTeamsAsync()
@@ -72,7 +78,8 @@ namespace com.gameon.domain.Managers
             var teams = await _service.GetNbaTeamsAsync();
 
             var teamVMs = new List<NbaTeamVM>();
-            foreach (var t in teams) teamVMs.Add(new NbaTeamVM(t));
+            foreach (var t in teams)
+                teamVMs.Add(_mapper.Map<NbaTeamVM>(t));
 
             return teamVMs;
         }

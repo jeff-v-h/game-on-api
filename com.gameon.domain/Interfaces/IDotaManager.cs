@@ -1,4 +1,4 @@
-﻿using com.gameon.domain.ViewModels.Dota2;
+﻿using com.gameon.domain.Models.ViewModels.Dota2;
 using System.Collections.Generic;
 
 namespace com.gameon.domain.Interfaces

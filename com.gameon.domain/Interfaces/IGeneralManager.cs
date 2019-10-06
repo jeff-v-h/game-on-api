@@ -1,4 +1,4 @@
-﻿using com.gameon.domain.ViewModels.General;
+﻿using com.gameon.domain.Models.ViewModels.General;
 using System.Threading.Tasks;
 
 namespace com.gameon.domain.Interfaces
