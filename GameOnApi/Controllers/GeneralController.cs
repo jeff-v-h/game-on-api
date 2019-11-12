@@ -19,6 +19,19 @@ namespace GameOnApi.Controllers
             _manager = manager;
         }
 
+        /*
+         * GET for specific sports in a given week (mainly for testing purposes)
+         */
+        [HttpGet("events/week/{sport}")]
+        [ProducesResponseType(typeof(SortedWeekEventsVM), 200)]
+        public async Task<IActionResult> GetSportSortedWeekEvents(string sport, [FromQuery] string startDate)
+        {
+            var events = await _manager.GetSportSortedWeekEventsAsync(sport, startDate);
+
+            return Ok(events);
+        }
+
+        // GET all sports sorted for a specific week (from today by default)
         // GET api/general/events/week
         [HttpGet("events/week")]
         [ProducesResponseType(typeof(SortedWeekEventsVM), 200)]

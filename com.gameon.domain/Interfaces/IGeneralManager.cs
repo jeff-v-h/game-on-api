@@ -7,5 +7,6 @@ namespace com.gameon.domain.Interfaces
     {
         Task<SortedEventsVM> GetEventsAsync();
         Task<SortedWeekEventsVM> GetSortedWeekEventsAsync(string weekStartDateString = null);
+        Task<SortedWeekEventsVM> GetSportSortedWeekEventsAsync(string sportOrLeague, string weekStartDateString = null);
     }
 }

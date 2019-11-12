@@ -302,7 +302,7 @@ namespace com.gameon.domain.Managers
             var tennisTask = GetTennisWeekEventsAsync(weekStartDate);
             var esportsTask = GetEsportsWeekEventsAsync(weekStartDate);
 
-            var allTasks = new List<Task<SortedWeekEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
+            var allTasks = new List<Task<SortedWeekEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, tennisTask, esportsTask };
 
             var eventsToday = new List<EventVM>();
             var eventsTomorrow = new List<EventVM>();
@@ -343,32 +343,34 @@ namespace com.gameon.domain.Managers
             return allEventsSorted;
         }
 
-        /**
-         * dateString in format: "yyyy-mm-dd"
-         */
-        private DateTime GetDateFromReverseStringFormat(string dateString)
+        public async Task<SortedWeekEventsVM> GetSportSortedWeekEventsAsync(string sportOrLeague, string weekStartDateString = null)
         {
-            var dateParts = dateString.Split("-");
+            DateTime weekStartDate = (weekStartDateString == null) ? DateTime.UtcNow
+                : GetDateFromReverseStringFormat(weekStartDateString);
 
-            if (dateParts.Length == 3)
+            Task<SortedWeekEventsVM> task;
+            switch (sportOrLeague.ToLower())
             {
-                if (Int32.TryParse(dateParts[0], out int year) &&
-                    Int32.TryParse(dateParts[1], out int month) &&
-                    Int32.TryParse(dateParts[2], out int day))
-                {
-                    return new DateTime(year, month, day);
-                }
-                else
-                {
-                    throw new Exception("Date provided needs to be numbers separated by a dash");
-                }
+                case "nba":
+                    task = GetNbaWeekEventsAsync(weekStartDate);
+                    break;
+                case "epl":
+                case "europaleague":
+                case "championsleague":
+                    task = GetFootballWeekEventsAsync(sportOrLeague.ToLower(), weekStartDate);
+                    break;
+                case "tennis":
+                    task = GetTennisWeekEventsAsync(weekStartDate);
+                    break;
+                case "esports":
+                    task = GetEsportsWeekEventsAsync(weekStartDate);
+                    break;
+                default:
+                    throw new Exception("Incorrect sport of league passed through to GetSportSortedWeekEventsAsync()");
             }
-            else
-            {
-                throw new Exception("Date provided needs to be in format 'yyyy-mm-dd'");
-            }
+
+            return await task;
         }
-
 
         private async Task<SortedWeekEventsVM> GetNbaWeekEventsAsync(DateTime weekStartDate)
         {
@@ -456,7 +458,7 @@ namespace com.gameon.domain.Managers
             var day5 = weekStartDate.AddDays(4);
             var day6 = weekStartDate.AddDays(5);
             var day7 = weekStartDate.AddDays(6);
-            string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
+            string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "atp_world_tour_finals", "wta_premier", "wta_international" };
 
             // Await the async task
             var tournaments = await getTournaments;
@@ -492,9 +494,9 @@ namespace com.gameon.domain.Managers
                         var endDateParts = tournament.CurrentSeason?.EndDate?.Split("-");
 
                         if (endDateParts.Length == 3 &&
-                            Int32.TryParse(dateParts[0], out int endDateYear) &&
-                            Int32.TryParse(dateParts[1], out int endDateMonth) &&
-                            Int32.TryParse(dateParts[2], out int endDateDay))
+                            Int32.TryParse(endDateParts[0], out int endDateYear) &&
+                            Int32.TryParse(endDateParts[1], out int endDateMonth) &&
+                            Int32.TryParse(endDateParts[2], out int endDateDay))
                         {
                             var endDateTime = new DateTime(endDateYear, endDateMonth, endDateDay);
                             var endDate = endDateTime.Date;
@@ -605,6 +607,32 @@ namespace com.gameon.domain.Managers
             }
 
             return events;
+        }
+
+        /**
+         * dateString in format: "yyyy-mm-dd"
+         */
+        private DateTime GetDateFromReverseStringFormat(string dateString)
+        {
+            var dateParts = dateString.Split("-");
+
+            if (dateParts.Length == 3)
+            {
+                if (Int32.TryParse(dateParts[0], out int year) &&
+                    Int32.TryParse(dateParts[1], out int month) &&
+                    Int32.TryParse(dateParts[2], out int day))
+                {
+                    return new DateTime(year, month, day);
+                }
+                else
+                {
+                    throw new Exception("Date provided needs to be numbers separated by a dash");
+                }
+            }
+            else
+            {
+                throw new Exception("Date provided needs to be in format 'yyyy-mm-dd'");
+            }
         }
 
         private SortedWeekEventsVM GetEmptySortedWeekObject()
