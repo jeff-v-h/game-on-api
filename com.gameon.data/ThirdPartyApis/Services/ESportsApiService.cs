@@ -42,7 +42,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             string requestUrl = (timeFrame == "upcoming") ? BuildUrlWithQueryParams(mainUrl, sortBy: "begin_at")
                 : BuildUrlWithQueryParams(mainUrl);
             requestUrl += "&per_page=100";
-
+            //requestUrl += "&range[begin_at]=2019-05-01T10:00:00Z,2019-05-30T22:00:00Z";
             var response = await _client.GetAsync(requestUrl);
 
             if (response.IsSuccessStatusCode)

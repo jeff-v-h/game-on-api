@@ -299,7 +299,7 @@ namespace com.gameon.domain.Managers
             var eplTask = GetFootballWeekEventsAsync("epl", weekStartDate);
             var europaLeagueTask = GetFootballWeekEventsAsync("europaLeague", weekStartDate);
             var championsLeagueTask = GetFootballWeekEventsAsync("championsleague", weekStartDate);
-            //var tennisTask = GetTennisWeekEventsAsync(weekStartDate);
+            var tennisTask = GetTennisWeekEventsAsync(weekStartDate);
             var esportsTask = GetEsportsWeekEventsAsync(weekStartDate);
 
             var allTasks = new List<Task<SortedWeekEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
