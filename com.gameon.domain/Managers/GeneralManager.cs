@@ -36,10 +36,10 @@ namespace com.gameon.domain.Managers
             var eplTask = GetFootballEventsAsync("epl", now);
             var europaLeagueTask = GetFootballEventsAsync("europaLeague", now);
             var championsLeagueTask = GetFootballEventsAsync("championsleague", now);
-            //var tennisTask = GetTennisEventsAsync(now);
+            var tennisTask = GetTennisEventsAsync(now);
             var esportsTask = GetEsportsEventsAsync(now);
 
-            var allTasks = new List<Task<SortedEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
+            var allTasks = new List<Task<SortedEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, tennisTask, esportsTask };
 
             var liveEvents = new List<EventVM>();
             var upcomingEvents = new List<EventVM>();
@@ -468,6 +468,9 @@ namespace com.gameon.domain.Managers
                 var tournament = tournaments[i];
                 bool isTopTournament = Array.IndexOf(atpLevels, tournament.Category?.Level) > -1;
                 // date is in format "2019-05-31"
+                if (tournament.Category?.Level == "atp_world_tour_finals")
+                    Console.WriteLine("test debugging");
+
                 var dateParts = tournament.CurrentSeason?.StartDate?.Split("-");
 
                 if (isTopTournament && 
@@ -535,7 +538,8 @@ namespace com.gameon.domain.Managers
 
         private async Task<SortedWeekEventsVM> GetEsportsWeekEventsAsync(DateTime weekStartDate)
         {
-            var getTournaments = _esportsService.GetTournamentsAsync();
+            var getTournamentsRunningTask = _esportsService.GetTournamentsAsync(timeFrame: "running");
+            var getTournamentsUpcomingTask = _esportsService.GetTournamentsAsync(timeFrame: "upcoming");
 
             // Create variables
             var events = GetEmptySortedWeekObject();
@@ -546,8 +550,8 @@ namespace com.gameon.domain.Managers
             var day6 = weekStartDate.AddDays(5);
             var day7 = weekStartDate.AddDays(6);
 
-            // Await the async task
-            var tournaments = await getTournaments;
+            var tournaments = await getTournamentsRunningTask;
+            tournaments.AddRange(await getTournamentsUpcomingTask);
 
             for (int i = 0; i < tournaments.Count; i++)
             {
@@ -557,6 +561,9 @@ namespace com.gameon.domain.Managers
                 if (tournament.BeginAt.HasValue)
                 {
                     var startDate = tournament.BeginAt.Value.Date;
+
+                    if (tournament.VideoGame.Slug == "dota-2")
+                        Console.WriteLine("test debugging");
 
                     // Add the tournament if within a week of specified date
                     //if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(tournament));
