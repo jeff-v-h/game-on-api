@@ -482,54 +482,67 @@ namespace com.gameon.domain.Managers
                     var startDateTime = new DateTime(year, month, day);
                     var startDate = startDateTime.Date;
 
-                    //if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(tournament));
-                    //else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));
-                    //else if (startDate == day3.Date) events.Day3.Add(new EventVM(tournament));
-                    //else if (startDate == day4.Date) events.Day4.Add(new EventVM(tournament));
-                    //else if (startDate == day5.Date) events.Day5.Add(new EventVM(tournament));
-                    //else if (startDate == day6.Date) events.Day6.Add(new EventVM(tournament));
-                    //else if (startDate == day7.Date) events.Day7.Add(new EventVM(tournament));
-
-                    bool isWithinWeek = false;
-                    // Get matches for tournament if it any of it's days lie within the dates above.
-                    if (startDate <= day7.Date)
+                    // Adding tournaments
+                    var endDateParts = tournament.CurrentSeason?.EndDate?.Split("-");
+                    if (isTopTournament &&
+                        endDateParts.Length == 3 &&
+                        Int32.TryParse(endDateParts[0], out int endYear) &&
+                        Int32.TryParse(endDateParts[1], out int endMonth) &&
+                        Int32.TryParse(endDateParts[2], out int endDay))
                     {
-                        var endDateParts = tournament.CurrentSeason?.EndDate?.Split("-");
+                        var endDateTime = new DateTime(endYear, endMonth, endDay);
+                        var endDate = endDateTime.Date;
 
-                        if (endDateParts.Length == 3 &&
-                            Int32.TryParse(endDateParts[0], out int endDateYear) &&
-                            Int32.TryParse(endDateParts[1], out int endDateMonth) &&
-                            Int32.TryParse(endDateParts[2], out int endDateDay))
-                        {
-                            var endDateTime = new DateTime(endDateYear, endDateMonth, endDateDay);
-                            var endDate = endDateTime.Date;
-                            if (endDate >= weekStartDate.Date) isWithinWeek = true;
-                        }
-                        else if (startDate >= weekStartDate.Date) isWithinWeek = true;
+                        if (startDate <= weekStartDate.Date && weekStartDate.Date <= endDate) events.Today.Add(new EventVM(tournament));
+                        if (startDate <= tomorrow.Date && tomorrow.Date <= endDate) events.Tomorrow.Add(new EventVM(tournament));
+                        if (startDate <= day3.Date && day3.Date <= endDate) events.Day3.Add(new EventVM(tournament));
+                        if (startDate <= day4.Date && day4.Date <= endDate) events.Day4.Add(new EventVM(tournament));
+                        if (startDate <= day5.Date && day5.Date <= endDate) events.Day5.Add(new EventVM(tournament));
+                        if (startDate <= day6.Date && day6.Date <= endDate) events.Day6.Add(new EventVM(tournament));
+                        if (startDate <= day7.Date && day7.Date <= endDate) events.Day7.Add(new EventVM(tournament));
                     }
 
-                    if (isWithinWeek)
-                    {
-                        var tournamentsMatches = await _tennisService.GetTournamentScheduleAsync(tournament.Id);
 
-                        for (int j = 0; j < tournamentsMatches.Count; j++)
-                        {
-                            var match = tournamentsMatches[j];
+                    //bool isWithinWeek = false;
+                    //// Get matches for tournament if it any of it's days lie within the dates above.
+                    //if (startDate <= day7.Date)
+                    //{
+                    //    var endDateParts = tournament.CurrentSeason?.EndDate?.Split("-");
 
-                            if (match.Scheduled.HasValue)
-                            {
-                                var matchStartDate = match.Scheduled.Value.Date;
+                    //    if (endDateParts.Length == 3 &&
+                    //        Int32.TryParse(endDateParts[0], out int endDateYear) &&
+                    //        Int32.TryParse(endDateParts[1], out int endDateMonth) &&
+                    //        Int32.TryParse(endDateParts[2], out int endDateDay))
+                    //    {
+                    //        var endDateTime = new DateTime(endDateYear, endDateMonth, endDateDay);
+                    //        var endDate = endDateTime.Date;
+                    //        if (endDate >= weekStartDate.Date) isWithinWeek = true;
+                    //    }
+                    //    else if (startDate >= weekStartDate.Date) isWithinWeek = true;
+                    //}
 
-                                if (matchStartDate == weekStartDate.Date) events.Today.Add(new EventVM(match));
-                                else if (matchStartDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(match));
-                                else if (matchStartDate == day3.Date) events.Day3.Add(new EventVM(match));
-                                else if (matchStartDate == day4.Date) events.Day4.Add(new EventVM(match));
-                                else if (matchStartDate == day5.Date) events.Day5.Add(new EventVM(match));
-                                else if (matchStartDate == day6.Date) events.Day6.Add(new EventVM(match));
-                                else if (matchStartDate == day7.Date) events.Day7.Add(new EventVM(match));
-                            }
-                        }
-                    }
+                    //if (isWithinWeek)
+                    //{
+                    //    var tournamentsMatches = await _tennisService.GetTournamentScheduleAsync(tournament.Id);
+
+                    //    for (int j = 0; j < tournamentsMatches.Count; j++)
+                    //    {
+                    //        var match = tournamentsMatches[j];
+
+                    //        if (match.Scheduled.HasValue)
+                    //        {
+                    //            var matchStartDate = match.Scheduled.Value.Date;
+
+                    //            if (matchStartDate == weekStartDate.Date) events.Today.Add(new EventVM(match));
+                    //            else if (matchStartDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(match));
+                    //            else if (matchStartDate == day3.Date) events.Day3.Add(new EventVM(match));
+                    //            else if (matchStartDate == day4.Date) events.Day4.Add(new EventVM(match));
+                    //            else if (matchStartDate == day5.Date) events.Day5.Add(new EventVM(match));
+                    //            else if (matchStartDate == day6.Date) events.Day6.Add(new EventVM(match));
+                    //            else if (matchStartDate == day7.Date) events.Day7.Add(new EventVM(match));
+                    //        }
+                    //    }
+                    //}
                 }
             }
 
