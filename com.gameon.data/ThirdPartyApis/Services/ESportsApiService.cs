@@ -35,7 +35,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         {
             // Create the main url pathway
             var mainUrl = _host;
-            if (game == null) mainUrl += _settings[game];
+            if (game != null) mainUrl += _settings[game];
             mainUrl += _settings["Tournaments"];
             if (timeFrame != null) mainUrl += "/" + timeFrame;
 
