@@ -42,10 +42,9 @@ namespace GameOnApi.Controllers
         // GET api/dota/tournaments
         [HttpGet("dota/tournaments")]
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
-        public async Task<IActionResult> GetDotaTournaments()
+        public async Task<IActionResult> GetDotaTournaments([FromQuery] string seriesId = null)
         {
-            var tournaments = await _manager.GetTournamentsAsync("Dota2");
-
+            var tournaments = await _manager.GetTournamentsAsync("Dota2", seriesId: seriesId);
             return Ok(tournaments);
         }
 

@@ -31,7 +31,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
         }
 
-        public async Task<List<EsportsTournament>> GetTournamentsAsync(string game = null, string timeFrame = null)
+        public async Task<List<EsportsTournament>> GetTournamentsAsync(string game = null, string timeFrame = null, string seriesId = null)
         {
             // Create the main url pathway
             var mainUrl = _host;
@@ -42,6 +42,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             string requestUrl = (timeFrame == "upcoming") ? BuildUrlWithQueryParams(mainUrl, sortBy: "begin_at")
                 : BuildUrlWithQueryParams(mainUrl);
             requestUrl += "&per_page=100";
+            if (seriesId != null) requestUrl += $"&filter[serie_id]={seriesId}";
             //requestUrl += "&range[begin_at]=2019-05-01T10:00:00Z,2019-05-30T22:00:00Z";
             var response = await _client.GetAsync(requestUrl);
 
