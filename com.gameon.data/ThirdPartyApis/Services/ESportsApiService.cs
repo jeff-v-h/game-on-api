@@ -155,7 +155,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
             query[_apiKeyQuery] = _apiKey;
-            //query["filter[per_page]"] = "100";
+            query["page[size]"] = "100";
             if (tournamentId.HasValue) query["filter[tournament_id]"] = tournamentId.Value.ToString();
             if (sortBy != null) query["sort"] = sortBy;
             if (thenBy != null) query["sort"] += "," + thenBy;
