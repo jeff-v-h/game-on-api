@@ -8,7 +8,7 @@ namespace com.gameon.domain.Interfaces
     {
         Task<List<EsportsTournamentVM>> GetTournamentsAsync(string game = null, string timeFrame = null, string seriesId = null);
         Task<List<EsportsTeamVM>> GetTeamsAsync(string game);
-        Task<List<SeriesVM>> GetSeriesAsync(string game);
+        Task<List<SeriesVM>> GetSeriesAsync(string game, List<string> range = null);
         Task<List<MatchVM>> GetMatchesAsync(string game = null, int? tournamentId = null, string timeFrame = null);
     }
 }

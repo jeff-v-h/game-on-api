@@ -3,6 +3,7 @@ using com.gameon.data.ThirdPartyApis.Interfaces;
 using com.gameon.data.ThirdPartyApis.Models.Esports;
 using com.gameon.domain.Interfaces;
 using com.gameon.domain.Models.ViewModels.Esports;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -40,15 +41,20 @@ namespace com.gameon.domain.Managers
             return teamVMs;
         }
 
-        public async Task<List<SeriesVM>> GetSeriesAsync(string game)
+        // Ranges in format yyyy-mm-dd
+        public async Task<List<SeriesVM>> GetSeriesAsync(string game, List<string> range = null)
         {
-            var series = await _service.GetSeriesAsync(game);
+            var rangeDatetimes = (range != null && range.Count > 0) ? GetRangeAsDateTimes(range) : null;
+            var series = await _service.GetSeriesAsync(game, rangeDatetimes);
 
             var seriesVM = new List<SeriesVM>();
             // Due to api sort by descending starts with null dates, must not return the beginning few objects
-            var indexFirst = series.FindIndex(x => !(x.BeginAt == null && x.EndAt == null));
-            for (int i = indexFirst; i < series.Count; i++)
-                seriesVM.Add(_mapper.Map<SeriesVM>(series[i]));
+            if (series.Count > 0)
+            {
+                var indexFirst = series.FindIndex(x => !(x.BeginAt == null && x.EndAt == null));
+                for (int i = indexFirst; i < series.Count; i++)
+                    seriesVM.Add(_mapper.Map<SeriesVM>(series[i]));
+            }
 
             return seriesVM;
         }
@@ -68,6 +74,28 @@ namespace com.gameon.domain.Managers
             foreach (var t in matches) matchVM.Add(_mapper.Map<MatchVM>(t));
 
             return matchVM;
+        }
+
+        private List<DateTime> GetRangeAsDateTimes(List<string> range)
+        {
+            var rangeDatetime = new List<DateTime>();
+
+            try
+            {
+                foreach (var date in range)
+                {
+                    var year = int.Parse(date.Substring(0, 4));
+                    var month = int.Parse(date.Substring(5, 2));
+                    var day = int.Parse(date.Substring(8, 2));
+                    var dt = new DateTime(year, month, day);
+                    rangeDatetime.Add(dt);
+                }
+                return rangeDatetime;
+            }
+            catch
+            {
+                throw new Exception("Range dates should be in format yyyy-mm-dd");
+            }
         }
     }
 }

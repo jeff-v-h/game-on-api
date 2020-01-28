@@ -61,9 +61,13 @@ namespace GameOnApi.Controllers
         // GET api/dota/series
         [HttpGet("dota/series")]
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
-        public async Task<IActionResult> GetDotaSeries()
+        public async Task<IActionResult> GetDotaSeries([FromQuery] string rangeBegin = null, [FromQuery] string rangeEnd = null)
         {
-            var series = await _manager.GetSeriesAsync("Dota2");
+            var ranges = new List<string>();
+            if (rangeBegin != null) ranges.Add(rangeBegin);
+            if (rangeEnd != null) ranges.Add(rangeEnd);
+
+            var series = await _manager.GetSeriesAsync("Dota2", ranges);
 
             return Ok(series);
         }

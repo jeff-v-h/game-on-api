@@ -72,11 +72,11 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<List<Series>> GetSeriesAsync(string game)
+        public async Task<List<Series>> GetSeriesAsync(string game, List<DateTime> range = null)
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Series"];
-            string requestUrl = BuildUrlWithQueryParams(url: mainUrl, sortBy: "-end_at");
+            string requestUrl = BuildUrlWithQueryParams(url: mainUrl, sortBy: "-end_at", range: range);
 
             var response = await _client.GetAsync(requestUrl);
 
@@ -149,7 +149,7 @@ namespace com.gameon.data.ThirdPartyApis.Services
         }
 
         // Add parameters to url
-        private string BuildUrlWithQueryParams(string url, int? tournamentId = null, string sortBy = null, string thenBy = null)
+        private string BuildUrlWithQueryParams(string url, int? tournamentId = null, string sortBy = null, string thenBy = null, List<DateTime> range = null)
         {
             var builder = new UriBuilder(url);
             builder.Port = -1;
@@ -160,7 +160,14 @@ namespace com.gameon.data.ThirdPartyApis.Services
             if (sortBy != null) query["sort"] = sortBy;
             if (thenBy != null) query["sort"] += "," + thenBy;
             builder.Query = query.ToString();
-            return builder.ToString();
+            var requestUrl = builder.ToString();
+            if (range != null)
+            {
+                var rangeString = range[0].ToString("yyyy-MM-dd") + "T00:00:00Z";
+                if (range.Count > 1) rangeString += $",{range[1].ToString("yyyy-MM-dd")}T00:00:00Z";
+                requestUrl += $"&range[begin_at]={rangeString}";
+            }
+            return requestUrl;
         }
     }
 }
