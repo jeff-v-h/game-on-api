@@ -571,12 +571,15 @@ namespace com.gameon.domain.Managers
                 var tournament = tournaments[i];
                 // date is in format "2019-05-31"
 
-                if (tournament.BeginAt.HasValue)
+                // Temporarily only include Dota and League of Legends
+                var isWantedGame = tournament.VideoGame.Name == "Dota 2" || tournament.VideoGame.Name == "LoL";
+
+                if (tournament.BeginAt.HasValue && isWantedGame)
                 {
                     var startDate = tournament.BeginAt.Value.Date;
 
-                    if (tournament.VideoGame.Slug == "dota-2")
-                        Console.WriteLine("test debugging");
+                    //if (tournament.VideoGame.Slug == "dota-2")
+                    //    Console.WriteLine("test debugging");
 
                     // Add the tournament if within a week of specified date
                     //if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(tournament));
