@@ -36,10 +36,10 @@ namespace com.gameon.domain.Managers
             var eplTask = GetFootballEventsAsync("epl", now);
             var europaLeagueTask = GetFootballEventsAsync("europaLeague", now);
             var championsLeagueTask = GetFootballEventsAsync("championsleague", now);
-            //var tennisTask = GetTennisEventsAsync(now);
+            var tennisTask = GetTennisEventsAsync(now);
             var esportsTask = GetEsportsEventsAsync(now);
 
-            var allTasks = new List<Task<SortedEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
+            var allTasks = new List<Task<SortedEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, tennisTask, esportsTask };
 
             var liveEvents = new List<EventVM>();
             var upcomingEvents = new List<EventVM>();
@@ -302,7 +302,7 @@ namespace com.gameon.domain.Managers
             var tennisTask = GetTennisWeekEventsAsync(weekStartDate);
             var esportsTask = GetEsportsWeekEventsAsync(weekStartDate);
 
-            var allTasks = new List<Task<SortedWeekEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, esportsTask };
+            var allTasks = new List<Task<SortedWeekEventsVM>> { nbaTask, eplTask, europaLeagueTask, championsLeagueTask, tennisTask, esportsTask };
 
             var eventsToday = new List<EventVM>();
             var eventsTomorrow = new List<EventVM>();
@@ -343,32 +343,34 @@ namespace com.gameon.domain.Managers
             return allEventsSorted;
         }
 
-        /**
-         * dateString in format: "yyyy-mm-dd"
-         */
-        private DateTime GetDateFromReverseStringFormat(string dateString)
+        public async Task<SortedWeekEventsVM> GetSportSortedWeekEventsAsync(string sportOrLeague, string weekStartDateString = null)
         {
-            var dateParts = dateString.Split("-");
+            DateTime weekStartDate = (weekStartDateString == null) ? DateTime.UtcNow
+                : GetDateFromReverseStringFormat(weekStartDateString);
 
-            if (dateParts.Length == 3)
+            Task<SortedWeekEventsVM> task;
+            switch (sportOrLeague.ToLower())
             {
-                if (Int32.TryParse(dateParts[0], out int year) &&
-                    Int32.TryParse(dateParts[1], out int month) &&
-                    Int32.TryParse(dateParts[2], out int day))
-                {
-                    return new DateTime(year, month, day);
-                }
-                else
-                {
-                    throw new Exception("Date provided needs to be numbers separated by a dash");
-                }
+                case "nba":
+                    task = GetNbaWeekEventsAsync(weekStartDate);
+                    break;
+                case "epl":
+                case "europaleague":
+                case "championsleague":
+                    task = GetFootballWeekEventsAsync(sportOrLeague.ToLower(), weekStartDate);
+                    break;
+                case "tennis":
+                    task = GetTennisWeekEventsAsync(weekStartDate);
+                    break;
+                case "esports":
+                    task = GetEsportsWeekEventsAsync(weekStartDate);
+                    break;
+                default:
+                    throw new Exception("Incorrect sport of league passed through to GetSportSortedWeekEventsAsync()");
             }
-            else
-            {
-                throw new Exception("Date provided needs to be in format 'yyyy-mm-dd'");
-            }
+
+            return await task;
         }
-
 
         private async Task<SortedWeekEventsVM> GetNbaWeekEventsAsync(DateTime weekStartDate)
         {
@@ -456,7 +458,7 @@ namespace com.gameon.domain.Managers
             var day5 = weekStartDate.AddDays(4);
             var day6 = weekStartDate.AddDays(5);
             var day7 = weekStartDate.AddDays(6);
-            string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "wta_premier", "wta_international" };
+            string[] atpLevels = { "atp_250", "atp_500", "atp_1000", "grand_slam", "atp_world_tour_finals", "wta_premier", "wta_international" };
 
             // Await the async task
             var tournaments = await getTournaments;
@@ -466,6 +468,9 @@ namespace com.gameon.domain.Managers
                 var tournament = tournaments[i];
                 bool isTopTournament = Array.IndexOf(atpLevels, tournament.Category?.Level) > -1;
                 // date is in format "2019-05-31"
+                if (tournament.Category?.Level == "atp_world_tour_finals")
+                    Console.WriteLine("test debugging");
+
                 var dateParts = tournament.CurrentSeason?.StartDate?.Split("-");
 
                 if (isTopTournament && 
@@ -477,54 +482,67 @@ namespace com.gameon.domain.Managers
                     var startDateTime = new DateTime(year, month, day);
                     var startDate = startDateTime.Date;
 
-                    //if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(tournament));
-                    //else if (startDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(tournament));
-                    //else if (startDate == day3.Date) events.Day3.Add(new EventVM(tournament));
-                    //else if (startDate == day4.Date) events.Day4.Add(new EventVM(tournament));
-                    //else if (startDate == day5.Date) events.Day5.Add(new EventVM(tournament));
-                    //else if (startDate == day6.Date) events.Day6.Add(new EventVM(tournament));
-                    //else if (startDate == day7.Date) events.Day7.Add(new EventVM(tournament));
-
-                    bool isWithinWeek = false;
-                    // Get matches for tournament if it any of it's days lie within the dates above.
-                    if (startDate <= day7.Date)
+                    // Adding tournaments
+                    var endDateParts = tournament.CurrentSeason?.EndDate?.Split("-");
+                    if (isTopTournament &&
+                        endDateParts.Length == 3 &&
+                        Int32.TryParse(endDateParts[0], out int endYear) &&
+                        Int32.TryParse(endDateParts[1], out int endMonth) &&
+                        Int32.TryParse(endDateParts[2], out int endDay))
                     {
-                        var endDateParts = tournament.CurrentSeason?.EndDate?.Split("-");
+                        var endDateTime = new DateTime(endYear, endMonth, endDay);
+                        var endDate = endDateTime.Date;
 
-                        if (endDateParts.Length == 3 &&
-                            Int32.TryParse(dateParts[0], out int endDateYear) &&
-                            Int32.TryParse(dateParts[1], out int endDateMonth) &&
-                            Int32.TryParse(dateParts[2], out int endDateDay))
-                        {
-                            var endDateTime = new DateTime(endDateYear, endDateMonth, endDateDay);
-                            var endDate = endDateTime.Date;
-                            if (endDate >= weekStartDate.Date) isWithinWeek = true;
-                        }
-                        else if (startDate >= weekStartDate.Date) isWithinWeek = true;
+                        if (startDate <= weekStartDate.Date && weekStartDate.Date <= endDate) events.Today.Add(new EventVM(tournament));
+                        if (startDate <= tomorrow.Date && tomorrow.Date <= endDate) events.Tomorrow.Add(new EventVM(tournament));
+                        if (startDate <= day3.Date && day3.Date <= endDate) events.Day3.Add(new EventVM(tournament));
+                        if (startDate <= day4.Date && day4.Date <= endDate) events.Day4.Add(new EventVM(tournament));
+                        if (startDate <= day5.Date && day5.Date <= endDate) events.Day5.Add(new EventVM(tournament));
+                        if (startDate <= day6.Date && day6.Date <= endDate) events.Day6.Add(new EventVM(tournament));
+                        if (startDate <= day7.Date && day7.Date <= endDate) events.Day7.Add(new EventVM(tournament));
                     }
 
-                    if (isWithinWeek)
-                    {
-                        var tournamentsMatches = await _tennisService.GetTournamentScheduleAsync(tournament.Id);
 
-                        for (int j = 0; j < tournamentsMatches.Count; j++)
-                        {
-                            var match = tournamentsMatches[j];
+                    //bool isWithinWeek = false;
+                    //// Get matches for tournament if it any of it's days lie within the dates above.
+                    //if (startDate <= day7.Date)
+                    //{
+                    //    var endDateParts = tournament.CurrentSeason?.EndDate?.Split("-");
 
-                            if (match.Scheduled.HasValue)
-                            {
-                                var matchStartDate = match.Scheduled.Value.Date;
+                    //    if (endDateParts.Length == 3 &&
+                    //        Int32.TryParse(endDateParts[0], out int endDateYear) &&
+                    //        Int32.TryParse(endDateParts[1], out int endDateMonth) &&
+                    //        Int32.TryParse(endDateParts[2], out int endDateDay))
+                    //    {
+                    //        var endDateTime = new DateTime(endDateYear, endDateMonth, endDateDay);
+                    //        var endDate = endDateTime.Date;
+                    //        if (endDate >= weekStartDate.Date) isWithinWeek = true;
+                    //    }
+                    //    else if (startDate >= weekStartDate.Date) isWithinWeek = true;
+                    //}
 
-                                if (matchStartDate == weekStartDate.Date) events.Today.Add(new EventVM(match));
-                                else if (matchStartDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(match));
-                                else if (matchStartDate == day3.Date) events.Day3.Add(new EventVM(match));
-                                else if (matchStartDate == day4.Date) events.Day4.Add(new EventVM(match));
-                                else if (matchStartDate == day5.Date) events.Day5.Add(new EventVM(match));
-                                else if (matchStartDate == day6.Date) events.Day6.Add(new EventVM(match));
-                                else if (matchStartDate == day7.Date) events.Day7.Add(new EventVM(match));
-                            }
-                        }
-                    }
+                    //if (isWithinWeek)
+                    //{
+                    //    var tournamentsMatches = await _tennisService.GetTournamentScheduleAsync(tournament.Id);
+
+                    //    for (int j = 0; j < tournamentsMatches.Count; j++)
+                    //    {
+                    //        var match = tournamentsMatches[j];
+
+                    //        if (match.Scheduled.HasValue)
+                    //        {
+                    //            var matchStartDate = match.Scheduled.Value.Date;
+
+                    //            if (matchStartDate == weekStartDate.Date) events.Today.Add(new EventVM(match));
+                    //            else if (matchStartDate == tomorrow.Date) events.Tomorrow.Add(new EventVM(match));
+                    //            else if (matchStartDate == day3.Date) events.Day3.Add(new EventVM(match));
+                    //            else if (matchStartDate == day4.Date) events.Day4.Add(new EventVM(match));
+                    //            else if (matchStartDate == day5.Date) events.Day5.Add(new EventVM(match));
+                    //            else if (matchStartDate == day6.Date) events.Day6.Add(new EventVM(match));
+                    //            else if (matchStartDate == day7.Date) events.Day7.Add(new EventVM(match));
+                    //        }
+                    //    }
+                    //}
                 }
             }
 
@@ -533,7 +551,8 @@ namespace com.gameon.domain.Managers
 
         private async Task<SortedWeekEventsVM> GetEsportsWeekEventsAsync(DateTime weekStartDate)
         {
-            var getTournaments = _esportsService.GetTournamentsAsync();
+            var getTournamentsRunningTask = _esportsService.GetTournamentsAsync(timeFrame: "running");
+            var getTournamentsUpcomingTask = _esportsService.GetTournamentsAsync(timeFrame: "upcoming");
 
             // Create variables
             var events = GetEmptySortedWeekObject();
@@ -544,17 +563,23 @@ namespace com.gameon.domain.Managers
             var day6 = weekStartDate.AddDays(5);
             var day7 = weekStartDate.AddDays(6);
 
-            // Await the async task
-            var tournaments = await getTournaments;
+            var tournaments = await getTournamentsRunningTask;
+            tournaments.AddRange(await getTournamentsUpcomingTask);
 
             for (int i = 0; i < tournaments.Count; i++)
             {
                 var tournament = tournaments[i];
                 // date is in format "2019-05-31"
 
-                if (tournament.BeginAt.HasValue)
+                // Temporarily only include Dota and League of Legends
+                var isWantedGame = tournament.VideoGame.Name == "Dota 2" || tournament.VideoGame.Name == "LoL";
+
+                if (tournament.BeginAt.HasValue && isWantedGame)
                 {
                     var startDate = tournament.BeginAt.Value.Date;
+
+                    //if (tournament.VideoGame.Slug == "dota-2")
+                    //    Console.WriteLine("test debugging");
 
                     // Add the tournament if within a week of specified date
                     //if (startDate == weekStartDate.Date) events.Today.Add(new EventVM(tournament));
@@ -605,6 +630,32 @@ namespace com.gameon.domain.Managers
             }
 
             return events;
+        }
+
+        /**
+         * dateString in format: "yyyy-mm-dd"
+         */
+        private DateTime GetDateFromReverseStringFormat(string dateString)
+        {
+            var dateParts = dateString.Split("-");
+
+            if (dateParts.Length == 3)
+            {
+                if (Int32.TryParse(dateParts[0], out int year) &&
+                    Int32.TryParse(dateParts[1], out int month) &&
+                    Int32.TryParse(dateParts[2], out int day))
+                {
+                    return new DateTime(year, month, day);
+                }
+                else
+                {
+                    throw new Exception("Date provided needs to be numbers separated by a dash");
+                }
+            }
+            else
+            {
+                throw new Exception("Date provided needs to be in format 'yyyy-mm-dd'");
+            }
         }
 
         private SortedWeekEventsVM GetEmptySortedWeekObject()

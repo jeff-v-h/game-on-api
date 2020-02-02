@@ -52,13 +52,13 @@ namespace com.gameon.domain.Models.ViewModels.General
                 : "";
             Name = g.HomeTeam.TeamName + " v " + g.AwayTeam.TeamName;
             Sport = "Football";
-            LeagueOrTournament = (g.LeagueId == 2) ? "EPL" 
-                : (g.LeagueId == 132) ? "Champions League"
-                : (g.LeagueId == 137) ? "Europa League"
+            LeagueOrTournament = (g.LeagueId == 524) ? "EPL" 
+                : (g.LeagueId == 530) ? "Champions League"
+                : (g.LeagueId == 514) ? "Europa League"
                 : null;
-            Selector = (g.LeagueId == 2) ? "epl"
-                : (g.LeagueId == 132) ? "champions league"
-                : (g.LeagueId == 137) ? "europa league"
+            Selector = (g.LeagueId == 524) ? "epl"
+                : (g.LeagueId == 530) ? "champions league"
+                : (g.LeagueId == 514) ? "europa league"
                 : "football";
             Competitors = MapFootballCompetitors(g.HomeTeam, g.AwayTeam, g.GoalsHomeTeam, g.GoalsAwayTeam);
         }

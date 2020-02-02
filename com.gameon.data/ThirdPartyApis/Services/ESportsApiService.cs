@@ -31,17 +31,18 @@ namespace com.gameon.data.ThirdPartyApis.Services
             _client.DefaultRequestHeaders.Add("User-Agent", "Game-On-Api");
         }
 
-        public async Task<List<EsportsTournament>> GetTournamentsAsync(string game = null, string timeFrame = null)
+        public async Task<List<EsportsTournament>> GetTournamentsAsync(string game = null, string timeFrame = null, string seriesId = null)
         {
             // Create the main url pathway
             var mainUrl = _host;
-            if (game == null) mainUrl += _settings[game];
+            if (game != null) mainUrl += _settings[game];
             mainUrl += _settings["Tournaments"];
             if (timeFrame != null) mainUrl += "/" + timeFrame;
 
             string requestUrl = (timeFrame == "upcoming") ? BuildUrlWithQueryParams(mainUrl, sortBy: "begin_at")
                 : BuildUrlWithQueryParams(mainUrl);
             requestUrl += "&per_page=100";
+            if (seriesId != null) requestUrl += $"&filter[serie_id]={seriesId}";
             //requestUrl += "&range[begin_at]=2019-05-01T10:00:00Z,2019-05-30T22:00:00Z";
             var response = await _client.GetAsync(requestUrl);
 
@@ -71,11 +72,11 @@ namespace com.gameon.data.ThirdPartyApis.Services
             else throw new Exception(response.ReasonPhrase);
         }
 
-        public async Task<List<Series>> GetSeriesAsync(string game)
+        public async Task<List<Series>> GetSeriesAsync(string game, List<DateTime> range = null)
         {
             // Create the main url pathway
             var mainUrl = _host + _settings[game] + _settings["Series"];
-            string requestUrl = BuildUrlWithQueryParams(url: mainUrl, sortBy: "-end_at");
+            string requestUrl = BuildUrlWithQueryParams(url: mainUrl, sortBy: "-end_at", range: range);
 
             var response = await _client.GetAsync(requestUrl);
 
@@ -148,18 +149,25 @@ namespace com.gameon.data.ThirdPartyApis.Services
         }
 
         // Add parameters to url
-        private string BuildUrlWithQueryParams(string url, int? tournamentId = null, string sortBy = null, string thenBy = null)
+        private string BuildUrlWithQueryParams(string url, int? tournamentId = null, string sortBy = null, string thenBy = null, List<DateTime> range = null)
         {
             var builder = new UriBuilder(url);
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
             query[_apiKeyQuery] = _apiKey;
-            //query["filter[per_page]"] = "100";
+            query["page[size]"] = "100";
             if (tournamentId.HasValue) query["filter[tournament_id]"] = tournamentId.Value.ToString();
             if (sortBy != null) query["sort"] = sortBy;
             if (thenBy != null) query["sort"] += "," + thenBy;
             builder.Query = query.ToString();
-            return builder.ToString();
+            var requestUrl = builder.ToString();
+            if (range != null)
+            {
+                var rangeString = range[0].ToString("yyyy-MM-dd") + "T00:00:00Z";
+                if (range.Count > 1) rangeString += $",{range[1].ToString("yyyy-MM-dd")}T00:00:00Z";
+                requestUrl += $"&range[begin_at]={rangeString}";
+            }
+            return requestUrl;
         }
     }
 }

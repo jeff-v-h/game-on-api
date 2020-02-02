@@ -42,10 +42,9 @@ namespace GameOnApi.Controllers
         // GET api/dota/tournaments
         [HttpGet("dota/tournaments")]
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
-        public async Task<IActionResult> GetDotaTournaments()
+        public async Task<IActionResult> GetDotaTournaments([FromQuery] string seriesId = null)
         {
-            var tournaments = await _manager.GetTournamentsAsync("Dota2");
-
+            var tournaments = await _manager.GetTournamentsAsync("Dota2", seriesId: seriesId);
             return Ok(tournaments);
         }
 
@@ -62,9 +61,13 @@ namespace GameOnApi.Controllers
         // GET api/dota/series
         [HttpGet("dota/series")]
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
-        public async Task<IActionResult> GetDotaSeries()
+        public async Task<IActionResult> GetDotaSeries([FromQuery] string rangeBegin = null, [FromQuery] string rangeEnd = null)
         {
-            var series = await _manager.GetSeriesAsync("Dota2");
+            var ranges = new List<string>();
+            if (rangeBegin != null) ranges.Add(rangeBegin);
+            if (rangeEnd != null) ranges.Add(rangeEnd);
+
+            var series = await _manager.GetSeriesAsync("Dota2", ranges);
 
             return Ok(series);
         }
@@ -82,12 +85,12 @@ namespace GameOnApi.Controllers
             return Ok(matches);
         }
 
-        // GET api/lol/tournaments
+        // GET api/lol/tournaments?seriesId=2337
         [HttpGet("lol/tournaments")]
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
-        public async Task<IActionResult> GetLolTournaments()
+        public async Task<IActionResult> GetLolTournaments([FromQuery] string seriesId = null)
         {
-            var tournaments = await _manager.GetTournamentsAsync("LoL");
+            var tournaments = await _manager.GetTournamentsAsync("LoL", seriesId: seriesId);
 
             return Ok(tournaments);
         }
@@ -105,9 +108,13 @@ namespace GameOnApi.Controllers
         // GET api/lol/series
         [HttpGet("lol/series")]
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
-        public async Task<IActionResult> GetLolSeries()
+        public async Task<IActionResult> GetLolSeries([FromQuery] string rangeBegin = null, [FromQuery] string rangeEnd = null)
         {
-            var series = await _manager.GetSeriesAsync("LoL");
+            var ranges = new List<string>();
+            if (rangeBegin != null) ranges.Add(rangeBegin);
+            if (rangeEnd != null) ranges.Add(rangeEnd);
+
+            var series = await _manager.GetSeriesAsync("LoL", ranges);
 
             return Ok(series);
         }
@@ -128,9 +135,9 @@ namespace GameOnApi.Controllers
         // GET api/overwatch/tournaments
         [HttpGet("overwatch/tournaments")]
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
-        public async Task<IActionResult> GetOverwatchTournaments()
+        public async Task<IActionResult> GetOverwatchTournaments([FromQuery] string seriesId = null)
         {
-            var tournaments = await _manager.GetTournamentsAsync("Overwatch");
+            var tournaments = await _manager.GetTournamentsAsync("Overwatch", seriesId: seriesId);
 
             return Ok(tournaments);
         }
@@ -148,9 +155,13 @@ namespace GameOnApi.Controllers
         // GET api/overwatch/series
         [HttpGet("overwatch/series")]
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
-        public async Task<IActionResult> GetOverwatchSeries()
+        public async Task<IActionResult> GetOverwatchSeries([FromQuery] string rangeBegin = null, [FromQuery] string rangeEnd = null)
         {
-            var series = await _manager.GetSeriesAsync("Overwatch");
+            var ranges = new List<string>();
+            if (rangeBegin != null) ranges.Add(rangeBegin);
+            if (rangeEnd != null) ranges.Add(rangeEnd);
+
+            var series = await _manager.GetSeriesAsync("Overwatch", ranges);
 
             return Ok(series);
         }
@@ -171,9 +182,9 @@ namespace GameOnApi.Controllers
         // GET api/csgo/tournaments
         [HttpGet("csgo/tournaments")]
         [ProducesResponseType(typeof(List<EsportsTournamentVM>), 200)]
-        public async Task<IActionResult> GetCsgoTournaments()
+        public async Task<IActionResult> GetCsgoTournaments([FromQuery] string seriesId = null)
         {
-            var tournaments = await _manager.GetTournamentsAsync("CS:GO");
+            var tournaments = await _manager.GetTournamentsAsync("CS:GO", seriesId: seriesId);
 
             return Ok(tournaments);
         }
@@ -191,9 +202,13 @@ namespace GameOnApi.Controllers
         // GET api/csgo/series
         [HttpGet("csgo/series")]
         [ProducesResponseType(typeof(List<SeriesVM>), 200)]
-        public async Task<IActionResult> GetCsgoSeries()
+        public async Task<IActionResult> GetCsgoSeries([FromQuery] string rangeBegin = null, [FromQuery] string rangeEnd = null)
         {
-            var series = await _manager.GetSeriesAsync("CS:GO");
+            var ranges = new List<string>();
+            if (rangeBegin != null) ranges.Add(rangeBegin);
+            if (rangeEnd != null) ranges.Add(rangeEnd);
+
+            var series = await _manager.GetSeriesAsync("CS:GO", ranges);
 
             return Ok(series);
         }
