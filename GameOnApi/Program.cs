@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace GameOnApi
@@ -18,7 +18,7 @@ namespace GameOnApi
 
             try
             {
-                CreateWebHostBuilder(args).Build().Run();
+                CreateHostBuilder(args).Build().Run();
             }
             finally
             {
@@ -26,10 +26,17 @@ namespace GameOnApi
             }
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
                 .UseSerilog()
-                //.UseSetting("https_port", "443") // For production
-                .UseStartup<Startup>();
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                    {
+                        // Set properties and call methods on options
+                    })
+                    //.UseSetting("https_port", "443") // For production
+                    .UseStartup<Startup>();
+                });
     }
 }
