@@ -11,6 +11,15 @@ This project was made to be run in conjunction with the [backend API](https://gi
 - .NET Core 2.2
 - MongoDB Driver 2.9
 
+### Third Party API Keys
+
+You will need to register and create an API Key to be able to obtain data for each individual sport.
+
+- [API-NBA](https://rapidapi.com/api-sports/api/api-nba)
+- [API-Football](https://rapidapi.com/api-sports/api/api-football)
+- [Sportradar: Tennis v2](https://developer.sportradar.com/docs/read/tennis/Tennis_v2)
+- [Panda Score](https://pandascore.co/)
+
 ### Installation
 
 - Clone the project into a directory: `git clone https://github.com/jeffvhuang/game-on-api.git`
@@ -22,7 +31,7 @@ This project was made to be run in conjunction with the [backend API](https://gi
 
 ## Production
 
-This app is undergoing initial development and is not currently deployed.
+This app has been taken down from deployment due to ongoing running costs for not only hosting, but also the usage of each individual API provider.
 
 ### Deployment
 
